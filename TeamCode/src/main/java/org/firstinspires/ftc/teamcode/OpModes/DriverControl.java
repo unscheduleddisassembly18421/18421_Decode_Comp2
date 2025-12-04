@@ -192,6 +192,8 @@ public class DriverControl extends OpMode {
     g1.copy(gamepad1);
     g2.copy(gamepad2);
 
+    double yaw = Math.toDegrees(r.drive.localizer.getPose().heading.toDouble()); //maybe in radians
+
     //r.outtake.launcherMotor1OnFar();
     //r.outtake.launcherMotor2OnFar();
 

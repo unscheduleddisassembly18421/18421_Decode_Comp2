@@ -118,8 +118,8 @@ public class FieldCentricDrive extends OpMode {
     // This routine drives the robot field relative
     private void driveFieldRelative(double forward, double right, double rotate) {
         // First, convert direction being asked to drive to polar coordinates
-        double theta = Math.atan2(forward, right);
-        double r = Math.hypot(right, forward);
+        double theta = Math.atan2(forward, right);//gives me angle between x and y
+        double r = Math.hypot(right, forward);//gives me the hypotonuse b/w 0,0 and x, y
 
         // Second, rotate angle by the angle the robot is pointing
         theta = AngleUnit.normalizeRadians(theta -
