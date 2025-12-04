@@ -42,7 +42,7 @@ public class Rotator {
 
     public static double intakeTolerance = 6;
 
-    PIDController rotatorPower = new PIDController(kp,kd,ki);
+    ServoPIDController rotatorPower = new ServoPIDController(kp,kd,ki);
 
     private final double DEGREES_PER_VOLT = 360/3.3;
 

@@ -4,14 +4,14 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Config
-public class PIDController {
+public class ServoPIDController {
     private double kp, kd, ki;
 
     private double lasterror = 0;
     private double integralsum = 0;
     ElapsedTime timer = null;
 
-    public PIDController(double kp, double kd, double ki){
+    public ServoPIDController(double kp, double kd, double ki){
         this.kp = kp;
         this.kd = kd;
         this.ki = ki;
