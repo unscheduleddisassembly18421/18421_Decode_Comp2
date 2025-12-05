@@ -4,25 +4,29 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+
 @Config
 @TeleOp(name = "Field Centric Drive:Use", group = "Concept")
 public class NewFieldCentricDrive extends OpMode {
     public HwRobot r = null;
-    public double yaw = Math.toDegrees(r.drive.localizer.getPose().heading.toDouble());
+    public double yaw;
 
     @Override
     public void init() {
         r = new HwRobot(telemetry, hardwareMap);
+        r.init();
 
     }
 
     @Override
     public void loop() {
-        yaw = Math.toDegrees(r.drive.localizer.getPose().heading.toDouble()); //maybe in radians
+        yaw = r.drive.localizer.getPose().heading.toDouble(); //maybe in radians
         driveFieldCentric(
                 -gamepad1.left_stick_y,
                 gamepad1.left_stick_x,
-                gamepad1.right_stick_x
+                gamepad1.right_stick_x,
+                yaw
         );
 
     }
@@ -55,10 +59,11 @@ public class NewFieldCentricDrive extends OpMode {
         r.drive.leftFront.setPower(maxSpeed * (backRightPower / maxPower));
     }
 
-    public void driveFieldCentric(double forward, double right, double rotate){
+    public void driveFieldCentric(double forward, double right, double rotate, double newyaw){
         double theta = Math.atan2(forward, right);
         double r = Math.hypot(right, forward);
-        theta = yaw;
+        theta = AngleUnit.normalizeRadians(theta -
+                newyaw);
 
         double newForward = r * Math.sin(theta);
         double newRight = r * Math.cos(theta);

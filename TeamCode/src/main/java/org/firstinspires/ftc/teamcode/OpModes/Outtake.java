@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -38,6 +39,10 @@ public class Outtake {
     public static double AUTO_LAUNCHERMOTOR_VELOCITY_ON = 1980;
     public static double AUTO_HOODSERVO_SHOOT = 0.525;
     public static double LIFTSERVO_LIFT_POSITION = 0.35;
+
+    public static double newP = 0;
+    public static double newI = 0;
+    public static double newD = 0;
 
 
     //constructor
