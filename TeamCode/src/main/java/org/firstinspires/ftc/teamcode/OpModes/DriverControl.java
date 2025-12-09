@@ -215,21 +215,18 @@ public class DriverControl extends OpMode {
       r.turret.setPosition(thirdAngle);
     }
     if(g2.a){
-      r.outtake.elavatorMotorON();
       r.outtake.launcherMotor2OnFar();
       r.outtake.launcherMotor1OnFar();
     }
     if(g2.dpad_down){
       r.outtake.launcherMotor2Off();
       r.outtake.launcherMotor1Off();
-      r.outtake.elavatorMotorOff();
     }
 
 
     switch(shooterState) {
       case READY:
         if (g2.right_bumper && !previousG2.right_bumper && intakeState == IntakeState.FIRING) {
-          r.outtake.elavatorMotorON();
           r.outtake.launcherMotor1OnFar();
           r.outtake.launcherMotor2OnFar();
           r.outtake.hoodServoShootFar();
@@ -240,7 +237,6 @@ public class DriverControl extends OpMode {
           r.outtake.launcherMotor1OnNear();
           r.outtake.launcherMotor2OnNear();
           r.outtake.hoodServoShootNear();
-          r.outtake.elavatorMotorON();
           shooterState = ShooterState.NEARFIRE1;
           shooterClock.reset();
         }
@@ -250,7 +246,6 @@ public class DriverControl extends OpMode {
 
         if (r.outtake.launchMotorsAtVelocity()) {
           r.turret.setPosition(firstShootingAngle);
-          r.outtake.elavatorMotorON();
           shooterClock.reset();
           shooterState = ShooterState.FARFIRE2;
         }
@@ -301,7 +296,6 @@ public class DriverControl extends OpMode {
 
         case RELOAD:
             if (shooterClock.milliseconds() > RELOAD_DELAY) {
-              r.outtake.elavatorMotorOff();
               r.outtake.launcherMotor1Off();
               r.outtake.launcherMotor2Off();
               r.outtake.hoodServoStart();
