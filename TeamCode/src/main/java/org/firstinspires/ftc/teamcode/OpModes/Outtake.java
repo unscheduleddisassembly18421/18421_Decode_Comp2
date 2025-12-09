@@ -7,9 +7,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -22,63 +20,62 @@ public class Outtake {
     //hardware
     private  DcMotorEx launcherMotor1 = null;
     private DcMotorEx launcherMotor2 = null;
-    private DcMotor elavatorMotor = null;
-    private Servo hoodServo1 = null;
-    private Servo liftServo1 = null;
-    private Servo liftServo2 = null;
-    //private Servo hoodServo2 = null;
-
+    private Servo hoodServo = null;
+    private Servo ballBlockServo1 = null;
+    private Servo ballBlockServo2 = null;
     //Positions
     public static double HOODSERVO_START_POSITION  = 0;
     public static double HOODSERVO_SHOOT_POSITION = 0.3;
     public static double HOODSERVO_CLOSE_SHOOT_POSITION = 0.4;
     public static double FAR_LAUNCHERMOTOR_VELOCITY_ON = 1950;//max is around 2700
     public static double CLOSE_LAUNCHERMOTOR_VELOCITY_ON = 1675;//test
-    public static double ELAVATORMOTOR_POWER_ON = 1;
     public static double LAUNCHER_TOLERANCE = 0.995;
     public static double AUTO_LAUNCHERMOTOR_VELOCITY_ON = 1980;
     public static double AUTO_HOODSERVO_SHOOT = 0.525;
-    public static double LIFTSERVO_LIFT_POSITION = 0.35;
+    public static double BALLBLOCKSERVO_BLOCK_POSITION = 0.35;
 
     public static double newP = 0;
     public static double newI = 0;
     public static double newD = 0;
+    public static double newF = 0;
+    //tune f to set velocity to lowest speed
+    //tune i first
+    //then add in a little p
 
 
     //constructor
     public Outtake(HardwareMap hwmap, Telemetry telemetry) {
         this.telemetry = telemetry;
 
-        hoodServo1 = hwmap.get(Servo.class, "hs1 ");
-        //hoodServo2 = hwmap.get(Servo.class, "hs2");
+        hoodServo = hwmap.get(Servo.class, "hs1 ");
         launcherMotor1 = hwmap.get(DcMotorEx.class, "Lm1");
         launcherMotor2 = hwmap.get(DcMotorEx.class, "Lm2");
-        elavatorMotor = hwmap.get(DcMotor.class, "em");
-        liftServo1 = hwmap.get(Servo.class, "ls1");
-        liftServo2 = hwmap.get(Servo.class, "lm2");
+        ballBlockServo1 = hwmap.get(Servo.class, "bs1");
+        ballBlockServo2 = hwmap.get(Servo.class, "bs2");
 
-        hoodServo1.setDirection(Servo.Direction.FORWARD);
-        //hoodServo2.setDirection(Servo.Direction.REVERSE);
+        hoodServo.setDirection(Servo.Direction.FORWARD);
 
-        liftServo1.setDirection(Servo.Direction.FORWARD);
-        liftServo2.setDirection(Servo.Direction.REVERSE);
+        ballBlockServo1.setDirection(Servo.Direction.FORWARD);
+        ballBlockServo2.setDirection(Servo.Direction.REVERSE);
+
+
+        hoodServo.setPosition(HOODSERVO_START_POSITION);
+        //flywheel motor stuff
 
         launcherMotor1.setDirection(DcMotor.Direction.FORWARD);
-        launcherMotor2.setDirection(DcMotor.Direction.FORWARD);
-        elavatorMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        hoodServo1.setPosition(HOODSERVO_START_POSITION);
-
+        launcherMotor2.setDirection(DcMotor.Direction.REVERSE);
         launcherMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         launcherMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         launcherMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         launcherMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        elavatorMotor.setPower(0);
+        launcherMotor1.setVelocityPIDFCoefficients(newP, newI, newD, newF);
+        launcherMotor2.setVelocityPIDFCoefficients(newP, newI, newD, newF);
+
     }
 
     public void init(){
-        hoodServo1.setPosition(HOODSERVO_START_POSITION);
+        hoodServo.setPosition(HOODSERVO_START_POSITION);
         liftServoStart();
     }
 
@@ -108,35 +105,28 @@ public class Outtake {
         launcherMotor2.setVelocity(0);
     }
 
-    public void elavatorMotorON(){
-        elavatorMotor.setPower(ELAVATORMOTOR_POWER_ON);
-    }
-
-    public void elavatorMotorOff(){
-        elavatorMotor.setPower(0);
-    }
 
     public void  hoodServoStart(){
-        hoodServo1.setPosition(HOODSERVO_START_POSITION);
+        hoodServo.setPosition(HOODSERVO_START_POSITION);
     }
 
     public void hoodServoShootNear(){
-        hoodServo1.setPosition(HOODSERVO_CLOSE_SHOOT_POSITION);
+        hoodServo.setPosition(HOODSERVO_CLOSE_SHOOT_POSITION);
     }
 
 
     public void  hoodServoShootFar(){
-        hoodServo1.setPosition(HOODSERVO_SHOOT_POSITION);
+        hoodServo.setPosition(HOODSERVO_SHOOT_POSITION);
     }
 
     public void liftServoStart(){
-        liftServo1.setPosition(0);
-        liftServo2.setPosition(0);
+        ballBlockServo1.setPosition(0);
+        ballBlockServo2.setPosition(0);
     }
 
     public void liftServoLift(){
-        liftServo1.setPosition(LIFTSERVO_LIFT_POSITION);
-        liftServo2.setPosition(LIFTSERVO_LIFT_POSITION);
+        ballBlockServo1.setPosition(BALLBLOCKSERVO_BLOCK_POSITION);
+        ballBlockServo2.setPosition(BALLBLOCKSERVO_BLOCK_POSITION);
     }
 
     public boolean launchMotorsAtVelocity(){
@@ -229,35 +219,12 @@ public class Outtake {
     }
 
 
-    public class TurnElavatorMotorOn implements Action {
-
-        @Override
-        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            elavatorMotorON();
-            return false;
-        }
-    }
-    public Action turnElavatorMotorOn(){
-        return new TurnElavatorMotorOn();
-    }
-
-    public class TurnElavatorMotorOff implements Action{
-
-        @Override
-        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            elavatorMotorOff();
-            return false;
-        }
-    }
-    public Action turnElavatorMotorOff(){
-        return new TurnElavatorMotorOff();
-    }
 
     public class OpenHoodServoFar implements Action{
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            hoodServo1.setPosition(AUTO_HOODSERVO_SHOOT);
+            hoodServo.setPosition(AUTO_HOODSERVO_SHOOT);
             return false;
         }
     }

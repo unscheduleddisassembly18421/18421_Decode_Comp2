@@ -52,14 +52,6 @@ public class HwRobot {
         return outtake.checkShooterVelocityNear();
     }
 
-    public Action turnElavatorMotorOn(){
-        return outtake.turnElavatorMotorOn();
-    }
-
-    public Action turnElavatorMotorOff(){
-        return outtake.turnElavatorMotorOff();
-    }
-
     public Action openHoodServo(){
         return outtake.openHoodServoFar();
     }
