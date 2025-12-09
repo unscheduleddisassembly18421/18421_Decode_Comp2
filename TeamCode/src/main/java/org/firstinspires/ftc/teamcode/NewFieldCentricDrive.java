@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
@@ -10,7 +11,16 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 @TeleOp(name = "Field Centric Drive:Use", group = "Concept")
 public class NewFieldCentricDrive extends OpMode {
     public HwRobot r = null;
+
+    Gamepad g1 = new Gamepad();
+    Gamepad previousG1 = new Gamepad();
     public double yaw;
+    double headingLockValue = 0;
+
+    boolean headingLock;
+    public static double error;
+    public static double kp = 0;
+    public double stickSensitivity = 0.05;
 
     @Override
     public void init() {
@@ -21,14 +31,34 @@ public class NewFieldCentricDrive extends OpMode {
 
     @Override
     public void loop() {
+        previousG1.copy(g1);
+        g1.copy(gamepad1);
         yaw = r.drive.localizer.getPose().heading.toDouble(); //maybe in radians
+
+        if(Math.abs(g1.right_stick_x) < stickSensitivity && Math.abs(previousG1.right_stick_x) > stickSensitivity){
+            headingLock = true;
+            headingLockValue = yaw;
+        }
+
+        if(Math.abs(g1.right_stick_x) > stickSensitivity){
+            headingLock = false;
+        }
+        if (headingLock){
+            error = headingLockValue - yaw;
+        }
+        else {
+            error = 0;
+        }
+
+
         driveFieldCentric(
                 -gamepad1.left_stick_y,
                 gamepad1.left_stick_x,
-                gamepad1.right_stick_x,
+                gamepad1.right_stick_x+(error*kp),
                 yaw
         );
 
+        telemetry.addData("heading lock", headingLock);
     }
 
     public void drive(double forward, double right, double rotate) {

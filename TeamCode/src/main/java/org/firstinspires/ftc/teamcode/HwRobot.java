@@ -7,13 +7,13 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.OpModes.Intake;
 import org.firstinspires.ftc.teamcode.OpModes.Outtake;
-import org.firstinspires.ftc.teamcode.OpModes.Rotator;
+import org.firstinspires.ftc.teamcode.OpModes.Turret;
 
 public class HwRobot {
     public MecanumDrive drive;
     public Intake intake = null;
     public Outtake outtake = null;
-    public Rotator rotator = null;
+    public Turret turret = null;
     Telemetry telemetry = null;
     HardwareMap hardwareMap = null;
     Pose2d BlueWallRight = new Pose2d(0,0,0);
@@ -27,8 +27,8 @@ public class HwRobot {
         drive = new MecanumDrive(hardwareMap, BlueWallRight);
         intake = new Intake(hardwareMap, telemetry);
         outtake = new Outtake(hardwareMap, telemetry);
-        rotator = new Rotator(hardwareMap, telemetry);
-        rotator.init();
+        turret = new Turret(hardwareMap, telemetry);
+        turret.init();
         outtake.init();
     }
 
@@ -73,30 +73,6 @@ public class HwRobot {
     }
 
 
-    public Action turnToFirstShootingAngle(){
-        return rotator.turnToFirstShootingAngle();
-    }
-
-    public Action turnToSecondShootingAngle(){
-        return rotator.turnToSecondShootingAngle();
-    }
-
-    public Action turnToThirdShootingAngle(){
-        return rotator.turnToThirdShootingAngle();
-    }
-
-    public Action turnToFirstAngle(){
-        return rotator.turnToFirstAngle();
-    }
-
-    public Action turnToSecondAngle(){
-        return rotator.turnToSecondAngle();
-    }
-
-    public Action turnToThirdAngle(){
-        return rotator.turnToThirdAngle();
-    }
-
     public Action turnOnIntake(){
         return intake.turnOnIntake();
     }
@@ -105,12 +81,8 @@ public class HwRobot {
         return intake.turnOffIntake();
     }
 
-    public Action waitForBall(double d) {
-        return rotator.waitForBall(d);
-    }
-
     public Action updateRotator(){
-        return rotator.updateRotator();
+        return turret.updateRotator();
     }
 
     public Action reverseIntake(){

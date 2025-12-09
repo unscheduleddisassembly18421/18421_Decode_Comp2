@@ -8,12 +8,23 @@ import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.tuning.TuningOpModes;
 
 @TeleOp(name = "localzation test: field centric", group = "robot")
 public class LocalzationTestWithFieldCentric extends LinearOpMode {
+
+    Gamepad g1 = new Gamepad();
+    Gamepad previousG1 = new Gamepad();
+    public double yaw;
+    double headingLockValue = 0;
+
+    boolean headingLock;
+    public static double error;
+    public static double kp = 0;
+    public double stickSensitivity = 0.05;
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -25,14 +36,34 @@ public class LocalzationTestWithFieldCentric extends LinearOpMode {
         while (opModeIsActive()) {
             double slowdown = 1;
 
+            previousG1.copy(g1);
+            g1.copy(gamepad1);
+
+            yaw = drive.localizer.getPose().heading.toDouble();
+
             if (gamepad1.right_bumper){
                 slowdown = 3;
+            }
+
+            if(Math.abs(g1.right_stick_x) < stickSensitivity && Math.abs(previousG1.right_stick_x) > stickSensitivity){
+                headingLock = true;
+                headingLockValue = yaw;
+            }
+
+            if(Math.abs(g1.right_stick_x) > stickSensitivity){
+                headingLock = false;
+            }
+            if (headingLock){
+                error = headingLockValue - yaw;
+            }
+            else {
+                error = 0;
             }
 
 
             double forward = -gamepad1.left_stick_y/slowdown;
             double right = gamepad1.left_stick_x/slowdown;
-            double rotate = gamepad1.right_stick_x/slowdown;
+            double rotate = gamepad1.right_stick_x+(error*kp);
 
             driveFieldRelative(forward, right, rotate, drive);
 
@@ -54,6 +85,7 @@ public class LocalzationTestWithFieldCentric extends LinearOpMode {
             telemetry.addData("y", pose.position.y);
             telemetry.addData("heading (deg)", Math.toDegrees(pose.heading.toDouble()));
             telemetry.addData("press and hold right bumper for slow mode", slowdown);
+            telemetry.addData("heading lock", headingLock);
             telemetry.update();
 
             TelemetryPacket packet = new TelemetryPacket();
