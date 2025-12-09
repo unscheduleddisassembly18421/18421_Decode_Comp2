@@ -20,7 +20,7 @@ public class Outtake {
     //hardware
     private  DcMotorEx launcherMotor1 = null;
     private DcMotorEx launcherMotor2 = null;
-    private Servo hoodServo1 = null;
+    private Servo hoodServo = null;
     private Servo ballBlockServo1 = null;
     private Servo ballBlockServo2 = null;
     //Positions
@@ -29,11 +29,10 @@ public class Outtake {
     public static double HOODSERVO_CLOSE_SHOOT_POSITION = 0.4;
     public static double FAR_LAUNCHERMOTOR_VELOCITY_ON = 1950;//max is around 2700
     public static double CLOSE_LAUNCHERMOTOR_VELOCITY_ON = 1675;//test
-    public static double ELAVATORMOTOR_POWER_ON = 1;
     public static double LAUNCHER_TOLERANCE = 0.995;
     public static double AUTO_LAUNCHERMOTOR_VELOCITY_ON = 1980;
     public static double AUTO_HOODSERVO_SHOOT = 0.525;
-    public static double BALLBLOCKSERVO_LIFT_POSITION = 0.35;
+    public static double BALLBLOCKSERVO_BLOCK_POSITION = 0.35;
 
     public static double newP = 0;
     public static double newI = 0;
@@ -48,23 +47,23 @@ public class Outtake {
     public Outtake(HardwareMap hwmap, Telemetry telemetry) {
         this.telemetry = telemetry;
 
-        hoodServo1 = hwmap.get(Servo.class, "hs1 ");
-        //hoodServo2 = hwmap.get(Servo.class, "hs2");
+        hoodServo = hwmap.get(Servo.class, "hs1 ");
         launcherMotor1 = hwmap.get(DcMotorEx.class, "Lm1");
         launcherMotor2 = hwmap.get(DcMotorEx.class, "Lm2");
         ballBlockServo1 = hwmap.get(Servo.class, "bs1");
         ballBlockServo2 = hwmap.get(Servo.class, "bs2");
 
-        hoodServo1.setDirection(Servo.Direction.FORWARD);
+        hoodServo.setDirection(Servo.Direction.FORWARD);
 
         ballBlockServo1.setDirection(Servo.Direction.FORWARD);
         ballBlockServo2.setDirection(Servo.Direction.REVERSE);
 
+
+        hoodServo.setPosition(HOODSERVO_START_POSITION);
+        //flywheel motor stuff
+
         launcherMotor1.setDirection(DcMotor.Direction.FORWARD);
-        launcherMotor2.setDirection(DcMotor.Direction.FORWARD);
-
-        hoodServo1.setPosition(HOODSERVO_START_POSITION);
-
+        launcherMotor2.setDirection(DcMotor.Direction.REVERSE);
         launcherMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         launcherMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         launcherMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -76,7 +75,7 @@ public class Outtake {
     }
 
     public void init(){
-        hoodServo1.setPosition(HOODSERVO_START_POSITION);
+        hoodServo.setPosition(HOODSERVO_START_POSITION);
         liftServoStart();
     }
 
@@ -108,16 +107,16 @@ public class Outtake {
 
 
     public void  hoodServoStart(){
-        hoodServo1.setPosition(HOODSERVO_START_POSITION);
+        hoodServo.setPosition(HOODSERVO_START_POSITION);
     }
 
     public void hoodServoShootNear(){
-        hoodServo1.setPosition(HOODSERVO_CLOSE_SHOOT_POSITION);
+        hoodServo.setPosition(HOODSERVO_CLOSE_SHOOT_POSITION);
     }
 
 
     public void  hoodServoShootFar(){
-        hoodServo1.setPosition(HOODSERVO_SHOOT_POSITION);
+        hoodServo.setPosition(HOODSERVO_SHOOT_POSITION);
     }
 
     public void liftServoStart(){
@@ -126,8 +125,8 @@ public class Outtake {
     }
 
     public void liftServoLift(){
-        ballBlockServo1.setPosition(BALLBLOCKSERVO_LIFT_POSITION);
-        ballBlockServo2.setPosition(BALLBLOCKSERVO_LIFT_POSITION);
+        ballBlockServo1.setPosition(BALLBLOCKSERVO_BLOCK_POSITION);
+        ballBlockServo2.setPosition(BALLBLOCKSERVO_BLOCK_POSITION);
     }
 
     public boolean launchMotorsAtVelocity(){
@@ -225,7 +224,7 @@ public class Outtake {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            hoodServo1.setPosition(AUTO_HOODSERVO_SHOOT);
+            hoodServo.setPosition(AUTO_HOODSERVO_SHOOT);
             return false;
         }
     }
