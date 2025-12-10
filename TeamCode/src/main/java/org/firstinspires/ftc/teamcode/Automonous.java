@@ -326,7 +326,7 @@ public class Automonous extends LinearOpMode {
 
 
                           new SequentialAction(//can do turn to first angle here to speed up time
-                              r.turnToFirstAngle(),
+
                               r.activateShooter(),
                               RedFarGoToShootingPosition,
                               shoot(),
@@ -476,48 +476,36 @@ public class Automonous extends LinearOpMode {
     //TODO figure out why shoot, shoot, wait, shoot
     public Action shoot(){
         return new SequentialAction(
-                r.turnToSecondAngle(),
                 r.activateShooter(),
                 r.openHoodServo(),
                 new SleepAction(0.3),
-                r.turnElavatorMotorOn(),
                 r.checkShooterVelocity(),
-                r.turnToFirstShootingAngle(),
                 new SleepAction(0.3), //.45
                 r.checkShooterVelocity(),
-                r.turnToThirdShootingAngle(),
                 new SleepAction(0.3),
                 r.checkShooterVelocity(),
-                r.turnToSecondShootingAngle(),
                 new SleepAction(0.3),
                 r.checkShooterVelocity(),
                 //r.turnOffShooter(),
                 new SleepAction(0.35),
-                r.turnElavatorMotorOff(),
                 r.closeHoodServo()
         );
     }
 
     public Action nearShoot(){
         return new SequentialAction(
-                r.turnToSecondAngle(),
                 r.activateShooterNear(),
                 r.openHoodServoNear(),
                 new SleepAction(0.3),
-                r.turnElavatorMotorOn(),
                 r.checkShooterVelocityNear(),
-                r.turnToFirstShootingAngle(),
                 new SleepAction(0.3), //.45
                 r.checkShooterVelocityNear(),
-                r.turnToThirdShootingAngle(),
                 new SleepAction(0.3),
                 r.checkShooterVelocity(),
-                r.turnToSecondShootingAngle(),
                 new SleepAction(0.3),
                 r.checkShooterVelocityNear(),
                 //r.turnOffShooter(),
                 new SleepAction(0.5),
-                r.turnElavatorMotorOff(),
                 r.closeHoodServo()
 
         );
@@ -526,17 +514,11 @@ public class Automonous extends LinearOpMode {
     public Action intake(double d){
         return new SequentialAction(
                 r.turnOnIntake(),
-                r.turnToFirstAngle(),
                 new SleepAction(0.2),
-                r.waitForBall(d),
                 new SleepAction(0.2),
-                r.turnToThirdAngle(),
                 new SleepAction(0.2),
-                r.waitForBall(d),
                 new SleepAction(0.2),
-                r.turnToSecondAngle(),
                 new SleepAction(0.2),
-                r.waitForBall(d),
                 new SleepAction(0.75),
                 r.turnOffIntake(),
                 r.reverseIntake(),

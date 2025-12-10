@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Pose2d;
@@ -13,6 +14,8 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.tuning.TuningOpModes;
 
+@Config
+
 @TeleOp(name = "localzation test: field centric", group = "robot")
 public class LocalzationTestWithFieldCentric extends LinearOpMode {
 
@@ -23,7 +26,7 @@ public class LocalzationTestWithFieldCentric extends LinearOpMode {
 
     boolean headingLock;
     public static double error;
-    public static double kp = 0;
+    public static double kp = 0.05;
     public double stickSensitivity = 0.05;
     @Override
     public void runOpMode() throws InterruptedException {
@@ -83,7 +86,7 @@ public class LocalzationTestWithFieldCentric extends LinearOpMode {
             Pose2d pose = drive.localizer.getPose();
             telemetry.addData("x", pose.position.x);
             telemetry.addData("y", pose.position.y);
-            telemetry.addData("heading (deg)", Math.toDegrees(pose.heading.toDouble()));
+            telemetry.addData("heading (deg)", Math.toDegrees(yaw));
             telemetry.addData("press and hold right bumper for slow mode", slowdown);
             telemetry.addData("heading lock", headingLock);
             telemetry.update();
