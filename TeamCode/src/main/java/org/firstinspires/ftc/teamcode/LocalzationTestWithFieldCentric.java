@@ -26,7 +26,7 @@ public class LocalzationTestWithFieldCentric extends LinearOpMode {
 
     boolean headingLock;
     public static double error;
-    public static double kp = 0.05;
+    public static double kp = -5;
     public double stickSensitivity = 0.05;
     @Override
     public void runOpMode() throws InterruptedException {
