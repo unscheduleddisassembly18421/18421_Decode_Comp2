@@ -76,7 +76,7 @@ public class Outtake {
 
     public void init(){
         hoodServo.setPosition(HOODSERVO_START_POSITION);
-        liftServoStart();
+        ballBlockServoStart();
     }
 
 
@@ -119,12 +119,12 @@ public class Outtake {
         hoodServo.setPosition(HOODSERVO_SHOOT_POSITION);
     }
 
-    public void liftServoStart(){
+    public void ballBlockServoStart(){
         ballBlockServo1.setPosition(0);
         ballBlockServo2.setPosition(0);
     }
 
-    public void liftServoLift(){
+    public void ballBlocKServoBlock(){
         ballBlockServo1.setPosition(BALLBLOCKSERVO_BLOCK_POSITION);
         ballBlockServo2.setPosition(BALLBLOCKSERVO_BLOCK_POSITION);
     }

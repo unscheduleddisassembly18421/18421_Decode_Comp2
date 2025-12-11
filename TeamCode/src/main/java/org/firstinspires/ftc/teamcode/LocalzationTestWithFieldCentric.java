@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.tuning.TuningOpModes;
 
 @Config
 
-@TeleOp(name = "localzation test: field centric", group = "robot")
+@TeleOp(name = "localzation test: field centric: USE", group = "robot")
 public class LocalzationTestWithFieldCentric extends LinearOpMode {
 
     Gamepad g1 = new Gamepad();
@@ -89,6 +89,7 @@ public class LocalzationTestWithFieldCentric extends LinearOpMode {
             telemetry.addData("heading (deg)", Math.toDegrees(yaw));
             telemetry.addData("press and hold right bumper for slow mode", slowdown);
             telemetry.addData("heading lock", headingLock);
+            telemetry.addData("errror for PID", error);
             telemetry.update();
 
             TelemetryPacket packet = new TelemetryPacket();
