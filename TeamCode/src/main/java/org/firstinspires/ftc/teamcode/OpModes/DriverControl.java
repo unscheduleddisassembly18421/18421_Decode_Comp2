@@ -97,12 +97,10 @@ public class DriverControl extends OpMode {
   boolean blueTargetFound     = false;// Used to hold the data for a detected AprilTag
   boolean redTargetFound    = false;
 
-  final double SPEED_GAIN  =  0.02  ;   //  Forward Speed Control "Gain". e.g. Ramp up to 50% power at a 25 inch error.   (0.50 / 25.0)
-  final double STRAFE_GAIN =  0.015 ;   //  Strafe Speed Control "Gain".  e.g. Ramp up to 37% power at a 25 degree Yaw error.   (0.375 / 25.0)
+
   public static double TURN_GAIN   =  0.04  ;   //  Turn Control "Gain".  e.g. Ramp up to 25% power at a 25 degree error. (0.25 / 25.0)
 
-  final double MAX_AUTO_SPEED = 0.5;   //  Clip the approach speed to this max value (adjust for your robot)
-  final double MAX_AUTO_STRAFE= 0.5;   //  Clip the strafing speed to this max value (adjust for your robot)
+
   public static double MAX_AUTO_TURN  = 0.3;   //  Clip the turn speed to this max value (adjust for your robot)
   public static double DESIRED_DISTANCE = 12.0;
   double  drive           = 0;        // Desired forward power/speed (-1 to +1)
@@ -122,9 +120,9 @@ public class DriverControl extends OpMode {
 
   boolean shooterToggle = false;
 
-  boolean elevatorToggle = false;
+  boolean slideToggle = false;
 
-  boolean hoodToggle = false;
+  boolean ballBlockToggle = false;
 
   public static double power = 0;
 
@@ -201,198 +199,52 @@ public class DriverControl extends OpMode {
     telemetry.addData("Status", "Run Time: " + runtime.toString());
 
     //NEW CODE
-
-    if(gamepad1.right_bumper){
-      slowDown = 5;
+    if(g1.aWasPressed()){
+      shooterToggle = !shooterToggle;
     }
 
-    if(g2.dpad_up){
-      r.turret.setPosition(firstAngle);
+    if(g1.bWasPressed()){
+      intakeToggle = !intakeToggle;
     }
-    if(g2.dpad_right){
-      r.turret.setPosition(secondAngle);
+
+    if(g1.yWasPressed()){
+      ballBlockToggle = !ballBlockToggle;
     }
-    if(g2.dpad_left){
-      r.turret.setPosition(thirdAngle);
+
+    if(g1.xWasPressed()){
+      slideToggle = !slideToggle;
     }
-    if(g2.a){
-      r.outtake.launcherMotor2OnFar();
+
+    if(shooterToggle){
       r.outtake.launcherMotor1OnFar();
+      r.outtake.launcherMotor2OnFar();
     }
-    if(g2.dpad_down){
-      r.outtake.launcherMotor2Off();
+    else {
       r.outtake.launcherMotor1Off();
+      r.outtake.launcherMotor2Off();
     }
 
-
-    switch(shooterState) {
-      case READY:
-        if (g2.right_bumper && !previousG2.right_bumper && intakeState == IntakeState.FIRING) {
-          r.outtake.launcherMotor1OnFar();
-          r.outtake.launcherMotor2OnFar();
-          r.outtake.hoodServoShootFar();
-          shooterState = ShooterState.FARFIRE1;
-        }
-
-        if(g2.y && !previousG2.y && intakeState == IntakeState.FIRING){
-          r.outtake.launcherMotor1OnNear();
-          r.outtake.launcherMotor2OnNear();
-          r.outtake.hoodServoShootNear();
-          shooterState = ShooterState.NEARFIRE1;
-          shooterClock.reset();
-        }
-        break;
-
-      case FARFIRE1:
-
-        if (r.outtake.launchMotorsAtVelocity()) {
-          r.turret.setPosition(firstShootingAngle);
-          shooterClock.reset();
-          shooterState = ShooterState.FARFIRE2;
-        }
-        break;
-
-      case FARFIRE2:
-        if (r.outtake.launchMotorsAtVelocity() && shooterClock.milliseconds() > SHOOTER_DELAY) {
-          r.turret.setPosition(thirdShootingAngle);
-          shooterClock.reset();
-          shooterState = ShooterState.FARFIRE3;
-        }
-        break;
-
-      case FARFIRE3:
-
-        if (r.outtake.launchMotorsAtVelocity() && shooterClock.milliseconds() > SHOOTER_DELAY) {
-          r.turret.setPosition(secondShootingAngle);
-          shooterClock.reset();
-          shooterState = ShooterState.RELOAD;
-        }
-          break;
-
-      case NEARFIRE1:
-        if(r.outtake.launcherMotorsAtVelocityNear()){
-          r.turret.setPosition(firstShootingAngle);
-          shooterClock.reset();
-          shooterState = ShooterState.NEARFIRE2;
-        }
-        break;
-
-      case NEARFIRE2:
-        if(r.outtake.launcherMotorsAtVelocityNear() && shooterClock.milliseconds() > SHOOTER_DELAY){
-          r.turret.setPosition(thirdShootingAngle);
-          shooterClock.reset();
-          shooterState = ShooterState.NEARFIRE3;
-        }
-
-        break;
-
-      case NEARFIRE3:
-        if(r.outtake.launcherMotorsAtVelocityNear() && shooterClock.milliseconds() > SHOOTER_DELAY){
-          r.turret.setPosition(secondShootingAngle);
-          shooterClock.reset();
-          shooterState = ShooterState.RELOAD;
-        }
-
-        break;
-
-        case RELOAD:
-            if (shooterClock.milliseconds() > RELOAD_DELAY) {
-              r.outtake.launcherMotor1Off();
-              r.outtake.launcherMotor2Off();
-              r.outtake.hoodServoStart();
-              r.turret.setPosition(firstAngle);
-              intakeState = IntakeState.READY;
-              shooterState = ShooterState.READY;
-            }
-            break;
+    if(intakeToggle){
+      r.intake.intakeMotorOn();
+    }
+    else {
+      r.intake.intakeMotorOff();
     }
 
-
-
-
-
-
-
-    switch (intakeState){
-      case READY:
-        r.turret.leftLightRed();
-        r.turret.rightLightRed();
-        if(g2.left_bumper && !previousG2.left_bumper){
-          r.turret.setPosition(firstAngle);
-          r.intake.intakeMotorOn();
-          intakeState = IntakeState.INTAKE1;
-        }
-        break;
-
-      case INTAKE1:
-        if( g2.xWasPressed()){
-          intakeState = IntakeState.INTAKE2;
-          intakeClock.reset();
-        }
-
-        if(g2.b ){
-          r.intake.intakeMotorForward();
-        }
-        else {
-          r.intake.intakeMotorOn();
-        }
-        break;
-      case INTAKE2:
-        r.turret.setPosition(thirdAngle);
-        if(intakeClock.milliseconds() > INTAKE_DELAY && (g2.xWasPressed())){
-          intakeClock.reset();
-          intakeState = IntakeState.INTAKE3;
-        }
-        if(g1.b){
-          r.intake.intakeMotorForward();
-        }
-        else{
-          r.intake.intakeMotorOn();
-        }
-        break;
-
-      case INTAKE3:
-        r.turret.setPosition(secondAngle);
-        if(intakeClock.milliseconds() > INTAKE_DELAY &&  g2.xWasPressed()){
-          intakeClock.reset();
-          intakeState = IntakeState.FULL;
-        }
-        if(g2.b){
-          r.intake.intakeMotorForward();
-        }
-        else {
-          r.intake.intakeMotorOn();
-        }
-        break;
-
-      case FULL:
-        if(intakeClock.milliseconds() > INTAKE_OFF_DELAY) {
-          r.intake.intakeMotorOff();
-          r.turret.rightLightGreen();
-          shooterState = ShooterState.READY;
-          intakeState = IntakeState.FIRING;
-          r.outtake.launcherMotor1OnNear();
-          r.outtake.launcherMotor2OnNear();
-        }
-
-        break;
-
-      case FIRING:
-        if (shooterState == ShooterState.RELOAD ){
-
-          intakeState = IntakeState.READY;
-        }
-
-
-        if(g2.b){
-          r.intake.intakeMotorForward();
-        }
-        else{
-          r.intake.intakeMotorOff();
-        }
-
-        break;
+    if(ballBlockToggle){
+      r.outtake.ballBlocKServoBlock();
     }
+    else{
+      r.outtake.ballBlockServoStart();
+    }
+
+    if(slideToggle){
+      r.intake.slideServoExtend();
+    }
+    else{
+      r.intake.slideServostart();
+    }
+
 
 
     r.turret.readColorSensors();
@@ -495,8 +347,6 @@ public class DriverControl extends OpMode {
     telemetry.addData("x", pose.position.x);
     telemetry.addData("y", pose.position.y);
     telemetry.addData("heading (deg)", Math.toDegrees(pose.heading.toDouble()));
-    telemetry.addData("shooter state", shooterState);
-    telemetry.addData("intake state", intakeState);
     telemetry.addData("motors at velocity", r.outtake.launchMotorsAtVelocity());
     telemetry.addData("launcher1 motors velocity", r.outtake.getVelocity1());
     telemetry.addData("launcher2 motors velocity", r.outtake.getVelocity2());

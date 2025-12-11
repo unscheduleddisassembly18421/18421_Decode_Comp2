@@ -89,6 +89,7 @@ public class LocalzationTestWithFieldCentric extends LinearOpMode {
             telemetry.addData("heading (deg)", Math.toDegrees(yaw));
             telemetry.addData("press and hold right bumper for slow mode", slowdown);
             telemetry.addData("heading lock", headingLock);
+            telemetry.addData("errror for PID", error);
             telemetry.update();
 
             TelemetryPacket packet = new TelemetryPacket();
