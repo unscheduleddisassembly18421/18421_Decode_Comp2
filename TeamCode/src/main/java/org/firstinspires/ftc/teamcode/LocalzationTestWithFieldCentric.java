@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.tuning.TuningOpModes;
 
 @Config
 
-@TeleOp(name = "localzation test: field centric", group = "robot")
+@TeleOp(name = "localzation test: field centric: USE", group = "robot")
 public class LocalzationTestWithFieldCentric extends LinearOpMode {
 
     Gamepad g1 = new Gamepad();

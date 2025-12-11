@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 @Config
-@TeleOp(name = "Field Centric Drive:Use", group = "Concept")
+@TeleOp(name = "Field Centric Drive", group = "Concept")
 public class NewFieldCentricDrive extends OpMode {
     public HwRobot r = null;
 
