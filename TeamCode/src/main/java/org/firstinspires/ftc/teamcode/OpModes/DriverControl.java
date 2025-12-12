@@ -417,17 +417,6 @@ public class DriverControl extends OpMode {
     // Decimation = 3 ..  Detect 5" Tag from 10 feet away at 30 Frames Per Second
     // Note: Decimation can be changed on-the-fly to adapt during a match.
     aprilTag.setDecimation(3);
-
-
-    // Create the vision portal by using a builder.
-    if (USE_WEBCAM) {
-      visionPortal = new VisionPortal.Builder()
-              .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
-              .addProcessor(aprilTag)
-              .build();
-      CameraStreamProcessor processor = new CameraStreamProcessor();
-      FtcDashboard.getInstance().startCameraStream(processor, 0);
-    }
   }
 
 

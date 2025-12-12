@@ -55,8 +55,8 @@ public class Outtake {
 
         hoodServo.setDirection(Servo.Direction.FORWARD);
 
-        ballBlockServo1.setDirection(Servo.Direction.FORWARD);
-        ballBlockServo2.setDirection(Servo.Direction.REVERSE);
+        ballBlockServo1.setDirection(Servo.Direction.REVERSE);
+        ballBlockServo2.setDirection(Servo.Direction.FORWARD);
 
 
         hoodServo.setPosition(HOODSERVO_START_POSITION);

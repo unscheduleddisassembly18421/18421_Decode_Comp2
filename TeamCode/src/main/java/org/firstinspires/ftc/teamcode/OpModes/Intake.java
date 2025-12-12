@@ -25,7 +25,7 @@ public class Intake {
     public static double INTAKEMOTOR_POWER_ON = 0.95;
     private static double INTAKEMOTOR_POWER_OFF = 0;
 
-    public static double SLIDESERVO_EXTEND_POSITION = 0.5;
+    public static double SLIDESERVO_EXTEND_POSITION = 0.15;
 
     //Constructor
     public Intake(HardwareMap hwmap, Telemetry telemetry) {
