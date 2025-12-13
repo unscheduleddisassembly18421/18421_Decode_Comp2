@@ -18,7 +18,7 @@ public class Outtake {
     Telemetry telemetry = null;
 
     //hardware
-    private  DcMotorEx launcherMotor1 = null;
+    private  DcMotorEx launcherMotor1 = null;//left one
     private DcMotorEx launcherMotor2 = null;
     private Servo hoodServo = null;
     private Servo ballBlockServo1 = null;
@@ -32,7 +32,7 @@ public class Outtake {
     public static double LAUNCHER_TOLERANCE = 0.995;
     public static double AUTO_LAUNCHERMOTOR_VELOCITY_ON = 1980;
     public static double AUTO_HOODSERVO_SHOOT = 0.525;
-    public static double BALLBLOCKSERVO_BLOCK_POSITION = 0.35;
+    public static double BALLBLOCKSERVO_BLOCK_POSITION = 0.6;
 
     public static double newP = 0;
     public static double newI = 0;

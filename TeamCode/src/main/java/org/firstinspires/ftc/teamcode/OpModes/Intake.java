@@ -17,27 +17,30 @@ public class Intake {
     Telemetry telemetry = null;
 
     //Hardware
-    private DcMotor intakeMotor = null;
+    private DcMotor intakeMotor1 = null;
+    private DcMotor intakeMotor2 = null;
 
     private Servo slideServo1 = null;
     private Servo slideServo2 = null;
 
     public static double INTAKEMOTOR_POWER_ON = 0.95;
-    private static double INTAKEMOTOR_POWER_OFF = 0;
+    private final double INTAKEMOTOR_POWER_OFF = 0;
 
-    public static double SLIDESERVO_EXTEND_POSITION = 0.15;
+    public static double SLIDESERVO_EXTEND_POSITION = 0.215;
 
     //Constructor
     public Intake(HardwareMap hwmap, Telemetry telemetry) {
         this.telemetry = telemetry;
 
-        intakeMotor = hwmap.get(DcMotor.class, "intakem");
+        intakeMotor1 = hwmap.get(DcMotor.class, "intakem1");
+        intakeMotor2 = hwmap.get(DcMotor.class, "im2");
 
         slideServo1 = hwmap.get(Servo.class, "slide1");
         slideServo2 = hwmap.get(Servo.class, "slide2");
 
         //initial directions and positions
-        intakeMotor.setDirection(DcMotor.Direction.REVERSE);
+        intakeMotor1.setDirection(DcMotor.Direction.FORWARD);
+        intakeMotor2.setDirection(DcMotor.Direction.REVERSE);
 
         slideServo1.setDirection(Servo.Direction.REVERSE);
         slideServo2.setDirection(Servo.Direction.FORWARD);
@@ -49,17 +52,22 @@ public class Intake {
 
 
     public void intakeMotorOff(){
-        intakeMotor.setPower(INTAKEMOTOR_POWER_OFF);
+        intakeMotor1.setPower(INTAKEMOTOR_POWER_OFF);
+        intakeMotor2.setPower(INTAKEMOTOR_POWER_OFF);
     }
 
     public void intakeMotorOn(){
-        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        intakeMotor.setPower(INTAKEMOTOR_POWER_ON);
+        intakeMotor1.setDirection(DcMotorSimple.Direction.REVERSE);
+        intakeMotor2.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeMotor1.setPower(INTAKEMOTOR_POWER_ON);
+        intakeMotor2.setPower(INTAKEMOTOR_POWER_ON);
     }
 
     public void intakeMotorForward(){
-        intakeMotor.setDirection(DcMotor.Direction.FORWARD);
-        intakeMotor.setPower(INTAKEMOTOR_POWER_ON);
+        intakeMotor1.setDirection(DcMotor.Direction.FORWARD);
+        intakeMotor2.setDirection(DcMotor.Direction.REVERSE);
+        intakeMotor1.setPower(INTAKEMOTOR_POWER_ON);
+        intakeMotor2.setPower(INTAKEMOTOR_POWER_ON);
     }
 
     public void slideServostart(){

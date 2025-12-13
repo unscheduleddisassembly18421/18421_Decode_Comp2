@@ -199,7 +199,7 @@ public class DriverControl extends OpMode {
     telemetry.addData("Status", "Run Time: " + runtime.toString());
 
     //NEW CODE
-    if(g1.aWasPressed()){
+    if(g1.a && !previousG1.a){
       shooterToggle = !shooterToggle;
     }
 
@@ -243,6 +243,18 @@ public class DriverControl extends OpMode {
     }
     else{
       r.intake.slideServostart();
+    }
+    if (g1.dpadUpWasPressed()){
+      r.outtake.hoodServoShootNear();
+    }
+    if(g1.dpadDownWasPressed()){
+      r.outtake.ballBlockServoStart();
+    }
+    if(g1.dpadRightWasPressed()){
+      r.turret.setPosition(0);
+    }
+    if(g1.dpadLeftWasPressed()){
+      r.turret.setPosition(firstAngle);
     }
 
 
@@ -352,11 +364,7 @@ public class DriverControl extends OpMode {
     telemetry.addData("launcher2 motors velocity", r.outtake.getVelocity2());
     telemetry.addData("green Position", greenPosition);
     telemetry.addData("close motors at velocity", r.outtake.launcherMotorsAtVelocityNear());
-    telemetry.addData("bearing error", RED_BEARING_OFFSET);
-    telemetry.addData("blue tag detected state", blueTargetFound);
-    telemetry.addData("red tag detection data", redTargetFound);
-    telemetry.addData("blue heading error", headingErrorBlue);
-    telemetry.addData("red heading error", headingErrorRed);
+    telemetry.addData("shooter toggle", shooterToggle);
     telemetry.update();
 
     TelemetryPacket packet = new TelemetryPacket();
