@@ -35,9 +35,9 @@ public class Outtake {
     public static double AUTO_HOODSERVO_SHOOT = 0.525;
     public static double BALLBLOCKSERVO_BLOCK_POSITION = 0.6;
 
-    public static double newP = 0;
-    public static double newI = 32750;//tune more
-    public static double newD = 0;
+    public static double newP = 525;
+    public static double newI = 40;//tune more. stole from Brennan
+    public static double newD = 20;//TRY and UPLOAD
     public static double newF = 0;
     //tune f to set velocity to lowest speed
     //tune i first
