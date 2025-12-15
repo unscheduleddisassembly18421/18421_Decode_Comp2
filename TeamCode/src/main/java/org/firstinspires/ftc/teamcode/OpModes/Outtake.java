@@ -7,6 +7,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -35,7 +36,7 @@ public class Outtake {
     public static double BALLBLOCKSERVO_BLOCK_POSITION = 0.6;
 
     public static double newP = 0;
-    public static double newI = 0;
+    public static double newI = 32750;//tune more
     public static double newD = 0;
     public static double newF = 0;
     //tune f to set velocity to lowest speed
@@ -62,7 +63,7 @@ public class Outtake {
         hoodServo.setPosition(HOODSERVO_START_POSITION);
         //flywheel motor stuff
 
-        launcherMotor1.setDirection(DcMotor.Direction.FORWARD);
+        launcherMotor1.setDirection(DcMotor.Direction.REVERSE);
         launcherMotor2.setDirection(DcMotor.Direction.REVERSE);
         launcherMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         launcherMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -82,6 +83,8 @@ public class Outtake {
 
     //commands
     public void launcherMotor1OnFar(){
+        launcherMotor1.setVelocityPIDFCoefficients(newP, newI, newD, newF);
+
         launcherMotor1.setVelocity(FAR_LAUNCHERMOTOR_VELOCITY_ON);
     }
 
@@ -95,6 +98,7 @@ public class Outtake {
 
     public void  launcherMotor2OnFar(){
         launcherMotor2.setVelocity(FAR_LAUNCHERMOTOR_VELOCITY_ON);
+        launcherMotor2.setVelocityPIDFCoefficients(newP, newI, newD, newF);
     }
 
     public void launcherMotor2OnNear(){
@@ -149,7 +153,7 @@ public class Outtake {
     }
 
     public double getVelocity2(){
-        return (launcherMotor2.getVelocity());
+        return -(launcherMotor2.getVelocity());
     }
 
     //actions
