@@ -109,8 +109,8 @@ public class DriverControl extends OpMode {
 
   public double slowDown = 1;
 
-  Pose2d bluePose = new Pose2d(0,0,0);
-  Pose2d redPose = new Pose2d(0,0,0);
+  Pose2d bluePose = new Pose2d(-65,61,0);
+  Pose2d redPose = new Pose2d(-65,-61,0);
 
   public enum TargetGoal{
     BLUE, RED
@@ -216,10 +216,10 @@ public class DriverControl extends OpMode {
     if(g1.dpadDownWasPressed()){
       r.outtake.hoodServoStart();
     }
-    if(g1.dpadRightWasPressed()){
+    if(g1.dpad_right){
       r.turret.setPosition(0);
     }
-    if(g1.dpadLeftWasPressed()) {
+    if(g1.dpad_left) {
       r.turret.setPosition(firstAngle);
     }
 
@@ -235,7 +235,8 @@ public class DriverControl extends OpMode {
       r.outtake.hoodServoShoot();
     }
 
-    r.autoTurretTracking(currentPose, bluePose);
+//    r.autoTurretTracking(currentPose, bluePose);
+
 
     //tune PID controller for turret first, then test the code
 

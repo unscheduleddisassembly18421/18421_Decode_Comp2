@@ -9,6 +9,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
@@ -60,7 +61,7 @@ public class Turret {
         rotatorServo = hwmap.get(CRServo.class, "rs");
         ai = hwmap.get(AnalogInput.class,"ai");
         position = getPosition();
-        rotatorServo.setDirection(CRServo.Direction.REVERSE);
+        rotatorServo.setDirection(CRServo.Direction.FORWARD);
 
 
         rightLight = hwmap.get(Servo.class, "rightil");
@@ -101,6 +102,7 @@ public class Turret {
         rotatorPower.setPIDConstants(kp,kd,ki);
         double power = rotatorPower.calculate(targetPosition,getPosition());
         setPower(power);
+        telemetry.addData("target angle", targetPosition);
         telemetry.addData("Rotator Position",getPosition());
         telemetry.addData("Rotator Power",power);
     }

@@ -4,12 +4,8 @@ plugins {
 java {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
-
-    repositories {
-        maven { url = 'https://jitpack.io' }
-        maven { url = 'https://maven.brott.dev/' }
-    }
 }
+
 repositories {
     maven { url = 'https://maven.brott.dev/' }
 }
