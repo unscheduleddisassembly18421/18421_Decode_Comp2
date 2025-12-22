@@ -18,6 +18,9 @@ public class HwRobot {
     HardwareMap hardwareMap = null;
     Pose2d BlueWallRight = new Pose2d(0,0,0);
 
+    Pose2d blueGoalPose = new Pose2d(0,0,0);//find real pose
+    Pose2d redGoalPose = new Pose2d(0,0,0);//find real pose
+
     public HwRobot(Telemetry t, HardwareMap hwm){
         hardwareMap = hwm;
         telemetry = t;
@@ -30,6 +33,31 @@ public class HwRobot {
         turret = new Turret(hardwareMap, telemetry);
         turret.init();
         outtake.init();
+    }
+
+
+    public double[] autoTurretTracking(Pose2d robotPose, Pose2d goalPose){
+        double poseRobotX = robotPose.position.x;
+        double poseRobotY = robotPose.position.y;
+        double robotYaw = robotPose.heading.toDouble();
+        double poseGoalX = goalPose.position.x;
+        double poseGoalY = goalPose.position.y;
+        double xDValue = poseRobotX - poseGoalX;
+        double yDValue = poseRobotY - poseGoalY;
+        double d = Math.sqrt((xDValue * xDValue) + (yDValue * yDValue));
+        double fieldAngle = Math.atan2(yDValue, xDValue);
+        double goalAngle = robotYaw + fieldAngle;
+        double goalAngleDegrees = Math.toDegrees(goalAngle);
+        telemetry.addData("distance", d);
+        telemetry.addData("target angle", goalAngleDegrees);
+        double[] aimToGoal = new double[2];
+        aimToGoal[0] = d;
+        aimToGoal[1] = goalAngleDegrees;
+        return aimToGoal;
+    }
+
+    public void turnTurret(double angle){
+        //DO SOMETHING
     }
 
     public Action activateShooter(){
@@ -80,30 +108,75 @@ public class HwRobot {
     public Action reverseIntake(){
         return intake.reverseIntake();
     }
-    //right front is in EH 0 named rf
-    //right back is in EH 1 named rb
-    //left back is in CH 1 named lb
-    //left front is in CH 0 named lf
-    //hood servo is in CH 1 named hs1
-    //left indicator light is in CH 3 named leftil
-    //right indicator light is in CH 4 named rightil
-    //pinpoint is in I2C bus 0 CH named pinpoint
-    //rotator servo is in CH 0 named rs
-    //elavator motor is in EH 2 named em
-    //intake motor is in EH 3 named intakem
-    //launcher motor 1 is in CH 3 named Lm1
-    //launcher motor 2 is in CH 2 named Lm2
-    //analog input is in CH analog input 0 named ai
-    //right color sensor is in EH I2C 0 named rightcs
-    //left color sensor is in CH I2C 2  named leftcs
-    //intake color sensor is in CH I2C 1 named ics
-    //lift servo 1 is in CH servo 5, named ls1
-    //lift servo 2 id in EH servo 0, named ls2
+
+    public void aimTurretRed(){
+        TurretAim turretAim = new TurretAim(drive.localizer.getPose(),redGoalPose);
+        turret.setPosition(turretAim.angle);
+        turret.update();
+    }
+
+    public void aimTurretBlue(){
+        TurretAim turretAim = new TurretAim(drive.localizer.getPose(), blueGoalPose);
+        turret.setPosition(turretAim.angle);
+        turret.update();
+    }
+
+    public void shooterRelativeVelocityBlue(){
+        TurretAim turretAim = new TurretAim(drive.localizer.getPose(), blueGoalPose);
+        double velocity = turretAim.distance;//write function for this here
+        outtake.flywheelOnInput(velocity);
+    }
+
+    public void shooterRelativeVelocityRed(){
+        TurretAim turretAim = new TurretAim(drive.localizer.getPose(), redGoalPose);
+        double velocity = turretAim.distance;//write function here for this
+        outtake.flywheelOnInput(velocity);
+    }
+
+    public class TurretAim {
+        public double distance;
+        public double angle;
+
+        public TurretAim(Pose2d robotPose, Pose2d goalPose) {
+            double poseRobotX = robotPose.position.x;
+            double poseRobotY = robotPose.position.y;
+            double robotYaw = robotPose.heading.toDouble();
+            double poseGoalX = goalPose.position.x;
+            double poseGoalY = goalPose.position.y;
+            double xDValue = poseRobotX - poseGoalX;
+            double yDValue = poseRobotY - poseGoalY;
+            double d = Math.sqrt((xDValue * xDValue) + (yDValue * yDValue));
+            double fieldAngle = Math.atan2(yDValue, xDValue);
+            double goalAngle = robotYaw + fieldAngle;
+            angle = Math.toDegrees(goalAngle);
+            distance = d;
+        }
+    }
+            //right front is in EH 0 named rf
+            //right back is in EH 1 named rb
+            //left back is in CH 1 named lb
+            //left front is in CH 0 named lf
+            //hood servo is in CH 1 named hs1
+            //left indicator light is in CH 3 named leftil
+            //right indicator light is in CH 4 named rightil
+            //pinpoint is in I2C bus 0 CH named pinpoint
+            //rotator servo is in CH 0 named rs
+            //elavator motor is in EH 2 named em
+            //intake motor is in EH 3 named intakem
+            //launcher motor 1 is in CH 3 named Lm1
+            //launcher motor 2 is in CH 2 named Lm2
+            //analog input is in CH analog input 0 named ai
+            //right color sensor is in EH I2C 0 named rightcs
+            //left color sensor is in CH I2C 2  named leftcs
+            //intake color sensor is in CH I2C 1 named ics
+            //lift servo 1 is in CH servo 5, named ls1
+            //lift servo 2 id in EH servo 0, named ls2
 
 
-    //COMP 2 HW MAp
-    //right front is CH 3
-    //right back is in CH 2
-    //left front is in CH 0
-    //left back is in CH 1
+            //COMP 2 HW MAp
+            //right front is CH 3
+            //right back is in CH 2
+            //left front is in CH 0
+            //left back is in CH 1
+
 }

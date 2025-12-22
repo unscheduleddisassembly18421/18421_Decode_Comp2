@@ -41,10 +41,7 @@ public class Turret {
     double ROTATOR_OFF = 0;
 
     private CRServo rotatorServo = null;
-    private NormalizedColorSensor leftSlideColorSensor = null;
-    private NormalizedColorSensor rightSlideColorSensor = null;
-    private NormalizedColorSensor rightOtherColorSensor = null;
-    private NormalizedColorSensor leftOtherColorSensor = null;
+
 
     private Servo leftLight = null;
     private Servo rightLight = null;
@@ -55,14 +52,6 @@ public class Turret {
 
     private AnalogInput ai = null;
 
-    float slideCSGain = 4;
-    float otherCSGain = 2;
-    float rightGain = 2;
-
-    float[] rightSlideColorHSV = new float[3];
-    float[] leftSlideColorHSV = new float[3];
-    float[] leftOtherColorHSV = new float[3];
-    float[] rightOtherColorHSV = new float[3];
 
 
     public Turret(HardwareMap hwmap, Telemetry telemetry){
@@ -73,10 +62,6 @@ public class Turret {
         position = getPosition();
         rotatorServo.setDirection(CRServo.Direction.REVERSE);
 
-        leftSlideColorSensor = hwmap.get(NormalizedColorSensor.class, "lscs");
-        rightSlideColorSensor = hwmap.get(NormalizedColorSensor.class, "rscs");
-        leftOtherColorSensor = hwmap.get(NormalizedColorSensor.class, "locs");
-        rightOtherColorSensor = hwmap.get(NormalizedColorSensor.class, "rocs");
 
         rightLight = hwmap.get(Servo.class, "rightil");
         leftLight = hwmap.get(Servo.class, "leftil");
@@ -87,10 +72,6 @@ public class Turret {
         rightLight.setDirection(Servo.Direction.FORWARD);
         leftLight.setDirection(Servo.Direction.FORWARD);
 
-       leftSlideColorSensor.setGain(slideCSGain);
-        rightSlideColorSensor.setGain(slideCSGain);
-        leftOtherColorSensor.setGain(otherCSGain);
-        rightOtherColorSensor.setGain(otherCSGain);
 
         //rotatorServo.setPosition(ROTATORSERVO_FIRST_POSITION);
 
@@ -101,20 +82,6 @@ public class Turret {
     }
 
     //color sensor stuff
-    public void readColorSensors(){
-        NormalizedRGBA rightSlideColor = rightSlideColorSensor.getNormalizedColors();
-        NormalizedRGBA leftSlideColor = leftSlideColorSensor.getNormalizedColors();
-        NormalizedRGBA rightOtherColor = rightOtherColorSensor.getNormalizedColors();
-        NormalizedRGBA leftOtherColor = leftOtherColorSensor.getNormalizedColors();
-        Color.colorToHSV(rightSlideColor.toColor(), rightSlideColorHSV);
-        Color.colorToHSV(leftSlideColor.toColor(), leftSlideColorHSV);
-        Color.colorToHSV(leftOtherColor.toColor(), leftOtherColorHSV);
-        Color.colorToHSV(rightSlideColor.toColor(), rightOtherColorHSV);
-        telemetry.addData("HSV right slide CS", Arrays.toString(rightSlideColorHSV));
-        telemetry.addData("HSV left slide CS", Arrays.toString(leftSlideColorHSV));
-        telemetry.addData("HSV left other CS", Arrays.toString(leftOtherColorHSV));
-        telemetry.addData("HSV right Colro HSV", Arrays.toString(rightOtherColorHSV));
-    }
 
 
     //PID servo stuff

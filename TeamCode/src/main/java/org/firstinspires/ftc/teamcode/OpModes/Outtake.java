@@ -82,11 +82,18 @@ public class Outtake {
 
 
     //commands
-    public void launcherMotor1OnFar(){
-        launcherMotor1.setVelocityPIDFCoefficients(newP, newI, newD, newF);
-
+    public void activateShooterTeleop(){
+        launcherMotor2.setVelocity(FAR_LAUNCHERMOTOR_VELOCITY_ON);
         launcherMotor1.setVelocity(FAR_LAUNCHERMOTOR_VELOCITY_ON);
+        launcherMotor2.setVelocityPIDFCoefficients(newP, newI, newD, newF);
+        launcherMotor1.setVelocityPIDFCoefficients(newP, newI, newD, newF);
     }
+
+    public void flywheelOnInput(double inputVelocity){
+        launcherMotor1.setVelocity(inputVelocity);
+        launcherMotor2.setVelocity(inputVelocity);
+    }
+
 
     public void launcherMotor1OnNear(){
         launcherMotor1.setVelocity(CLOSE_LAUNCHERMOTOR_VELOCITY_ON);
@@ -94,11 +101,6 @@ public class Outtake {
 
     public void launcherMotor1Off(){
         launcherMotor1.setVelocity(0);
-    }
-
-    public void  launcherMotor2OnFar(){
-        launcherMotor2.setVelocity(FAR_LAUNCHERMOTOR_VELOCITY_ON);
-        launcherMotor2.setVelocityPIDFCoefficients(newP, newI, newD, newF);
     }
 
     public void launcherMotor2OnNear(){
@@ -114,7 +116,7 @@ public class Outtake {
         hoodServo.setPosition(HOODSERVO_START_POSITION);
     }
 
-    public void hoodServoShootNear(){
+    public void hoodServoShoot(){
         hoodServo.setPosition(HOODSERVO_CLOSE_SHOOT_POSITION);
     }
 
@@ -253,7 +255,7 @@ public class Outtake {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            hoodServoShootNear();
+            hoodServoShoot();
             return false;
         }
     }

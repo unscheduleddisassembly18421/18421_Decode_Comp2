@@ -20,8 +20,6 @@ public class Intake {
     private DcMotor intakeMotor1 = null;
     private DcMotor intakeMotor2 = null;
 
-    private Servo slideServo1 = null;
-    private Servo slideServo2 = null;
 
     public static double INTAKEMOTOR_POWER_ON = 0.95;
     private final double INTAKEMOTOR_POWER_OFF = 0;
@@ -35,19 +33,16 @@ public class Intake {
         intakeMotor1 = hwmap.get(DcMotor.class, "intakem1");
         intakeMotor2 = hwmap.get(DcMotor.class, "im2");
 
-        slideServo1 = hwmap.get(Servo.class, "slide1");
-        slideServo2 = hwmap.get(Servo.class, "slide2");
+
 
         //initial directions and positions
         intakeMotor1.setDirection(DcMotor.Direction.FORWARD);
         intakeMotor2.setDirection(DcMotor.Direction.REVERSE);
 
-        slideServo1.setDirection(Servo.Direction.REVERSE);
-        slideServo2.setDirection(Servo.Direction.FORWARD);
+
 
         intakeMotorOff();
 
-        slideServostart();
     }
 
 
@@ -70,15 +65,6 @@ public class Intake {
         intakeMotor2.setPower(INTAKEMOTOR_POWER_ON);
     }
 
-    public void slideServostart(){
-        slideServo1.setPosition(0);
-        slideServo2.setPosition(0);
-    }
-
-    public void slideServoExtend(){
-        slideServo1.setPosition(SLIDESERVO_EXTEND_POSITION);
-        slideServo2.setPosition(SLIDESERVO_EXTEND_POSITION);
-    }
 
 
     public class TurnOnIntake implements Action {
