@@ -7,7 +7,6 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -27,8 +26,7 @@ public class Outtake {
     //Positions
     public static double HOODSERVO_START_POSITION  = 0;
     public static double HOODSERVO_SHOOT_POSITION = 0.3;
-    public static double HOODSERVO_CLOSE_SHOOT_POSITION = 0.4;
-    public static double FAR_LAUNCHERMOTOR_VELOCITY_ON = 1950;//max is around 2700
+    public static double LAUNCHERMOTOR_VELOCITY_ON_TELEOP = 1950;//max is around 2700
     public static double CLOSE_LAUNCHERMOTOR_VELOCITY_ON = 1675;//test
     public static double LAUNCHER_TOLERANCE = 0.995;
     public static double AUTO_LAUNCHERMOTOR_VELOCITY_ON = 1980;
@@ -83,8 +81,8 @@ public class Outtake {
 
     //commands
     public void activateShooterTeleop(){
-        launcherMotor2.setVelocity(FAR_LAUNCHERMOTOR_VELOCITY_ON);
-        launcherMotor1.setVelocity(FAR_LAUNCHERMOTOR_VELOCITY_ON);
+        launcherMotor2.setVelocity(LAUNCHERMOTOR_VELOCITY_ON_TELEOP);
+        launcherMotor1.setVelocity(LAUNCHERMOTOR_VELOCITY_ON_TELEOP);
         launcherMotor2.setVelocityPIDFCoefficients(newP, newI, newD, newF);
         launcherMotor1.setVelocityPIDFCoefficients(newP, newI, newD, newF);
     }
@@ -117,11 +115,6 @@ public class Outtake {
     }
 
     public void hoodServoShoot(){
-        hoodServo.setPosition(HOODSERVO_CLOSE_SHOOT_POSITION);
-    }
-
-
-    public void  hoodServoShootFar(){
         hoodServo.setPosition(HOODSERVO_SHOOT_POSITION);
     }
 
@@ -136,8 +129,8 @@ public class Outtake {
     }
 
     public boolean launchMotorsAtVelocity(){
-        return (launcherMotor1.getVelocity() > LAUNCHER_TOLERANCE*FAR_LAUNCHERMOTOR_VELOCITY_ON) &&
-                (launcherMotor2.getVelocity() > LAUNCHER_TOLERANCE*FAR_LAUNCHERMOTOR_VELOCITY_ON );
+        return (launcherMotor1.getVelocity() > LAUNCHER_TOLERANCE* LAUNCHERMOTOR_VELOCITY_ON_TELEOP) &&
+                (launcherMotor2.getVelocity() > LAUNCHER_TOLERANCE* LAUNCHERMOTOR_VELOCITY_ON_TELEOP);
     }
 
     public boolean autoLaunchMotorsAtVelocity(){
@@ -261,6 +254,30 @@ public class Outtake {
     }
     public Action openHoodServoNear(){
         return new OpenHoodServoNear();
+    }
+
+    public class BallServoBlock implements Action{
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            ballBlocKServoBlock();
+            return false;
+        }
+    }
+    public Action ballBlockServo(){
+        return new BallServoBlock();
+    }
+
+    public class BallServoOpen implements Action{
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            ballBlockServoStart();
+            return false;
+        }
+    }
+    public Action ballServoOpen(){
+        return new BallServoOpen();
     }
 
 

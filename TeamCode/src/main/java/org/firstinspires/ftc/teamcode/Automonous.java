@@ -316,15 +316,6 @@ public class Automonous extends LinearOpMode {
         if (autoSelector == AutoSelector.RED_FAR) {
             Actions.runBlocking(
                     new ParallelAction(
-                        r.updateRotator(),
-//                        new SequentialAction(
-//                                new InstantAction(()->r.rotator.setPosition(firstShootingAngle)),
-//                                new SleepAction(2),
-//                                new InstantAction(()->r.rotator.setPosition(thirdShootingAngle)),
-//                                new SleepAction(2),
-//                                new InstantAction(()->r.rotator.setPosition(secondShootingAngle))
-
-
                           new SequentialAction(//can do turn to first angle here to speed up time
 
                               r.activateShooter(),
@@ -333,21 +324,21 @@ public class Automonous extends LinearOpMode {
                                 new SleepAction(0.15),
                                 new ParallelAction(
                                     RedFarMoveToShootingFirstPath,
-                                    intake(NEAR_DELAY)
+                                    intake()
                                 ),
                                 shoot(),
 
                                 new SleepAction(0.2),
                                 new ParallelAction(
                                         RedFarMoveToShootingSecondPath,
-                                        intake(MIDDLE_DELAY)
+                                        intake()
                                 ),
                                  shoot(),
 
                                new SleepAction(0.15),
                                 new ParallelAction(
                                         RedFarMoveToShootingThirdPath,
-                                        intake(FAR_DELAY)
+                                        intake()
                               ),
                                shoot(),
                                   new SleepAction(0.15),
@@ -364,10 +355,9 @@ public class Automonous extends LinearOpMode {
         else if (autoSelector == AutoSelector.RED_NEAR) {
             Actions.runBlocking(
                     new ParallelAction(
-                            r.updateRotator(),
                             new SequentialAction(
                                     new ParallelAction(
-                                            intake(NEAR_DELAY),
+                                            intake(),
                                             RedNearMoveToShootingFirstPath
                                     ),
 
@@ -377,7 +367,7 @@ public class Automonous extends LinearOpMode {
                             new SleepAction(1),
 
                             new ParallelAction(
-                                    intake(MIDDLE_DELAY),
+                                    intake(),
                                     RedNearMoveToShootingSecondPath
                             ),
 
@@ -386,7 +376,7 @@ public class Automonous extends LinearOpMode {
                             nearShoot(),
                             new SleepAction(1),
                             new ParallelAction(
-                                    intake(FAR_DELAY),
+                                    intake(),
                                     RedNearMoveToShootingThirdPath
                             ),
                             new SleepAction(1),
@@ -399,7 +389,6 @@ public class Automonous extends LinearOpMode {
         else if (autoSelector == AutoSelector.BLUE_FAR) {
             Actions.runBlocking(
                     new ParallelAction(
-                            r.updateRotator(),
                             new SequentialAction(
                                     BlueFarGoToShootingPosition,
                                     shoot(),
@@ -407,14 +396,14 @@ public class Automonous extends LinearOpMode {
 
                                 new ParallelAction(
                                         BlueFarMoveToShootingFirstPath,
-                                        intake(NEAR_DELAY)
+                                        intake()
                                 ),
 
                                     shoot(),
                                     new SleepAction(0.15),
 
                                 new ParallelAction(
-                                    intake(MIDDLE_DELAY),
+                                    intake(),
                                     BlueFarMoveToShootingSecondPath
                                 ),
                                 shoot(),
@@ -422,7 +411,7 @@ public class Automonous extends LinearOpMode {
                                 new SleepAction(0.15),
 
                                 new ParallelAction(
-                                        intake(FAR_DELAY),
+                                        intake(),
                                         BlueFarMoveToShootingThirdPath
                                 ),
                                 shoot(),
@@ -436,11 +425,10 @@ public class Automonous extends LinearOpMode {
         else if (autoSelector == AutoSelector.BLUE_NEAR){
             Actions.runBlocking(
                     new ParallelAction(
-                            r.updateRotator(),
                             new SequentialAction(
                                     new SleepAction(1),
                                     new ParallelAction(
-                                           intake(NEAR_DELAY),
+                                           intake(),
                                            BlueFarMoveToShootingFirstPath
                                     ),
 
@@ -450,7 +438,7 @@ public class Automonous extends LinearOpMode {
                             new SleepAction(1),
 
                             new ParallelAction(
-                                    intake(MIDDLE_DELAY),
+                                    intake(),
                                     BlueNearMoveToShootingSecondPath
                             ),
 
@@ -459,7 +447,7 @@ public class Automonous extends LinearOpMode {
                             new SleepAction(1),
 
                             new ParallelAction(
-                                    intake(FAR_DELAY),
+                                    intake(),
                                     BlueNearMoveToShootingThirdPath
                             ),
                             new SleepAction(1),
@@ -473,22 +461,13 @@ public class Automonous extends LinearOpMode {
 
 
     }
-    //TODO figure out why shoot, shoot, wait, shoot
     public Action shoot(){
         return new SequentialAction(
                 r.activateShooter(),
                 r.openHoodServo(),
-                new SleepAction(0.3),
                 r.checkShooterVelocity(),
-                new SleepAction(0.3), //.45
-                r.checkShooterVelocity(),
-                new SleepAction(0.3),
-                r.checkShooterVelocity(),
-                new SleepAction(0.3),
-                r.checkShooterVelocity(),
-                //r.turnOffShooter(),
-                new SleepAction(0.35),
-                r.closeHoodServo()
+                r.turnOnIntake(),
+                r.ballBlockServoOpen()
         );
     }
 
@@ -496,34 +475,19 @@ public class Automonous extends LinearOpMode {
         return new SequentialAction(
                 r.activateShooterNear(),
                 r.openHoodServoNear(),
-                new SleepAction(0.3),
                 r.checkShooterVelocityNear(),
-                new SleepAction(0.3), //.45
-                r.checkShooterVelocityNear(),
-                new SleepAction(0.3),
-                r.checkShooterVelocity(),
-                new SleepAction(0.3),
-                r.checkShooterVelocityNear(),
-                //r.turnOffShooter(),
-                new SleepAction(0.5),
-                r.closeHoodServo()
+                r.turnOnIntake(),
+                r.ballBlockServoOpen()
 
         );
     }
     
-    public Action intake(double d){
+    public Action intake(){
         return new SequentialAction(
-                r.turnOnIntake(),
-                new SleepAction(0.2),
-                new SleepAction(0.2),
-                new SleepAction(0.2),
-                new SleepAction(0.2),
-                new SleepAction(0.2),
-                new SleepAction(0.75),
-                r.turnOffIntake(),
-                r.reverseIntake(),
-                new SleepAction(0.5),
-                r.turnOffIntake()
+                r.ballBlockServoBlock(),
+                r.closeHoodServo(),
+                new SleepAction(0.15),
+                r.turnOnIntake()
         );
     }
 }

@@ -116,7 +116,7 @@ public class DriverControl extends OpMode {
     BLUE, RED
   }
 
-  TargetGoal targetGoal;
+  TargetGoal targetGoal = TargetGoal.RED;
 
   public ElapsedTime shooterClock = new ElapsedTime();
   public ElapsedTime intakeClock = new ElapsedTime();
@@ -147,6 +147,7 @@ public class DriverControl extends OpMode {
 
   @Override
   public void start() {
+    r.turret.init();
     runtime.reset();
     shooterClock.reset();
     intakeClock.reset();
@@ -184,9 +185,6 @@ public class DriverControl extends OpMode {
       ballBlockToggle = !ballBlockToggle;
     }
 
-    if(g1.xWasPressed()){
-      slideToggle = !slideToggle;
-    }
 
     if(shooterToggle){
       r.outtake.activateShooterTeleop();
@@ -216,12 +214,22 @@ public class DriverControl extends OpMode {
     if(g1.dpadDownWasPressed()){
       r.outtake.hoodServoStart();
     }
-    if(g1.dpad_right){
-      r.turret.setPosition(0);
+
+    if(g1.x){
+      r.turret.startPosition();
     }
-    if(g1.dpad_left) {
-      r.turret.setPosition(firstAngle);
+    else{
+      switch (targetGoal){
+        case RED:
+          r.aimTurretRed();
+          break;
+
+        case BLUE:
+          r.aimTurretBlue();
+          break;
+      }
     }
+
 
     if(g1.right_bumper){
       r.intake.intakeMotorOn();
@@ -235,20 +243,11 @@ public class DriverControl extends OpMode {
       r.outtake.hoodServoShoot();
     }
 
-//    r.autoTurretTracking(currentPose, bluePose);
 
 
     //tune PID controller for turret first, then test the code
 
-//    switch (targetGoal){
-//      case RED:
-//        r.aimTurretRed();
-//        break;
-//
-//      case BLUE:
-//        r.aimTurretBlue();
-//        break;
-//    }
+
 
 
 
@@ -270,7 +269,6 @@ public class DriverControl extends OpMode {
 
 
     r.drive.updatePoseEstimate();
-    r.turret.update();
 
     telemetry.addData("x", currentPose.position.x);
     telemetry.addData("y", currentPose.position.y);

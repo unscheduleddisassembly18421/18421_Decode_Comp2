@@ -101,24 +101,43 @@ public class HwRobot {
         return intake.turnOffIntake();
     }
 
-    public Action updateRotator(){
-        return turret.updateRotator();
-    }
+
 
     public Action reverseIntake(){
         return intake.reverseIntake();
     }
 
+    public Action ballBlockServoBlock(){
+        return outtake.ballBlockServo();
+    }
+
+    public Action ballBlockServoOpen(){
+        return outtake.ballServoOpen();
+    }
+
     public void aimTurretRed(){
         TurretAim turretAim = new TurretAim(drive.localizer.getPose(),redGoalPose);
-        turret.setPosition(turretAim.angle);
-        turret.update();
+        //shooterRelativeVelocityRed();
+        if((turret.degreesPerRotation * turretAim.redAngle) + 0.5 > 1){
+            turret.startPosition();
+        }
+        else{
+            turret.setAngle(turretAim.redAngle);
+        }
+        telemetry.addData("target angle", turretAim.redAngle);
+
     }
 
     public void aimTurretBlue(){
         TurretAim turretAim = new TurretAim(drive.localizer.getPose(), blueGoalPose);
-        turret.setPosition(turretAim.angle);
-        turret.update();
+        //shooterRelativeVelocityBlue();
+        if((turretAim.blueAngle * turret.degreesPerRotation) > 1){
+            turret.startPosition();
+        }
+        else{
+            turret.setAngle(turretAim.blueAngle);
+        }
+
     }
 
     public void shooterRelativeVelocityBlue(){
@@ -135,7 +154,8 @@ public class HwRobot {
 
     public class TurretAim {
         public double distance;
-        public double angle;
+        public double blueAngle;
+        public double redAngle ;
 
         public TurretAim(Pose2d robotPose, Pose2d goalPose) {
             double poseRobotX = robotPose.position.x;
@@ -147,8 +167,8 @@ public class HwRobot {
             double yDValue = poseRobotY - poseGoalY;
             double d = Math.sqrt((xDValue * xDValue) + (yDValue * yDValue));
             double fieldAngle = Math.atan2(yDValue, xDValue);
-            double goalAngle = robotYaw + fieldAngle;
-            angle = Math.toDegrees(goalAngle);
+            blueAngle = Math.toDegrees((robotYaw + fieldAngle));
+            redAngle = Math.toDegrees((robotYaw - fieldAngle));
             distance = d;
         }
     }

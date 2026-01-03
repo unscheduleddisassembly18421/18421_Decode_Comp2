@@ -30,18 +30,20 @@ public class Turret {
     public static double kd = 0;
     public static double ki = 0;
 
+    public double degreesPerRotation = 1./355;
+
     public static double CLOCK_DELAY = 2000;
 
 
     public static double intakeTolerance = 6;
 
-    ServoPIDController rotatorPower = new ServoPIDController(kp,kd,ki);
+    ServoPIDController rotatorPower = new ServoPIDController(kp, kd, ki);
 
-    private final double DEGREES_PER_VOLT = 360/3.3;
+    private final double DEGREES_PER_VOLT = 360 / 3.3;
 
     double ROTATOR_OFF = 0;
 
-    private CRServo rotatorServo = null;
+    private Servo rotatorServo = null;
 
 
     private Servo leftLight = null;
@@ -54,14 +56,13 @@ public class Turret {
     private AnalogInput ai = null;
 
 
-
-    public Turret(HardwareMap hwmap, Telemetry telemetry){
+    public Turret(HardwareMap hwmap, Telemetry telemetry) {
         this.telemetry = telemetry;
 
-        rotatorServo = hwmap.get(CRServo.class, "rs");
-        ai = hwmap.get(AnalogInput.class,"ai");
-        position = getPosition();
-        rotatorServo.setDirection(CRServo.Direction.FORWARD);
+        rotatorServo = hwmap.get(Servo.class, "rs");
+        ai = hwmap.get(AnalogInput.class, "ai");
+//        position = getPosition();
+        rotatorServo.setDirection(Servo.Direction.FORWARD);
 
 
         rightLight = hwmap.get(Servo.class, "rightil");
@@ -78,66 +79,38 @@ public class Turret {
 
     }
 
-    public void init(){
-        setPower(ROTATOR_OFF);
+    public void init() {
+        rotatorServo.setPosition(0.5);
     }
 
     //color sensor stuff
 
 
     //PID servo stuff
-    double getPosition(){
-        return ai.getVoltage()*DEGREES_PER_VOLT;
-    }
 
-    public void setPower(double power){
-        rotatorServo.setPower(power);
-    }
-
-    public void setPosition(double angle){
-        targetPosition = angle;
-    }
-
-    public void update(){
-        rotatorPower.setPIDConstants(kp,kd,ki);
-        double power = rotatorPower.calculate(targetPosition,getPosition());
-        setPower(power);
-        telemetry.addData("target angle", targetPosition);
-        telemetry.addData("Rotator Position",getPosition());
-        telemetry.addData("Rotator Power",power);
-    }
 
     //indicator light stuff
-    public void leftLightNewColor(){
+    public void leftLightNewColor() {
         leftLight.setPosition(BLUE_COLOR);
     }
 
-    public void leftLightRed(){
+    public void leftLightRed() {
         leftLight.setPosition(RED_COLOR);
     }
 
-    public void rightLightGreen(){
+    public void rightLightGreen() {
         rightLight.setPosition(GREEN_COLOR);
     }
 
-    public void rightLightRed(){
+    public void rightLightRed() {
         rightLight.setPosition(RED_COLOR);
     }
 
-
-    //actions
-
-    public class UpdateRotator implements Action{
-
-
-        @Override
-        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            update();
-            return true;
-        }
+    public void setAngle(double angle){
+        rotatorServo.setPosition((angle * degreesPerRotation) + 0.5);
     }
 
-    public Action updateRotator(){
-        return new UpdateRotator();
+    public void startPosition(){
+        rotatorServo.setPosition(0.5);
     }
 }
