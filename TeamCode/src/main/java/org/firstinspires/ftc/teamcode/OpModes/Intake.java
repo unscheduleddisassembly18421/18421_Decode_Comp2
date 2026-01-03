@@ -52,15 +52,11 @@ public class Intake {
     }
 
     public void intakeMotorOn(){
-        intakeMotor1.setDirection(DcMotorSimple.Direction.REVERSE);
-        intakeMotor2.setDirection(DcMotorSimple.Direction.FORWARD);
         intakeMotor1.setPower(INTAKEMOTOR_POWER_ON);
         intakeMotor2.setPower(INTAKEMOTOR_POWER_ON);
     }
 
     public void intakeMotorForward(){
-        intakeMotor1.setDirection(DcMotor.Direction.FORWARD);
-        intakeMotor2.setDirection(DcMotor.Direction.REVERSE);
         intakeMotor1.setPower(INTAKEMOTOR_POWER_ON);
         intakeMotor2.setPower(INTAKEMOTOR_POWER_ON);
     }

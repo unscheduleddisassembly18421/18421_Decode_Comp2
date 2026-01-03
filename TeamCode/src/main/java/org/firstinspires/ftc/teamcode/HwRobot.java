@@ -167,9 +167,10 @@ public class HwRobot {
             double yDValue = poseRobotY - poseGoalY;
             double d = Math.sqrt((xDValue * xDValue) + (yDValue * yDValue));
             double fieldAngle = Math.atan2(yDValue, xDValue);
-            blueAngle = Math.toDegrees((robotYaw + fieldAngle));
+            blueAngle = Math.toDegrees((robotYaw - fieldAngle));
             redAngle = Math.toDegrees((robotYaw - fieldAngle));
             distance = d;
+            //build in red and blue goal poses, such that it only uses the robot pose to calculate its angle
         }
     }
             //right front is in EH 0 named rf

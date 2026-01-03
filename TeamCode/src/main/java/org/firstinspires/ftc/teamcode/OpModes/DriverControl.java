@@ -109,8 +109,8 @@ public class DriverControl extends OpMode {
 
   public double slowDown = 1;
 
-  Pose2d bluePose = new Pose2d(-65,61,0);
-  Pose2d redPose = new Pose2d(-65,-61,0);
+  public Pose2d blueStartPose = new Pose2d(52,50,0);
+  public Pose2d redStartPose = new Pose2d(52,-50,0);
 
   public enum TargetGoal{
     BLUE, RED
@@ -208,17 +208,22 @@ public class DriverControl extends OpMode {
       r.outtake.ballBlockServoStart();
     }
 
-    if (g1.dpadUpWasPressed()){
-      r.outtake.hoodServoShoot();
-    }
-    if(g1.dpadDownWasPressed()){
-      r.outtake.hoodServoStart();
-    }
 
-    if(g1.x){
+
+    if(g1.x && !previousG1.x){
+      switch (targetGoal){
+        case RED:
+          r.drive.localizer.setPose(redStartPose);
+          break;
+
+        case BLUE:
+          r.drive.localizer.setPose(blueStartPose);
+          break;
+      }
+    } else if (g1.dpad_down) {
       r.turret.startPosition();
-    }
-    else{
+
+    } else{
       switch (targetGoal){
         case RED:
           r.aimTurretRed();
