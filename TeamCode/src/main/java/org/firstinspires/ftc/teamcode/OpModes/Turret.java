@@ -1,25 +1,11 @@
 package org.firstinspires.ftc.teamcode.OpModes;
 
-import android.graphics.Color;
-
-import androidx.annotation.NonNull;
-
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.AnalogInput;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
-import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
-import java.util.Arrays;
 
 @Config
 public class Turret {
@@ -106,8 +92,14 @@ public class Turret {
         rightLight.setPosition(RED_COLOR);
     }
 
-    public void setAngle(double angle){
-        rotatorServo.setPosition((angle * degreesPerRotation) + 0.5);
+    public void setAngleRed(double angle){
+        double servoPosition = angle*degreesPerRotation + 0.5; //fix degrees per Rotation
+        rotatorServo.setPosition(servoPosition);
+    }
+
+    public void setAngleBlue(double angle){
+        double ServoPosition = angle*degreesPerRotation - 0.5;
+        rotatorServo.setPosition(ServoPosition);
     }
 
     public void startPosition(){

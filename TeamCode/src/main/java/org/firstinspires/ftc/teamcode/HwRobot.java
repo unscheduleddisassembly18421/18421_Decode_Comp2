@@ -118,11 +118,11 @@ public class HwRobot {
     public void aimTurretRed(){
         TurretAim turretAim = new TurretAim(drive.localizer.getPose(),redGoalPose);
         //shooterRelativeVelocityRed();
-        if((turret.degreesPerRotation * turretAim.redAngle) + 0.5 > 1){
+        if(((turret.degreesPerRotation * turretAim.redAngle) + 0.5) > 1 || ((turret.degreesPerRotation * turretAim.redAngle) + 0.5) < 0){
             turret.startPosition();
         }
         else{
-            turret.setAngle(turretAim.redAngle);
+            turret.setAngleRed(turretAim.redAngle);
         }
         telemetry.addData("target angle", turretAim.redAngle);
 
@@ -131,11 +131,11 @@ public class HwRobot {
     public void aimTurretBlue(){
         TurretAim turretAim = new TurretAim(drive.localizer.getPose(), blueGoalPose);
         //shooterRelativeVelocityBlue();
-        if((turretAim.blueAngle * turret.degreesPerRotation) > 1){
+        if((turretAim.blueAngle * turret.degreesPerRotation) > 1|| ((turret.degreesPerRotation * turretAim.blueAngle) + 0.5) < 0){
             turret.startPosition();
         }
         else{
-            turret.setAngle(turretAim.blueAngle);
+            turret.setAngleBlue(turretAim.blueAngle);
         }
 
     }
