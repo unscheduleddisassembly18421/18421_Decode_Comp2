@@ -18,8 +18,8 @@ public class HwRobot {
     HardwareMap hardwareMap = null;
     Pose2d BlueWallRight = new Pose2d(0,0,0);
 
-    Pose2d blueGoalPose = new Pose2d(-65,61,0);//find real pose
-    Pose2d redGoalPose = new Pose2d(-65,-61,0);//find real pose
+    Pose2d blueGoalPose = new Pose2d(-65,-61,0);//find real pose
+    Pose2d redGoalPose = new Pose2d(-65,61,0);//find real pose
 
     public HwRobot(Telemetry t, HardwareMap hwm){
         hardwareMap = hwm;
@@ -163,13 +163,14 @@ public class HwRobot {
             double robotYaw = robotPose.heading.toDouble();
             double poseGoalX = goalPose.position.x;
             double poseGoalY = goalPose.position.y;
-            double xDValue = poseRobotX - poseGoalX;
-            double yDValue = poseRobotY - poseGoalY;
+            double xDValue = poseGoalX - poseRobotX;
+            double yDValue = poseGoalY - poseRobotY;
             double d = Math.sqrt((xDValue * xDValue) + (yDValue * yDValue));
             double fieldAngle = Math.atan2(yDValue, xDValue);
             blueAngle = Math.toDegrees((robotYaw - fieldAngle));
             redAngle = Math.toDegrees((robotYaw - fieldAngle));
             distance = d;
+
             //build in red and blue goal poses, such that it only uses the robot pose to calculate its angle
         }
     }

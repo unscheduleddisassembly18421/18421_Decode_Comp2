@@ -31,7 +31,7 @@ public class Outtake {
     public static double LAUNCHER_TOLERANCE = 0.995;
     public static double AUTO_LAUNCHERMOTOR_VELOCITY_ON = 1980;
     public static double AUTO_HOODSERVO_SHOOT = 0.525;
-    public static double BALLBLOCKSERVO_BLOCK_POSITION = 0.6;
+    public static double BALLBLOCKSERVO_BLOCK_POSITION = 0.1;
 
     public static double newP = 525;
     public static double newI = 40;//tune more. stole from Brennan
@@ -54,8 +54,8 @@ public class Outtake {
 
         hoodServo.setDirection(Servo.Direction.FORWARD);
 
-        ballBlockServo1.setDirection(Servo.Direction.REVERSE);
-        ballBlockServo2.setDirection(Servo.Direction.FORWARD);
+        ballBlockServo1.setDirection(Servo.Direction.FORWARD);
+        ballBlockServo2.setDirection(Servo.Direction.REVERSE);
 
 
         hoodServo.setPosition(HOODSERVO_START_POSITION);

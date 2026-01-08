@@ -208,13 +208,6 @@ public class DriverControl extends OpMode {
       r.outtake.ballBlockServoStart();
     }
 
-    if(g1.dpad_right && !previousG1.dpad_right){
-      r.turret.setAngleRed(90);
-    }
-
-    if(g1.dpad_left && ! previousG1.dpad_right){
-      r.turret.setAngleRed(-90);
-    }
 
 
 
@@ -231,6 +224,10 @@ public class DriverControl extends OpMode {
     } else if (g1.dpad_down) {
       r.turret.startPosition();
 
+    } else if (g1.dpad_right) {
+      r.turret.setAngleRed(90);
+    } else if (g1.dpad_left) {
+      r.turret.setAngleRed(-90);
     } else{
       switch (targetGoal){
         case RED:

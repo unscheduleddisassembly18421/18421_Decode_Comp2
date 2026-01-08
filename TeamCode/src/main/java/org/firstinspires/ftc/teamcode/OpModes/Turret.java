@@ -93,12 +93,14 @@ public class Turret {
     }
 
     public void setAngleRed(double angle){
+        rotatorServo.setDirection(Servo.Direction.FORWARD);
         double servoPosition = angle*degreesPerRotation + 0.5; //fix degrees per Rotation
         rotatorServo.setPosition(servoPosition);
     }
 
     public void setAngleBlue(double angle){
-        double ServoPosition = angle*degreesPerRotation - 0.5;
+        rotatorServo.setDirection(Servo.Direction.REVERSE);
+        double ServoPosition = angle*degreesPerRotation + 0.5;
         rotatorServo.setPosition(ServoPosition);
     }
 
