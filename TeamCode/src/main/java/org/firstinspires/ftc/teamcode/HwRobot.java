@@ -122,14 +122,22 @@ public class HwRobot {
     public void aimTurretRed(){
         TurretAim turretAim = new TurretAim(drive.localizer.getPose(),redGoalPose);
         //shooterRelativeVelocityRed();
-        double angle = (turretAim.redAngle * turret.degreesPerRotation) + 0.5;
+        double TurretAngle;
+        double angle;
+        if(turretAim.redAngle > 180){
+            TurretAngle = turretAim.redAngle - 360;
+        } else if (turretAim.redAngle < -180) {
+            TurretAngle = turretAim.redAngle + 360;
+        } else{
+           TurretAngle = turretAim.redAngle;
+        }
+        angle =  (TurretAngle * turret.degreesPerRotation) + 0.5;
         if(angle > 1 || angle < 0){
             turret.startPosition();
         }
-        else{
-            turret.setAngleRed(turretAim.redAngle);
-        }
-        telemetry.addData("target angle", turretAim.redAngle);
+        turret.setAngleRed(TurretAngle);
+        telemetry.addData("original angle", turretAim.redAngle);
+        telemetry.addData("new angle", TurretAngle);
         telemetry.addData("servo position", angle);
 
     }
@@ -137,13 +145,20 @@ public class HwRobot {
     public void aimTurretBlue(){
         TurretAim turretAim = new TurretAim(drive.localizer.getPose(), blueGoalPose);
         //shooterRelativeVelocityBlue();
-        double angle = (turretAim.redAngle * turret.degreesPerRotation) + 0.5;
+        double TurretAngle;
+        double angle;
+        if(turretAim.blueAngle > 180){
+            TurretAngle = turretAim.blueAngle - 360;
+        } else if (turretAim.blueAngle < -180) {
+            TurretAngle = turretAim.blueAngle + 360;
+        } else{
+            TurretAngle = turretAim.blueAngle;
+        }
+        angle =  (turretAim.blueAngle * turret.degreesPerRotation) + 0.5;
         if(angle > 1|| angle < 0){
             turret.startPosition();
         }
-        else{
-            turret.setAngleBlue(turretAim.blueAngle);
-        }
+        turret.setAngleBlue(TurretAngle);
         telemetry.addData("target angle", turretAim.blueAngle);
         telemetry.addData("servo position", angle);
 

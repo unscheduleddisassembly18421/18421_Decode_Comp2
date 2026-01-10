@@ -20,9 +20,8 @@ public class Turret {
     public static double kd = 0;
     public static double ki = 0;
 
-    public static double TOTAL_DEGREES = 360;
 
-    public static double degreesPerRotation = 1./360;
+    public static double degreesPerRotation = 1./310;
 
     public static double CLOCK_DELAY = 2000;
 
@@ -105,11 +104,9 @@ public class Turret {
     public void setAngleRed(double angle){
         //rotatorServo.setDirection(Servo.Direction.FORWARD);
         //rotatorServo2.setDirection(Servo.Direction.FORWARD);
-        double degrees = 1./TOTAL_DEGREES;
-        double servoPosition = angle* degrees + 0.5; //fix degrees per Rotation
+        double servoPosition = angle* degreesPerRotation + 0.5; //fix degrees per Rotation
         rotatorServo.setPosition(servoPosition);
         rotatorServo2.setPosition(servoPosition);
-        telemetry.addData("degrees per rotation", degrees);
     }
 
     public void setAngleBlue(double angle){

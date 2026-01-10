@@ -110,7 +110,7 @@ public class DriverControl extends OpMode {
   public double slowDown = 1;
 
   public Pose2d blueStartPose = new Pose2d(65,67,Math.toRadians(180));
-  public Pose2d redStartPose = new Pose2d(52,-50,Math.toRadians(180));
+  public Pose2d redStartPose = new Pose2d(65,-67,Math.toRadians(180));
 
   public enum TargetGoal{
     BLUE, RED
@@ -213,47 +213,45 @@ public class DriverControl extends OpMode {
 
 
 
-//    if(g1.x && !previousG1.x){
-//      switch (targetGoal){
-//        case RED:
-//          r.drive.localizer.setPose(redStartPose);
-//          break;
-//
-//        case BLUE:
-//          r.drive.localizer.setPose(blueStartPose);
-//          break;
-//      }
-//    } else if (g1.dpad_down) {
-//      r.turret.startPosition();
-//
-//    } else if (g1.dpad_right) {
-//      r.turret.setAngleRed(90);
-//    } else if (g1.dpad_left) {
-//      r.turret.setAngleRed(-90);
-//    } else{
-//      switch (targetGoal){
-//        case RED:
-//          r.aimTurretRed();
-//          break;
-//
-//        case BLUE:
-//          r.aimTurretBlue();
-//          break;
-//      }
-//    }
+      if(g1.x && !previousG1.x){
+        switch (targetGoal){
+          case RED:
+            r.drive.localizer.setPose(redStartPose);
+            break;
+
+          case BLUE:
+            r.drive.localizer.setPose(blueStartPose);
+            break;
+        }
+      } else if (g1.dpad_down) {
+        r.turret.startPosition();
+
+      } else if (g1.dpad_right) {
+        r.turret.setAngleRed(90);
+      } else if (g1.dpad_left) {
+        r.turret.setAngleRed(-90);
+      } else{
+        switch (targetGoal){
+          case RED:
+            r.aimTurretRed();
+            break;
+
+          case BLUE:
+            r.aimTurretBlue();
+            break;
+        }
+      }
+
+      if(g1.left_bumper){
+        r.intake.intakeMotorOn();
+        r.outtake.ballBlocKServoBlock();
+      }
+      else{
+        r.intake.intakeMotorOff();
+        r.ballBlockServoOpen();
+      }
 
 
-    if(g1.right_bumper && !previousG1.right_bumper){
-      r.turret.setAngleRed(-90);
-    }
-
-    if(g1.left_bumper && ! previousG1.left_bumper){
-      r.turret.setAngleRed(90);
-    }
-
-    if(g1.dpad_down && !previousG1.dpad_down){
-      r.turret.startPosition();
-    }
 
 
 
