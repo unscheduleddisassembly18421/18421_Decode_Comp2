@@ -111,56 +111,72 @@ public class Automonous extends LinearOpMode {
 
 
 
-        // RED FAR
-        TrajectoryActionBuilder redFarMoveToShootingPosition = r.drive.actionBuilder(redStartFar)
-                .lineToX(56)
-                .turnTo(Math.toRadians(156))
+        // RED FAR (Change to 6 ball auto later)
+        TrajectoryActionBuilder redFarMoveToShootingPose = r.drive.actionBuilder(redStartFar)//moveToShootPoseFarRed
+                .lineToX(-12)
+                .turnTo(Math.toRadians(140))
                 .endTrajectory();
 
-        TrajectoryActionBuilder redFarFirstPath = redFarMoveToShootingPosition.fresh()//firstPathFarRed
-                .setTangent(Math.toRadians(180))
-                .splineToLinearHeading(new Pose2d(36, 30,Math.toRadians(90)),
-                        Math.toRadians(90))
-                .lineToY(55,  new TranslationalVelConstraint(20))
-                .setTangent(Math.toRadians(270))
-                .splineToLinearHeading(new Pose2d(55, 15,Math.toRadians(158)),Math.toRadians(0))
+        TrajectoryActionBuilder redFarFirstPath = redFarMoveToShootingPose.fresh()//firstPathFarRed
+                .turnTo(Math.toRadians(90))
+                .lineToY(55)
+                .lineToY(12)
+                .turnTo(Math.toRadians(140))
                 .endTrajectory();
+        //.setTangent(Math.toRadians(180))
+                //.splineToLinearHeading(new Pose2d(36, 30,Math.toRadians(90)),
+                  //      Math.toRadians(90))
+                //.lineToY(55,  new TranslationalVelConstraint(20))
+                //.setTangent(Math.toRadians(270))
+                //.splineToLinearHeading(new Pose2d(55, 15,Math.toRadians(158)),Math.toRadians(0))
+                //.endTrajectory();
 
 
         TrajectoryActionBuilder redFarSecondPath = redFarFirstPath.fresh()//secondPathFarRed
-                .setTangent(Math.toRadians(180))
-                .splineToLinearHeading(new Pose2d(13,30, Math.toRadians(90)), Math.toRadians(90))//13,35,90
-                .lineToY(52, new TranslationalVelConstraint(15))
-                .setTangent(Math.toRadians(270))
-                .splineToLinearHeading(new Pose2d(55, 12,Math.toRadians(155)),Math.toRadians(0)
-                )
+                .turnTo(Math.toRadians(90))
+                .strafeToLinearHeading(new Vector2d(12, 12), Math.toRadians(90))
+                .setTangent(Math.toRadians(90))
+                .lineToY(50)
+                .splineToLinearHeading(new Pose2d(-12, 12, Math.toRadians(140)), Math.toRadians(0))
                 .endTrajectory();
+                //.setTangent(Math.toRadians(180))
+                //.splineToLinearHeading(new Pose2d(13,30, Math.toRadians(90)), Math.toRadians(90))//13,35,90
+                //.lineToY(52, new TranslationalVelConstraint(15))
+                //.setTangent(Math.toRadians(270))
+                //.splineToLinearHeading(new Pose2d(55, 12,Math.toRadians(155)),Math.toRadians(0))
+
 
 
         TrajectoryActionBuilder redFarThirdPath = redFarSecondPath.fresh()//thirdPathFarRed
-                .setTangent(Math.toRadians(180))
-                .splineToLinearHeading(new Pose2d(-10, 30,Math.toRadians(90)),Math.toRadians(90))
-                .lineToY(55, new TranslationalVelConstraint(25))
-                .setTangent(Math.toRadians(-45))
-                .splineToLinearHeading(new Pose2d(50, 12,Math.toRadians(155)),
-                        Math.toRadians(-30), new TranslationalVelConstraint(55))
+                .turnTo(Math.toRadians(90))
+                .strafeToLinearHeading(new Vector2d(38, 12), Math.toRadians(90))
+                .setTangent(Math.toRadians(90))
+                .lineToY(50)
+                .splineToLinearHeading(new Pose2d(-12, 12, Math.toRadians(140)), Math.toRadians(0))
                 .endTrajectory();
+                //.setTangent(Math.toRadians(180))
+                //.splineToLinearHeading(new Pose2d(-10, 30,Math.toRadians(90)),Math.toRadians(90))
+                //.lineToY(55, new TranslationalVelConstraint(25))
+                //.setTangent(Math.toRadians(-45))
+                //.splineToLinearHeading(new Pose2d(50, 12,Math.toRadians(155)), Math.toRadians(-30), new TranslationalVelConstraint(55))
+
 
         TrajectoryActionBuilder redFarThirdPathEnd = redFarThirdPath.fresh()
-                .lineToX(35)
+                .strafeToLinearHeading(new Vector2d(-12, 39), Math.toRadians(90))
                 .endTrajectory();
 
 
         //RED NEAR
-        TrajectoryActionBuilder redNearFirstPath = r.drive.actionBuilder(redStartNear)//firstPathNearRed
-                .strafeToLinearHeading(new Vector2d(-12,12),Math.toRadians(90))
-                .setTangent(Math.toRadians(90))
-                .lineToY(56)
-                .lineToY(18)
-                .turnTo(Math.toRadians(145))
+        TrajectoryActionBuilder redNearMoveToShootingPose = r.drive.actionBuilder(redStartNear)//moveToShootPoseNearRed
+                .strafeToLinearHeading(new Vector2d(-12,12),Math.toRadians(140))
                 .endTrajectory();
+                //.setTangent(Math.toRadians(90))
+                //.lineToY(56)
+                //.lineToY(18)
+                //.turnTo(Math.toRadians(145))
 
-        TrajectoryActionBuilder redNearSecondPath = redNearFirstPath.fresh()//secondPathNearRed
+
+        TrajectoryActionBuilder redNearFirstPath = redNearMoveToShootingPose.fresh()//firstPathNearRed
                 .strafeToLinearHeading(new Vector2d(12, 12),Math.toRadians(90))
 //                    new TranslationalVelConstraint(40)
                 .lineToY(56)
@@ -169,13 +185,16 @@ public class Automonous extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(-12,12),Math.toRadians(145))
                 .endTrajectory() ;
 
-        TrajectoryActionBuilder redNearThirdPath = redNearSecondPath.fresh()//thirdPathNearRed
+        TrajectoryActionBuilder redNearSecondPath = redNearFirstPath.fresh()//secondPathNearRed
                 .strafeToLinearHeading(new Vector2d(36, 12), Math.toRadians(90))
                 .setTangent(Math.toRadians(90))
                 .lineToY(56)
                 .lineToY(12)
                 .setTangent(Math.toRadians(180))
                 .strafeToLinearHeading(new Vector2d(-12, 12), Math.toRadians(135))
+                .endTrajectory();
+        TrajectoryActionBuilder redNearThirdPath = redNearSecondPath.fresh()//thirdPathNearRed
+
                 .endTrajectory();
 
         //BLUE FAR
@@ -237,7 +256,7 @@ public class Automonous extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(-12, -12), Math.toRadians(220))
                 .endTrajectory();
 
-        //build trajectories
+
 
 
         //switch (intakeState){
@@ -288,13 +307,14 @@ public class Automonous extends LinearOpMode {
 
 
         //RED FAR
-        Action RedFarGoToShootingPosition = redFarMoveToShootingPosition.build();
+        Action RedFarGoToShootingPosition = redFarMoveToShootingPose.build();
         Action RedFarMoveToShootingFirstPath = redFarFirstPath.build();
         Action RedFarMoveToShootingSecondPath = redFarSecondPath.build();
         Action RedFarMoveToShootingThirdPath = redFarThirdPath.build();
         Action RedFarMoveToShootingThirdPathEnd = redFarThirdPathEnd.build();
         //RED NEAR
-        Action RedNearMoveToShootingFirstPath = redNearFirstPath.build();
+        Action RedNearGoToShootingPosition = redNearMoveToShootingPose.build();
+        Action RedNearMoveToShootingFirstPath = redNearMoveToShootingPose.build();
         Action RedNearMoveToShootingSecondPath = redNearSecondPath.build();
         Action RedNearMoveToShootingThirdPath = redNearThirdPath.build();
         //BLUE FAR
