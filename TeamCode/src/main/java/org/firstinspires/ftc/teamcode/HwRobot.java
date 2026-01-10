@@ -18,8 +18,8 @@ public class HwRobot {
     HardwareMap hardwareMap = null;
     Pose2d BlueWallRight = new Pose2d(0,0,0);
 
-    Pose2d blueGoalPose = new Pose2d(-65,61,0);//find real pose
-    Pose2d redGoalPose = new Pose2d(-65,-61,0);//find real pose
+    Pose2d blueGoalPose = new Pose2d(-65,-61,0);//find real pose
+    Pose2d redGoalPose = new Pose2d(-65,61,0);//find real pose
 
     public HwRobot(Telemetry t, HardwareMap hwm){
         hardwareMap = hwm;
@@ -101,6 +101,10 @@ public class HwRobot {
         return intake.turnOffIntake();
     }
 
+    public Action setTurretStart(){
+        return turret.setTurretStart();
+    }
+
 
 
     public Action reverseIntake(){
@@ -118,25 +122,30 @@ public class HwRobot {
     public void aimTurretRed(){
         TurretAim turretAim = new TurretAim(drive.localizer.getPose(),redGoalPose);
         //shooterRelativeVelocityRed();
-        if(((turret.degreesPerRotation * turretAim.redAngle) + 0.5) > 1 || ((turret.degreesPerRotation * turretAim.redAngle) + 0.5) < 0){
+        double angle = (turretAim.redAngle * turret.degreesPerRotation) + 0.5;
+        if(angle > 1 || angle < 0){
             turret.startPosition();
         }
         else{
             turret.setAngleRed(turretAim.redAngle);
         }
         telemetry.addData("target angle", turretAim.redAngle);
+        telemetry.addData("servo position", angle);
 
     }
 
     public void aimTurretBlue(){
         TurretAim turretAim = new TurretAim(drive.localizer.getPose(), blueGoalPose);
         //shooterRelativeVelocityBlue();
-        if((turretAim.blueAngle * turret.degreesPerRotation) > 1|| ((turret.degreesPerRotation * turretAim.blueAngle) + 0.5) < 0){
+        double angle = (turretAim.redAngle * turret.degreesPerRotation) + 0.5;
+        if(angle > 1|| angle < 0){
             turret.startPosition();
         }
         else{
             turret.setAngleBlue(turretAim.blueAngle);
         }
+        telemetry.addData("target angle", turretAim.blueAngle);
+        telemetry.addData("servo position", angle);
 
     }
 
@@ -163,13 +172,14 @@ public class HwRobot {
             double robotYaw = robotPose.heading.toDouble();
             double poseGoalX = goalPose.position.x;
             double poseGoalY = goalPose.position.y;
-            double xDValue = poseRobotX - poseGoalX;
-            double yDValue = poseRobotY - poseGoalY;
+            double xDValue = poseGoalX - poseRobotX;
+            double yDValue = poseGoalY - poseRobotY;
             double d = Math.sqrt((xDValue * xDValue) + (yDValue * yDValue));
             double fieldAngle = Math.atan2(yDValue, xDValue);
             blueAngle = Math.toDegrees((robotYaw - fieldAngle));
             redAngle = Math.toDegrees((robotYaw - fieldAngle));
             distance = d;
+
             //build in red and blue goal poses, such that it only uses the robot pose to calculate its angle
         }
     }
