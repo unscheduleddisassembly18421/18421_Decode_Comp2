@@ -316,6 +316,7 @@ public class Automonous extends LinearOpMode {
         if (autoSelector == AutoSelector.RED_FAR) {
             Actions.runBlocking(
                     new ParallelAction(
+                          r.setTurretStart(),
                           new SequentialAction(//can do turn to first angle here to speed up time
 
                               r.activateShooter(),
@@ -355,6 +356,7 @@ public class Automonous extends LinearOpMode {
         else if (autoSelector == AutoSelector.RED_NEAR) {
             Actions.runBlocking(
                     new ParallelAction(
+                            r.setTurretStart(),
                             new SequentialAction(
                                     new ParallelAction(
                                             intake(),
@@ -389,6 +391,7 @@ public class Automonous extends LinearOpMode {
         else if (autoSelector == AutoSelector.BLUE_FAR) {
             Actions.runBlocking(
                     new ParallelAction(
+                            r.setTurretStart(),
                             new SequentialAction(
                                     BlueFarGoToShootingPosition,
                                     shoot(),
@@ -425,6 +428,7 @@ public class Automonous extends LinearOpMode {
         else if (autoSelector == AutoSelector.BLUE_NEAR){
             Actions.runBlocking(
                     new ParallelAction(
+                            r.setTurretStart(),
                             new SequentialAction(
                                     new SleepAction(1),
                                     new ParallelAction(

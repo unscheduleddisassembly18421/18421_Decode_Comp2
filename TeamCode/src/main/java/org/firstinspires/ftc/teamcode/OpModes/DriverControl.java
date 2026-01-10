@@ -109,8 +109,8 @@ public class DriverControl extends OpMode {
 
   public double slowDown = 1;
 
-  public Pose2d blueStartPose = new Pose2d(52,50,0);
-  public Pose2d redStartPose = new Pose2d(52,-50,0);
+  public Pose2d blueStartPose = new Pose2d(65,67,Math.toRadians(180));
+  public Pose2d redStartPose = new Pose2d(52,-50,Math.toRadians(180));
 
   public enum TargetGoal{
     BLUE, RED
@@ -124,11 +124,6 @@ public class DriverControl extends OpMode {
 
   @Override
   public void init() {
-    r = new HwRobot(telemetry, hardwareMap);
-    r.init();
-    telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-    telemetry.addData("Status", "Initialized");
-    //FtcDashboard.getInstance().startCameraStream(aprilTag, 0);
   }
 
   @Override
@@ -141,12 +136,19 @@ public class DriverControl extends OpMode {
       targetGoal = TargetGoal.RED;
     }
 
+    telemetry.addLine("Press Dpad down for red goal tracking");
+    telemetry.addLine("Press Dpad up for blue goal tracking");
     telemetry.addData("target Goal", targetGoal);
   }
 
 
   @Override
   public void start() {
+    r = new HwRobot(telemetry, hardwareMap);
+    r.init();
+    telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+    telemetry.addData("Status", "Start");
+    //FtcDashboard.getInstance().startCameraStream(aprilTag, 0);
     r.turret.init();
     runtime.reset();
     shooterClock.reset();
@@ -211,47 +213,48 @@ public class DriverControl extends OpMode {
 
 
 
-    if(g1.x && !previousG1.x){
-      switch (targetGoal){
-        case RED:
-          r.drive.localizer.setPose(redStartPose);
-          break;
+//    if(g1.x && !previousG1.x){
+//      switch (targetGoal){
+//        case RED:
+//          r.drive.localizer.setPose(redStartPose);
+//          break;
+//
+//        case BLUE:
+//          r.drive.localizer.setPose(blueStartPose);
+//          break;
+//      }
+//    } else if (g1.dpad_down) {
+//      r.turret.startPosition();
+//
+//    } else if (g1.dpad_right) {
+//      r.turret.setAngleRed(90);
+//    } else if (g1.dpad_left) {
+//      r.turret.setAngleRed(-90);
+//    } else{
+//      switch (targetGoal){
+//        case RED:
+//          r.aimTurretRed();
+//          break;
+//
+//        case BLUE:
+//          r.aimTurretBlue();
+//          break;
+//      }
+//    }
 
-        case BLUE:
-          r.drive.localizer.setPose(blueStartPose);
-          break;
-      }
-    } else if (g1.dpad_down) {
-      r.turret.startPosition();
 
-    } else if (g1.dpad_right) {
-      r.turret.setAngleRed(90);
-    } else if (g1.dpad_left) {
+    if(g1.right_bumper && !previousG1.right_bumper){
       r.turret.setAngleRed(-90);
-    } else{
-      switch (targetGoal){
-        case RED:
-          r.aimTurretRed();
-          break;
-
-        case BLUE:
-          r.aimTurretBlue();
-          break;
-      }
     }
 
-
-    if(g1.right_bumper){
-      r.intake.intakeMotorOn();
-      r.outtake.ballBlocKServoBlock();
+    if(g1.left_bumper && ! previousG1.left_bumper){
+      r.turret.setAngleRed(90);
     }
 
-    if(g1.left_bumper){
-      r.outtake.activateShooterTeleop();
-      r.intake.intakeMotorOn();
-      r.outtake.ballBlockServoStart();
-      r.outtake.hoodServoShoot();
+    if(g1.dpad_down && !previousG1.dpad_down){
+      r.turret.startPosition();
     }
+
 
 
 
@@ -282,14 +285,14 @@ public class DriverControl extends OpMode {
 
     telemetry.addData("x", currentPose.position.x);
     telemetry.addData("y", currentPose.position.y);
-    telemetry.addData("heading (deg)", Math.toDegrees(currentPose.heading.toDouble()));
+    telemetry.addData("heading (deg)", Math.toDegrees(yaw));
     telemetry.addData("motors at velocity", r.outtake.launchMotorsAtVelocity());
     telemetry.addData("launcher1 motors velocity", r.outtake.getVelocity1());
     telemetry.addData("launcher2 motors velocity", r.outtake.getVelocity2());
     telemetry.addData("target goal", targetGoal);
     telemetry.addData("close motors at velocity", r.outtake.launcherMotorsAtVelocityNear());
     telemetry.addData("shooter toggle", shooterToggle);
-    telemetry.update();
+    //telemetry.update(); //not needed in a normal opmode
 
     TelemetryPacket packet = new TelemetryPacket();
     packet.fieldOverlay().setStroke("#3F51B5");

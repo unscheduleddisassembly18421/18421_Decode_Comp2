@@ -101,6 +101,10 @@ public class HwRobot {
         return intake.turnOffIntake();
     }
 
+    public Action setTurretStart(){
+        return turret.setTurretStart();
+    }
+
 
 
     public Action reverseIntake(){
@@ -118,25 +122,30 @@ public class HwRobot {
     public void aimTurretRed(){
         TurretAim turretAim = new TurretAim(drive.localizer.getPose(),redGoalPose);
         //shooterRelativeVelocityRed();
-        if(((turret.degreesPerRotation * turretAim.redAngle) + 0.5) > 1 || ((turret.degreesPerRotation * turretAim.redAngle) + 0.5) < 0){
+        double angle = (turretAim.redAngle * turret.degreesPerRotation) + 0.5;
+        if(angle > 1 || angle < 0){
             turret.startPosition();
         }
         else{
             turret.setAngleRed(turretAim.redAngle);
         }
         telemetry.addData("target angle", turretAim.redAngle);
+        telemetry.addData("servo position", angle);
 
     }
 
     public void aimTurretBlue(){
         TurretAim turretAim = new TurretAim(drive.localizer.getPose(), blueGoalPose);
         //shooterRelativeVelocityBlue();
-        if((turretAim.blueAngle * turret.degreesPerRotation) > 1|| ((turret.degreesPerRotation * turretAim.blueAngle) + 0.5) < 0){
+        double angle = (turretAim.redAngle * turret.degreesPerRotation) + 0.5;
+        if(angle > 1|| angle < 0){
             turret.startPosition();
         }
         else{
             turret.setAngleBlue(turretAim.blueAngle);
         }
+        telemetry.addData("target angle", turretAim.blueAngle);
+        telemetry.addData("servo position", angle);
 
     }
 
