@@ -97,20 +97,15 @@ public class DriverControl extends OpMode {
   Gamepad previousG1 = new Gamepad();
   Gamepad previousG2 = new Gamepad();
 
-  boolean intakeToggle = false;
 
   boolean shooterToggle = false;
-
-  boolean slideToggle = false;
-
-  boolean ballBlockToggle = false;
 
   public static double power = 0;
 
   public double slowDown = 1;
 
   public Pose2d blueStartPose = new Pose2d(65,67,Math.toRadians(180));
-  public Pose2d redStartPose = new Pose2d(52,-50,Math.toRadians(180));
+  public Pose2d redStartPose = new Pose2d(65,-67,Math.toRadians(180));
 
   public enum TargetGoal{
     BLUE, RED
@@ -175,95 +170,48 @@ public class DriverControl extends OpMode {
     telemetry.addData("Status", "Run Time: " + runtime.toString());
 
     //NEW CODE
-    if(g1.a && !previousG1.a){
-      shooterToggle = !shooterToggle;
-    }
-
-    if(g1.bWasPressed()){
-      intakeToggle = !intakeToggle;
-    }
-
-    if(g1.yWasPressed()){
-      ballBlockToggle = !ballBlockToggle;
-    }
 
 
-    if(shooterToggle){
-      r.outtake.activateShooterTeleop();
-    }
-    else {
-      r.outtake.launcherMotor1Off();
-      r.outtake.launcherMotor2Off();
-    }
+        if(g1.x && !previousG1.x){
+          switch (targetGoal){
+            case RED:
+              r.drive.localizer.setPose(redStartPose);
+              break;
 
-    if(intakeToggle){
-      r.intake.intakeMotorOn();
-    }
-    else {
-      r.intake.intakeMotorOff();
-    }
+            case BLUE:
+              r.drive.localizer.setPose(blueStartPose);
+              break;
+          }
+        } else if (g1.dpad_down) {
+          r.turret.startPosition();
+        } else if (g1.dpad_right) {
+          r.turret.setAngleRed(90);
+        } else if (g1.dpad_left) {
+          r.turret.setAngleRed(-90);
+        } else{
+          switch (targetGoal){
+            case RED:
+              r.aimTurretRed();
+              break;
 
-    if(ballBlockToggle){
-      r.outtake.ballBlocKServoBlock();
-    }
-    else{
-      r.outtake.ballBlockServoStart();
-    }
+           case BLUE:
+              r.aimTurretBlue();
+              break;
+          }
+        }
 
-
-
-
-//    if(g1.x && !previousG1.x){
-//      switch (targetGoal){
-//        case RED:
-//          r.drive.localizer.setPose(redStartPose);
-//          break;
-//
-//        case BLUE:
-//          r.drive.localizer.setPose(blueStartPose);
-//          break;
-//      }
-//    } else if (g1.dpad_down) {
-//      r.turret.startPosition();
-//
-//    } else if (g1.dpad_right) {
-//      r.turret.setAngleRed(90);
-//    } else if (g1.dpad_left) {
-//      r.turret.setAngleRed(-90);
-//    } else{
-//      switch (targetGoal){
-//        case RED:
-//          r.aimTurretRed();
-//          break;
-//
-//        case BLUE:
-//          r.aimTurretBlue();
-//          break;
-//      }
-//    }
-
-
-    if(g1.right_bumper && !previousG1.right_bumper){
-      r.turret.setAngleRed(-90);
-    }
-
-    if(g1.left_bumper && ! previousG1.left_bumper){
-      r.turret.setAngleRed(90);
-    }
-
-    if(g1.dpad_down && !previousG1.dpad_down){
-      r.turret.startPosition();
-    }
-
-
-
+      if(g1.left_bumper){
+        r.intake.intakeMotorOn();
+        r.outtake.ballBlocKServoBlock();
+      } else if (g1.right_bumper) {
+        r.intake.intakeMotorOn();
+        r.outtake.ballBlockServoStart();
+      } else{
+        r.intake.intakeMotorOff();
+        r.outtake.ballBlocKServoBlock();
+      }
 
     //tune PID controller for turret first, then test the code
-
-
-
-
-
 
       drive  = -gamepad1.left_stick_y/slowDown  ;
       strafe = -gamepad1.left_stick_x/slowDown  ;
