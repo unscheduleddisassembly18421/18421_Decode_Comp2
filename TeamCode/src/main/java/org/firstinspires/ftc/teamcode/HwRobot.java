@@ -121,7 +121,6 @@ public class HwRobot {
 
     public void aimTurretRed(){
         TurretAim turretAim = new TurretAim(drive.localizer.getPose(),redGoalPose);
-        //shooterRelativeVelocityRed();
         double TurretAngle;
         double angle;
         if(turretAim.redAngle > 180){
@@ -136,15 +135,21 @@ public class HwRobot {
             turret.startPosition();
         }
         turret.setAngleRed(TurretAngle);
+        if(turretAim.poseRobotX > 35){
+                outtake.activateShooterTeleop();
+          }
+          else{
+              outtake.activateShooterRelative(turretAim.distance);
+          }
         telemetry.addData("original angle", turretAim.redAngle);
         telemetry.addData("new angle", TurretAngle);
         telemetry.addData("servo position", angle);
+        telemetry.addData("distance", turretAim.distance);
 
     }
 
     public void aimTurretBlue(){
         TurretAim turretAim = new TurretAim(drive.localizer.getPose(), blueGoalPose);
-        //shooterRelativeVelocityBlue();
         double TurretAngle;
         double angle;
         if(turretAim.blueAngle > 180){
@@ -159,31 +164,31 @@ public class HwRobot {
             turret.startPosition();
         }
         turret.setAngleBlue(TurretAngle);
+          if(turretAim.poseRobotX > 35){
+              outtake.activateShooterTeleop();
+          }
+          else{
+              outtake.activateShooterRelative(turretAim.distance);
+          }
+        outtake.hoodServoRelative(turretAim.distance);
         telemetry.addData("target angle", turretAim.blueAngle);
         telemetry.addData("servo position", angle);
+        telemetry.addData("distance", turretAim.distance);
+        //hood regression y=0.00741x-0.16667
 
     }
 
-    public void shooterRelativeVelocityBlue(){
-        TurretAim turretAim = new TurretAim(drive.localizer.getPose(), blueGoalPose);
-        double velocity = turretAim.distance;//write function for this here
-        outtake.flywheelOnInput(velocity);
-    }
-
-    public void shooterRelativeVelocityRed(){
-        TurretAim turretAim = new TurretAim(drive.localizer.getPose(), redGoalPose);
-        double velocity = turretAim.distance;//write function here for this
-        outtake.flywheelOnInput(velocity);
-    }
 
     public class TurretAim {
         public double distance;
         public double blueAngle;
         public double redAngle ;
+        public double poseRobotX;
+        public double poseRobotY;
 
         public TurretAim(Pose2d robotPose, Pose2d goalPose) {
-            double poseRobotX = robotPose.position.x;
-            double poseRobotY = robotPose.position.y;
+            poseRobotX = robotPose.position.x;
+            poseRobotY = robotPose.position.y;
             double robotYaw = robotPose.heading.toDouble();
             double poseGoalX = goalPose.position.x;
             double poseGoalY = goalPose.position.y;
