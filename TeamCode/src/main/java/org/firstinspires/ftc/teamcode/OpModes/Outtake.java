@@ -25,8 +25,8 @@ public class Outtake {
     private Servo ballBlockServo2 = null;
     //Positions
     public static double HOODSERVO_START_POSITION  = 0;
-    public static double HOODSERVO_SHOOT_POSITION = 0.15;
-    public static double LAUNCHERMOTOR_VELOCITY_ON_TELEOP = 1950;//max is around 2700
+    public static double HOODSERVO_SHOOT_POSITION = 0.5;
+    public static double LAUNCHERMOTOR_VELOCITY_ON_TELEOP = 1450;//max is around 2700
     public static double CLOSE_LAUNCHERMOTOR_VELOCITY_ON = 1675;//test
     public static double LAUNCHER_TOLERANCE = 0.995;
     public static double AUTO_LAUNCHERMOTOR_VELOCITY_ON = 1980;
@@ -112,6 +112,12 @@ public class Outtake {
 
     public void  hoodServoStart(){
         hoodServo.setPosition(HOODSERVO_START_POSITION);
+    }
+
+    public void shootFar(){
+        launcherMotor1.setVelocity(LAUNCHERMOTOR_VELOCITY_ON_TELEOP);
+        launcherMotor2.setVelocity(LAUNCHERMOTOR_VELOCITY_ON_TELEOP);
+        hoodServo.setPosition(HOODSERVO_SHOOT_POSITION);
     }
 
     public void hoodServoShoot(){

@@ -18,8 +18,8 @@ public class HwRobot {
     HardwareMap hardwareMap = null;
     Pose2d BlueWallRight = new Pose2d(0,0,0);
 
-    Pose2d blueGoalPose = new Pose2d(-65,-61,0);//find real pose
-    Pose2d redGoalPose = new Pose2d(-65,61,0);//find real pose
+    Pose2d blueGoalPose = new Pose2d(-70,-63,0);//find real pose
+    Pose2d redGoalPose = new Pose2d(-70,63,0);//find real pose
 
     public HwRobot(Telemetry t, HardwareMap hwm){
         hardwareMap = hwm;
@@ -131,16 +131,17 @@ public class HwRobot {
            TurretAngle = turretAim.redAngle;
         }
         angle =  (TurretAngle * turret.degreesPerRotation) + 0.5;
-        if(angle > 1 || angle < 0){
+        if(angle > 0.85 || angle < 0.15){
             turret.startPosition();
         }
         turret.setAngleRed(TurretAngle);
         if(turretAim.poseRobotX > 35){
-                outtake.activateShooterTeleop();
-          }
-          else{
+                outtake.shootFar();
+        }
+        else{
               outtake.activateShooterRelative(turretAim.distance);
-          }
+              outtake.hoodServoRelative(turretAim.distance);
+        }
         telemetry.addData("original angle", turretAim.redAngle);
         telemetry.addData("new angle", TurretAngle);
         telemetry.addData("servo position", angle);
@@ -165,12 +166,12 @@ public class HwRobot {
         }
         turret.setAngleBlue(TurretAngle);
           if(turretAim.poseRobotX > 35){
-              outtake.activateShooterTeleop();
+              outtake.shootFar();
           }
           else{
               outtake.activateShooterRelative(turretAim.distance);
+              outtake.hoodServoRelative(turretAim.distance);
           }
-        outtake.hoodServoRelative(turretAim.distance);
         telemetry.addData("target angle", turretAim.blueAngle);
         telemetry.addData("servo position", angle);
         telemetry.addData("distance", turretAim.distance);

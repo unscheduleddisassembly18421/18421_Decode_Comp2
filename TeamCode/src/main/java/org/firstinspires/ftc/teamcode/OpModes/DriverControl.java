@@ -171,44 +171,50 @@ public class DriverControl extends OpMode {
 
     //NEW CODE
 
+          if(g2.x && !previousG2.x){
+            switch (targetGoal){
+              case RED:
+                r.drive.localizer.setPose(redStartPose);
+                break;
 
-        if(g1.x && !previousG1.x){
-          switch (targetGoal){
-            case RED:
-              r.drive.localizer.setPose(redStartPose);
-              break;
+              case BLUE:
+                r.drive.localizer.setPose(blueStartPose);
+                break;
+            }
+          } else if (g2.dpad_down) {
+            r.turret.startPosition();
+          } else if (g2.dpad_right) {
+            r.turret.setAngleRed(90);
+          } else if (g2.dpad_left) {
+            r.turret.setAngleRed(-90);
+          } else{
+            switch (targetGoal){
+              case RED:
+                r.aimTurretRed();
+                break;
 
-            case BLUE:
-              r.drive.localizer.setPose(blueStartPose);
-              break;
+             case BLUE:
+                r.aimTurretBlue();
+                break;
+            }
           }
-        } else if (g1.dpad_down) {
-          r.turret.startPosition();
-        } else if (g1.dpad_right) {
-          r.turret.setAngleRed(90);
-        } else if (g1.dpad_left) {
-          r.turret.setAngleRed(-90);
-        } else{
-          switch (targetGoal){
-            case RED:
-              r.aimTurretRed();
-              break;
 
-           case BLUE:
-              r.aimTurretBlue();
-              break;
-          }
-        }
-
-      if(g1.left_bumper){
+      if(g2.left_bumper){
         r.intake.intakeMotorOn();
         r.outtake.ballBlocKServoBlock();
-      } else if (g1.right_bumper) {
+      } else if (g2.right_bumper) {
         r.intake.intakeMotorOn();
         r.outtake.ballBlockServoStart();
       } else{
         r.intake.intakeMotorOff();
         r.outtake.ballBlocKServoBlock();
+      }
+
+      if(g1.left_bumper){
+        slowDown = 5;
+      }
+      else{
+        slowDown = 1;
       }
 
     //tune PID controller for turret first, then test the code
