@@ -29,8 +29,8 @@ public class Outtake {
     public static double LAUNCHERMOTOR_VELOCITY_ON_TELEOP = 1450;//max is around 2700
     public static double CLOSE_LAUNCHERMOTOR_VELOCITY_ON = 1675;//test
     public static double LAUNCHER_TOLERANCE = 0.995;
-    public static double AUTO_LAUNCHERMOTOR_VELOCITY_ON = 1980;
-    public static double AUTO_HOODSERVO_SHOOT = 0.525;
+    public static double AUTO_LAUNCHERMOTOR_VELOCITY_ON = 1450;
+    public static double AUTO_HOODSERVO_SHOOT = 0.5;
     public static double BALLBLOCKSERVO_BLOCK_POSITION = 0.1;
 
     public static double newP = 525;
@@ -98,7 +98,7 @@ public class Outtake {
     }
 
     public void launcherMotor1Off(){
-        launcherMotor1.setVelocity(0);
+        launcherMotor1.setPower(0);
     }
 
     public void launcherMotor2OnNear(){
@@ -106,7 +106,7 @@ public class Outtake {
     }
 
     public void launcherMotor2Off(){
-        launcherMotor2.setVelocity(0);
+        launcherMotor2.setPower(0);
     }
 
 

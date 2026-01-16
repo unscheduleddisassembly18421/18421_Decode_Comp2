@@ -98,7 +98,7 @@ public class DriverControl extends OpMode {
   Gamepad previousG2 = new Gamepad();
 
 
-  boolean shooterToggle = false;
+  boolean trackingToggle = false;
 
   public static double power = 0;
 
@@ -119,6 +119,7 @@ public class DriverControl extends OpMode {
 
   @Override
   public void init() {
+    telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
   }
 
   @Override
@@ -171,6 +172,15 @@ public class DriverControl extends OpMode {
 
     //NEW CODE
 
+    if(g2.b && ! previousG2.b){
+      trackingToggle = !trackingToggle;
+    }
+
+    if(trackingToggle){
+      r.outtake.launcherMotor2Off();
+      r.outtake.launcherMotor1Off();
+    }
+
           if(g2.x && !previousG2.x){
             switch (targetGoal){
               case RED:
@@ -187,7 +197,7 @@ public class DriverControl extends OpMode {
             r.turret.setAngleRed(90);
           } else if (g2.dpad_left) {
             r.turret.setAngleRed(-90);
-          } else{
+          }  else{
             switch (targetGoal){
               case RED:
                 r.aimTurretRed();
@@ -245,7 +255,7 @@ public class DriverControl extends OpMode {
     telemetry.addData("launcher2 motors velocity", r.outtake.getVelocity2());
     telemetry.addData("target goal", targetGoal);
     telemetry.addData("close motors at velocity", r.outtake.launcherMotorsAtVelocityNear());
-    telemetry.addData("shooter toggle", shooterToggle);
+    telemetry.addData("Tracking toggle", trackingToggle);
     //telemetry.update(); //not needed in a normal opmode
 
     TelemetryPacket packet = new TelemetryPacket();

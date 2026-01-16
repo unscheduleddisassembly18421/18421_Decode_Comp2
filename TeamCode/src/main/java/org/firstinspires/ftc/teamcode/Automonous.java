@@ -361,29 +361,29 @@ public class Automonous extends LinearOpMode {
                           r.setTurretStart(),
                           new SequentialAction(//can do turn to first angle here to speed up time
 
-                              r.activateShooter(),
+                              //r.activateShooter(),
                               RedFarGoToShootingPosition,
-                              shoot(),
+                              //shoot(),
                                 new SleepAction(0.15),
                                 new ParallelAction(
-                                    RedFarMoveToShootingFirstPath,
-                                    intake()
+                                    RedFarMoveToShootingFirstPath
+                                    //intake()
                                 ),
-                                shoot(),
+                                //shoot(),
 
                                 new SleepAction(0.2),
                                 new ParallelAction(
-                                        RedFarMoveToShootingSecondPath,
-                                        intake()
+                                        RedFarMoveToShootingSecondPath
+                                        //intake()
                                 ),
-                                 shoot(),
+                                 //shoot(),
 
                                new SleepAction(0.15),
                                 new ParallelAction(
-                                        RedFarMoveToShootingThirdPath,
-                                        intake()
+                                        RedFarMoveToShootingThirdPath
+                                        //intake()
                               ),
-                               shoot(),
+                               //shoot(),
                                   new SleepAction(0.15),
                                   RedFarEnd
 
