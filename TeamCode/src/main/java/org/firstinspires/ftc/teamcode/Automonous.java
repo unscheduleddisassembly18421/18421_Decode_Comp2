@@ -165,6 +165,13 @@ public class Automonous extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(-12, 39), Math.toRadians(90))
                 .endTrajectory();
 
+        TrajectoryActionBuilder redFarFourthPath = redFarThirdPathEnd.fresh()
+
+
+
+                .endTrajectory();
+
+
 
         //RED NEAR
         TrajectoryActionBuilder redNearMoveToShootingPose = r.drive.actionBuilder(redStartNear)//moveToShootPoseNearRed

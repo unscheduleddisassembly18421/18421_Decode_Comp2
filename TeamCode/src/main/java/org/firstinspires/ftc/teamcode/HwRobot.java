@@ -19,7 +19,7 @@ public class HwRobot {
     Pose2d BlueWallRight = new Pose2d(0,0,0);
 
     Pose2d blueGoalPose = new Pose2d(-70,-63,0);//find real pose
-    Pose2d redGoalPose = new Pose2d(-70,63,0);//find real pose
+    Pose2d redGoalPose = new Pose2d(-70,66,0);//find real pose
 
     public HwRobot(Telemetry t, HardwareMap hwm){
         hardwareMap = hwm;
