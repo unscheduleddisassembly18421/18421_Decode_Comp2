@@ -104,8 +104,6 @@ public class Automonous extends LinearOpMode {
         //Make the trajectories here
 
 
-
-
         // RED FAR (Change to 6 ball auto later)
         TrajectoryActionBuilder redFarMoveToShootingPose = r.drive.actionBuilder(redStartFar)//moveToShootPoseFarRed
                 .lineToX(-12)
@@ -116,16 +114,17 @@ public class Automonous extends LinearOpMode {
         TrajectoryActionBuilder redFarFirstPath = redFarMoveToShootingPose.fresh()//firstPathFarRed
                 .turnTo(Math.toRadians(90))
                 .lineToY(55, new TranslationalVelConstraint(45))
-                .lineToY(12)
+                .strafeToLinearHeading(new Vector2d(-12, 12), Math.toRadians(90))
+                // .lineToY(12)
                 //.turnTo(Math.toRadians(140))
                 .endTrajectory();
         //.setTangent(Math.toRadians(180))
-                //.splineToLinearHeading(new Pose2d(36, 30,Math.toRadians(90)),
-                  //      Math.toRadians(90))
-                //.lineToY(55,  new TranslationalVelConstraint(20))
-                //.setTangent(Math.toRadians(270))
-                //.splineToLinearHeading(new Pose2d(55, 15,Math.toRadians(158)),Math.toRadians(0))
-                //.endTrajectory();
+        //.splineToLinearHeading(new Pose2d(36, 30,Math.toRadians(90)),
+        //      Math.toRadians(90))
+        //.lineToY(55,  new TranslationalVelConstraint(20))
+        //.setTangent(Math.toRadians(270))
+        //.splineToLinearHeading(new Pose2d(55, 15,Math.toRadians(158)),Math.toRadians(0))
+        //.endTrajectory();
 
 
         TrajectoryActionBuilder redFarSecondPath = redFarFirstPath.fresh()//secondPathFarRed
@@ -133,14 +132,13 @@ public class Automonous extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(12, 12), Math.toRadians(90))
                 .setTangent(Math.toRadians(90))
                 .lineToY(50, new TranslationalVelConstraint(45))
-                .splineToLinearHeading(new Pose2d(-12, 12, Math.toRadians(140)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-15, 12, Math.toRadians(140)), Math.toRadians(0))
                 .endTrajectory();
-                //.setTangent(Math.toRadians(180))
-                //.splineToLinearHeading(new Pose2d(13,30, Math.toRadians(90)), Math.toRadians(90))//13,35,90
-                //.lineToY(52, new TranslationalVelConstraint(15))
-                //.setTangent(Math.toRadians(270))
-                //.splineToLinearHeading(new Pose2d(55, 12,Math.toRadians(155)),Math.toRadians(0))
-
+        //.setTangent(Math.toRadians(180))
+        //.splineToLinearHeading(new Pose2d(13,30, Math.toRadians(90)), Math.toRadians(90))//13,35,90
+        //.lineToY(52, new TranslationalVelConstraint(15))
+        //.setTangent(Math.toRadians(270))
+        //.splineToLinearHeading(new Pose2d(55, 12,Math.toRadians(155)),Math.toRadians(0))
 
 
         TrajectoryActionBuilder redFarThirdPath = redFarSecondPath.fresh()//thirdPathFarRed
@@ -148,13 +146,13 @@ public class Automonous extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(38, 12), Math.toRadians(90))
                 .setTangent(Math.toRadians(90))
                 .lineToY(50, new TranslationalVelConstraint(45))
-                .splineToLinearHeading(new Pose2d(-12, 12, Math.toRadians(140)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-15, 12, Math.toRadians(140)), Math.toRadians(0))
                 .endTrajectory();
-                //.setTangent(Math.toRadians(180))
-                //.splineToLinearHeading(new Pose2d(-10, 30,Math.toRadians(90)),Math.toRadians(90))
-                //.lineToY(55, new TranslationalVelConstraint(25))
-                //.setTangent(Math.toRadians(-45))
-                //.splineToLinearHeading(new Pose2d(50, 12,Math.toRadians(155)), Math.toRadians(-30), new TranslationalVelConstraint(55))
+        //.setTangent(Math.toRadians(180))
+        //.splineToLinearHeading(new Pose2d(-10, 30,Math.toRadians(90)),Math.toRadians(90))
+        //.lineToY(55, new TranslationalVelConstraint(25))
+        //.setTangent(Math.toRadians(-45))
+        //.splineToLinearHeading(new Pose2d(50, 12,Math.toRadians(155)), Math.toRadians(-30), new TranslationalVelConstraint(55))
 
 
         TrajectoryActionBuilder redFarThirdPathEnd = redFarThirdPath.fresh()//endRedFar
@@ -164,19 +162,17 @@ public class Automonous extends LinearOpMode {
         TrajectoryActionBuilder redFarFourthPath = redFarThirdPathEnd.fresh()
 
 
-
                 .endTrajectory();
 
 
-/*
         //RED NEAR
         TrajectoryActionBuilder redNearMoveToShootingPose = r.drive.actionBuilder(redStartNear)//moveToShootPoseNearRed
-                .strafeToLinearHeading(new Vector2d(-12,12),Math.toRadians(140))
+                .strafeToLinearHeading(new Vector2d(-12, 12), Math.toRadians(140))
                 .endTrajectory();
-                //.setTangent(Math.toRadians(90))
-                //.lineToY(56)
-                //.lineToY(18)
-                //.turnTo(Math.toRadians(145))
+        //.setTangent(Math.toRadians(90))
+        //.lineToY(56)
+        //.lineToY(18)
+        //.turnTo(Math.toRadians(145))
 
 
         TrajectoryActionBuilder redNearFirstPath = redNearMoveToShootingPose.fresh()//firstPathNearRed
@@ -205,9 +201,6 @@ public class Automonous extends LinearOpMode {
                 .endTrajectory();
 
 
-
-
-
         // B L U E   F A R
         TrajectoryActionBuilder blueFarMoveToShootingPosition = r.drive.actionBuilder(blueStartFar)//blueFarMoveToShootingPosition
                 .lineToX(56)
@@ -216,23 +209,23 @@ public class Automonous extends LinearOpMode {
 
         TrajectoryActionBuilder blueFarFirstPath = r.drive.actionBuilder(blueStartFar)//firstPathFarBlue
                 .setTangent(Math.toRadians(180))
-                .splineToLinearHeading(new Pose2d(38, -35,Math.toRadians(270)),Math.toRadians(270))
+                .splineToLinearHeading(new Pose2d(38, -35, Math.toRadians(270)), Math.toRadians(270))
                 .lineToY(-55, new TranslationalVelConstraint(25))
                 .setTangent(Math.toRadians(90))
-                .splineToLinearHeading(new Pose2d(55, -12,Math.toRadians(205)),Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(55, -12, Math.toRadians(205)), Math.toRadians(0))
                 .endTrajectory();
 
         TrajectoryActionBuilder blueFarSecondPath = blueFarFirstPath.fresh()//secondPathFarBlue
                 .setTangent(Math.toRadians(180))
-                .splineToLinearHeading(new Pose2d(13, -35,Math.toRadians(270)),Math.toRadians(270))
+                .splineToLinearHeading(new Pose2d(13, -35, Math.toRadians(270)), Math.toRadians(270))
                 .lineToY(-50, new TranslationalVelConstraint(12))
-                .splineToLinearHeading(new Pose2d(53, -12,Math.toRadians(205)),Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(53, -12, Math.toRadians(205)), Math.toRadians(0))
                 .endTrajectory();
 
         TrajectoryActionBuilder blueFarThirdPath = blueFarSecondPath.fresh()//thirdPathFarBlue
-                .splineToLinearHeading(new Pose2d(-10, -38,Math.toRadians(270)),Math.toRadians(270))
+                .splineToLinearHeading(new Pose2d(-10, -38, Math.toRadians(270)), Math.toRadians(270))
                 .lineToY(-53, new TranslationalVelConstraint(25))
-                .splineToLinearHeading(new Pose2d(55, -15,Math.toRadians(200)),
+                .splineToLinearHeading(new Pose2d(55, -15, Math.toRadians(200)),
                         Math.toRadians(-40), new TranslationalVelConstraint(55))
                 .endTrajectory();
         TrajectoryActionBuilder blueFarThirdPathEnd = blueFarThirdPath.fresh()//endBlueFar
@@ -272,13 +265,14 @@ public class Automonous extends LinearOpMode {
 
         TrajectoryActionBuilder blueNearThirdPathEnd = blueNearThirdPath.fresh()//endBlueNear
                 .setTangent(Math.toRadians(270))
-                .lineToY(-39)
+                .strafeToLinearHeading(new Vector2d(-12, -39), Math.toRadians(270))
+                //.lineToY(-39)
                 .endTrajectory();
 
 
         //build trajectories
         //Action *NameOfPath* = nameOfPath.build();
-*/
+
 
         //RED FAR
         Action RedFarGoToShootingPosition = redFarMoveToShootingPose.build();
@@ -286,7 +280,7 @@ public class Automonous extends LinearOpMode {
         Action RedFarMoveToShootingSecondPath = redFarSecondPath.build();
         Action RedFarMoveToShootingThirdPath = redFarThirdPath.build();
         Action RedFarEnd = redFarThirdPathEnd.build();
-/*
+
         //RED NEAR
         Action RedNearGoToShootingPosition = redNearMoveToShootingPose.build();
         Action RedNearMoveToShootingFirstPath = redNearMoveToShootingPose.build();
@@ -299,208 +293,201 @@ public class Automonous extends LinearOpMode {
         Action BlueFarMoveToShootingFirstPath = blueFarFirstPath.build();
         Action BlueFarMoveToShootingSecondPath = blueFarSecondPath.build();
         Action BlueFarMoveToShootingThirdPath = blueFarThirdPath.build();
-        Action BlueFarMoveToShootingThirdPathEnd = blueFarThirdPathEnd.build();
+        Action BlueFarEnd = blueFarThirdPathEnd.build();
 
         //BLUE NEAR
         Action BlueNearGoToShootingPosition = blueNearMoveToShootingPosition.build();
         Action BlueNearMoveToShootingFirstPath = blueNearFirstPath.build();
         Action BlueNearMoveToShootingSecondPath = blueNearSecondPath.build();
         Action BlueNearMoveToShootingThirdPath = blueNearThirdPath.build();
-        Action BlueNearEnd= blueNearThirdPathEnd.build();
-*/
-
+        Action BlueNearEnd = blueNearThirdPathEnd.build();
 
 
         waitForStart();
-        Actions.runBlocking(
-                new ParallelAction(
-                        r.turnTurretRed(),
-                        new SequentialAction(
-                                RedFarGoToShootingPosition,
-                                nearShoot(),
-                                new SleepAction(2),
 
-                                new ParallelAction(
-                                        RedFarMoveToShootingFirstPath,
-                                        intake()
-                                ),
-                                nearShoot(),
-                                new SleepAction(2),
-                                new ParallelAction(
-                                        RedFarMoveToShootingSecondPath,
-                                        intake()
-                                ),
-                                nearShoot(),
-                                new SleepAction(2),
-                                new ParallelAction(
-                                        RedFarMoveToShootingThirdPath,
-                                        intake()
-                                ),
-                                nearShoot(),
-                                new SleepAction(2),
-                                new ParallelAction(
-                                        RedFarEnd
+        switch (autoSelector) {
+            case RED_FAR:
+                Actions.runBlocking(
+                        new ParallelAction(
+                                r.turnTurretRed(),
+                                new SequentialAction(
+                                        RedFarGoToShootingPosition,
+                                        nearShoot(),
+                                        new SleepAction(2),
+
+                                        new ParallelAction(
+                                                RedFarMoveToShootingFirstPath,
+                                                intake()
+                                        ),
+                                        nearShoot(),
+                                        new SleepAction(2),
+                                        new ParallelAction(
+                                                RedFarMoveToShootingSecondPath,
+                                                intake()
+                                        ),
+                                        nearShoot(),
+                                        new SleepAction(2),
+                                        new ParallelAction(
+                                                RedFarMoveToShootingThirdPath,
+                                                intake()
+                                        ),
+                                        nearShoot(),
+                                        new SleepAction(2),
+                                        new ParallelAction(
+                                                RedFarEnd
+                                        )
+
+
                                 )
 
+                        )
+
+                );
+                break;
+            case RED_NEAR:
+                Actions.runBlocking(
+                        new ParallelAction(
+                                r.turnTurretRed(),
+                                new SequentialAction(
+                                        RedNearGoToShootingPosition,
+                                        nearShoot(),
+                                        new SleepAction(2),
+                                        new ParallelAction(
+                                                intake(),
+                                                RedNearMoveToShootingFirstPath
+                                        ),
+
+                                        nearShoot(),
+                                        new SleepAction(2),
+
+                                        new ParallelAction(
+                                                intake(),
+                                                RedNearMoveToShootingSecondPath
+                                        ),
+
+                                        nearShoot(),
+                                        new SleepAction(2),
+                                        new ParallelAction(
+                                                intake(),
+                                                RedNearMoveToShootingThirdPath
+                                        ),
+                                        nearShoot(),
+                                        new SleepAction(1)
+
+                                ))
+                );
+
+                break;
+
+            case BLUE_FAR:
+                Actions.runBlocking(
+                        new ParallelAction(
+                                r.turnTurretBlue(),
+                                new SequentialAction(
+                                        BlueFarGoToShootingPosition,
+                                        nearShoot(),
+                                        new SleepAction(2),
+
+                                        new ParallelAction(
+                                                BlueFarMoveToShootingFirstPath,
+                                                intake()
+                                        ),
+                                        nearShoot(),
+                                        new SleepAction(2),
+                                        new ParallelAction(
+                                                BlueFarMoveToShootingSecondPath,
+                                                intake()
+                                        ),
+                                        nearShoot(),
+                                        new SleepAction(2),
+                                        new ParallelAction(
+                                                BlueFarMoveToShootingThirdPath,
+                                                intake()
+                                        ),
+                                        nearShoot(),
+                                        new SleepAction(2),
+                                        new ParallelAction(
+                                                BlueFarEnd
+                                        )
+
+
+                                )
 
                         )
 
-                )
+                );
 
-        );
+        /*    case BLUE_FAR:
+                Actions.runBlocking(
+                        new ParallelAction(
+                                r.turnTurretBlue(),
+                                new SequentialAction(
+                                        BlueFarGoToShootingPosition,
+                                        nearShoot(),
+                                        new SleepAction(2),
 
-/*
-        if (autoSelector == AutoSelector.RED_FAR) {
-            Actions.runBlocking(
-                    new ParallelAction(
-                          r.setTurretStart(),
-                          new SequentialAction(//can do turn to first angle here to speed up time
+                                        new ParallelAction(
+                                                BlueFarMoveToShootingFirstPath,
+                                                intake()
+                                        ),
 
-                              r.activateShooter(),
-                              RedFarGoToShootingPosition,
-                              shoot(),
-                                new SleepAction(0.15),
-                                new ParallelAction(
-                                    RedFarMoveToShootingFirstPath,
-                                    intake()
-                                ),
-                                shoot(),
+                                        nearShoot(),
+                                        new SleepAction(2),
 
-                                new SleepAction(0.2),
-                                new ParallelAction(
-                                        RedFarMoveToShootingSecondPath,
-                                        intake()
-                                ),
-                                 shoot(),
+                                        new ParallelAction(
+                                                intake(),
+                                                BlueFarMoveToShootingSecondPath
+                                        ),
+                                        nearShoot(),
 
-                               new SleepAction(0.15),
-                                new ParallelAction(
-                                        RedFarMoveToShootingThirdPath,
-                                        intake()
-                              ),
-                               shoot(),
-                                  new SleepAction(0.15),
-                                  RedFarEnd
+                                        new SleepAction(2),
 
+                                        new ParallelAction(
+                                                intake(),
+                                                BlueFarMoveToShootingThirdPath
+                                        ),
+                                        nearShoot(),
+                                        new SleepAction(2),
+                                        BlueFarMoveToShootingThirdPathEnd
+                                )
+                        ));
 
+                break;
 
-                        )
-                    )
-                    );
+            */ case BLUE_NEAR:
+                Actions.runBlocking(
+                        new ParallelAction(
+                                r.turnTurretBlue(),
+                                new SequentialAction(
+                                        BlueFarGoToShootingPosition,
+                                        nearShoot(),
+                                        new SleepAction(2),
+                                        new ParallelAction(
+                                                intake(),
+                                                BlueFarMoveToShootingFirstPath
+                                        ),
+                                        nearShoot(),
 
-        }
-        //Im pushing htis again
-        else if (autoSelector == AutoSelector.RED_NEAR) {
-            Actions.runBlocking(
-                    new ParallelAction(
-                            r.setTurretStart(),
-                            new SequentialAction(
-                                    new ParallelAction(
-                                            intake(),
-                                            RedNearMoveToShootingFirstPath
-                                    ),
+                                        new SleepAction(2),
 
-                            new SleepAction(1),
+                                        new ParallelAction(
+                                                intake(),
+                                                BlueNearMoveToShootingSecondPath
+                                        ),
+                                        nearShoot(),
+                                        new SleepAction(2),
 
-                            nearShoot(),
-                            new SleepAction(1),
+                                        new ParallelAction(
+                                                intake(),
+                                                BlueNearMoveToShootingThirdPath
+                                        ),
+                                        nearShoot(),
+                                        new SleepAction(1)
+                                )));
 
-                            new ParallelAction(
-                                    intake(),
-                                    RedNearMoveToShootingSecondPath
-                            ),
-
-                            new SleepAction(1),
-
-                            nearShoot(),
-                            new SleepAction(1),
-                            new ParallelAction(
-                                    intake(),
-                                    RedNearMoveToShootingThirdPath
-                            ),
-                            new SleepAction(1),
-                            nearShoot()
-
-                    ))
-            );
+                break;
 
         }
-        else if (autoSelector == AutoSelector.BLUE_FAR) {
-            Actions.runBlocking(
-                    new ParallelAction(
-                            r.setTurretStart(),
-                            new SequentialAction(
-                                    //BlueFarMoveToShootingPosition,
-                                    shoot(),
-                                    new SleepAction(0.15),
-
-                                new ParallelAction(
-                                        BlueFarMoveToShootingFirstPath,
-                                        intake()
-                                ),
-
-                                    shoot(),
-                                    new SleepAction(0.15),
-
-                                new ParallelAction(
-                                    intake(),
-                                    BlueFarMoveToShootingSecondPath
-                                ),
-                                shoot(),
-
-                                new SleepAction(0.15),
-
-                                new ParallelAction(
-                                        intake(),
-                                        BlueFarMoveToShootingThirdPath
-                                ),
-                                shoot(),
-                                    new SleepAction(0.15),
-                                    BlueFarMoveToShootingThirdPathEnd
-                            )
-            ));
-
-
-        }
-        else if (autoSelector == AutoSelector.BLUE_NEAR){
-            Actions.runBlocking(
-                    new ParallelAction(
-                            r.setTurretStart(),
-                            new SequentialAction(
-                                    new SleepAction(1),
-                                    new ParallelAction(
-                                           intake(),
-                                           BlueFarMoveToShootingFirstPath
-                                    ),
-
-                            new SleepAction(1),
-                            nearShoot(),
-
-                            new SleepAction(1),
-
-                            new ParallelAction(
-                                    intake(),
-                                    BlueNearMoveToShootingSecondPath
-                            ),
-
-                            new SleepAction(1),
-                            nearShoot(),
-                            new SleepAction(1),
-
-                            new ParallelAction(
-                                    intake(),
-                                    BlueNearMoveToShootingThirdPath
-                            ),
-                            new SleepAction(1),
-                            nearShoot()
-                    )));
-
-        }else
-            r.drive.localizer.setPose(blueStartNear);
-
-*/
-
-
     }
     public Action shoot(){
         return new SequentialAction(
