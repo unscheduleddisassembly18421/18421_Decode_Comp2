@@ -25,9 +25,9 @@ public class Outtake {
     private Servo ballBlockServo2 = null;
     //Positions
     public static double HOODSERVO_START_POSITION  = 0;
-    public static double HOODSERVO_SHOOT_POSITION = 0.5;
+    public static double HOODSERVO_SHOOT_POSITION = 0.45;
     public static double LAUNCHERMOTOR_VELOCITY_ON_TELEOP = 1450;//max is around 2700
-    public static double CLOSE_LAUNCHERMOTOR_VELOCITY_ON = 1675;//test
+    public static double CLOSE_LAUNCHERMOTOR_VELOCITY_ON = 1100;//test
     public static double LAUNCHER_TOLERANCE = 0.995;
     public static double AUTO_LAUNCHERMOTOR_VELOCITY_ON = 1450;
     public static double AUTO_HOODSERVO_SHOOT = 0.5;
@@ -74,7 +74,7 @@ public class Outtake {
     }
 
     public void init(){
-        hoodServo.setPosition(HOODSERVO_START_POSITION);
+        hoodServo.setPosition(0);
         ballBlockServoStart();
     }
 
@@ -111,13 +111,12 @@ public class Outtake {
 
 
     public void  hoodServoStart(){
-        hoodServo.setPosition(HOODSERVO_START_POSITION);
+        hoodServo.setPosition(0);
     }
 
     public void shootFar(){
         launcherMotor1.setVelocity(LAUNCHERMOTOR_VELOCITY_ON_TELEOP);
         launcherMotor2.setVelocity(LAUNCHERMOTOR_VELOCITY_ON_TELEOP);
-        hoodServo.setPosition(HOODSERVO_SHOOT_POSITION);
     }
 
     public void hoodServoShoot(){
@@ -150,8 +149,15 @@ public class Outtake {
     }
 
     public void hoodServoRelative(double distance){
+        double trueAngle;
         double angle = (0.00741 * distance) -0.16667;
-        hoodServo.setPosition(angle);
+        if(angle > 0.5){
+            trueAngle = 0.5;
+        }
+        else{
+            trueAngle = angle;
+        }
+        hoodServo.setPosition(trueAngle);
     }
 
     public void activateShooterRelative(double robotdistance){

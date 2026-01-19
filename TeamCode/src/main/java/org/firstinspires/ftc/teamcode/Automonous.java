@@ -41,11 +41,6 @@ public class Automonous extends LinearOpMode {
     public static double MIDDLE_DELAY = 16500;
     public static double FAR_DELAY = 25000;
 
-    public enum IntakeState {
-        READY, INTAKE1, INTAKE2, INTAKE3, FULL, FIRING
-    }
-
-    IntakeState intakeState = IntakeState.READY;
     public ElapsedTime intakeClock = new ElapsedTime();
 
             private final ElapsedTime runtime = new ElapsedTime();
@@ -114,14 +109,15 @@ public class Automonous extends LinearOpMode {
         // RED FAR (Change to 6 ball auto later)
         TrajectoryActionBuilder redFarMoveToShootingPose = r.drive.actionBuilder(redStartFar)//moveToShootPoseFarRed
                 .lineToX(-12)
-                .turnTo(Math.toRadians(140))
+                //.setTangent(Math.toRadians(140))
+                //.turnTo(Math.toRadians(140))
                 .endTrajectory();
 
         TrajectoryActionBuilder redFarFirstPath = redFarMoveToShootingPose.fresh()//firstPathFarRed
                 .turnTo(Math.toRadians(90))
-                .lineToY(55)
+                .lineToY(55, new TranslationalVelConstraint(45))
                 .lineToY(12)
-                .turnTo(Math.toRadians(140))
+                //.turnTo(Math.toRadians(140))
                 .endTrajectory();
         //.setTangent(Math.toRadians(180))
                 //.splineToLinearHeading(new Pose2d(36, 30,Math.toRadians(90)),
@@ -136,7 +132,7 @@ public class Automonous extends LinearOpMode {
                 .turnTo(Math.toRadians(90))
                 .strafeToLinearHeading(new Vector2d(12, 12), Math.toRadians(90))
                 .setTangent(Math.toRadians(90))
-                .lineToY(50)
+                .lineToY(50, new TranslationalVelConstraint(45))
                 .splineToLinearHeading(new Pose2d(-12, 12, Math.toRadians(140)), Math.toRadians(0))
                 .endTrajectory();
                 //.setTangent(Math.toRadians(180))
@@ -151,7 +147,7 @@ public class Automonous extends LinearOpMode {
                 .turnTo(Math.toRadians(90))
                 .strafeToLinearHeading(new Vector2d(38, 12), Math.toRadians(90))
                 .setTangent(Math.toRadians(90))
-                .lineToY(50)
+                .lineToY(50, new TranslationalVelConstraint(45))
                 .splineToLinearHeading(new Pose2d(-12, 12, Math.toRadians(140)), Math.toRadians(0))
                 .endTrajectory();
                 //.setTangent(Math.toRadians(180))
@@ -172,7 +168,7 @@ public class Automonous extends LinearOpMode {
                 .endTrajectory();
 
 
-
+/*
         //RED NEAR
         TrajectoryActionBuilder redNearMoveToShootingPose = r.drive.actionBuilder(redStartNear)//moveToShootPoseNearRed
                 .strafeToLinearHeading(new Vector2d(-12,12),Math.toRadians(140))
@@ -280,54 +276,9 @@ public class Automonous extends LinearOpMode {
                 .endTrajectory();
 
 
-
-
-        //switch (intakeState){
-           // case READY:
-                //r.rotator.leftLightRed();
-                //r.rotator.rightLightRed();
-                //r.rotator.setPosition(firstAngle);
-                //r.intake.intakeMotorOn();
-                //intakeState = IntakeState.INTAKE1;
-
-                //break;
-
-            //case INTAKE1:
-               // if(r.rotator.detectedBall()){
-                    //intakeState = IntakeState.INTAKE2;
-                    //intakeClock.reset();
-                //}
-                //break;
-           // case INTAKE2:
-               // r.rotator.setPosition(secondAngle);
-    //            if(intakeClock.milliseconds() > INTAKE_DELAY && r.rotator.detectedBall()){
-      //              intakeClock.reset();
-        //            intakeState = IntakeState.INTAKE3;
-          //      }
-            //    break;
-
-     //       case INTAKE3:
-     //           r.rotator.setPosition(thirdAngle);
-     //           if(intakeClock.milliseconds() > INTAKE_DELAY && r.rotator.detectedBall()){
-     //               intakeClock.reset();
-     //               intakeState = IntakeState.FULL;
-     //           }
-     //           break;
-
-     //       case FULL:
-     //           if(intakeClock.milliseconds() > INTAKE_OFF_DELAY) {
-     //               r.intake.intakeMotorOff();
-      //              r.rotator.leftLightGreen();
-     //               r.rotator.rightLightGreen();
-     //               intakeState = IntakeState.FIRING;
-     //           }
-
-       //         break;
-        //}
-
         //build trajectories
         //Action *NameOfPath* = nameOfPath.build();
-
+*/
 
         //RED FAR
         Action RedFarGoToShootingPosition = redFarMoveToShootingPose.build();
@@ -335,7 +286,7 @@ public class Automonous extends LinearOpMode {
         Action RedFarMoveToShootingSecondPath = redFarSecondPath.build();
         Action RedFarMoveToShootingThirdPath = redFarThirdPath.build();
         Action RedFarEnd = redFarThirdPathEnd.build();
-
+/*
         //RED NEAR
         Action RedNearGoToShootingPosition = redNearMoveToShootingPose.build();
         Action RedNearMoveToShootingFirstPath = redNearMoveToShootingPose.build();
@@ -356,41 +307,78 @@ public class Automonous extends LinearOpMode {
         Action BlueNearMoveToShootingSecondPath = blueNearSecondPath.build();
         Action BlueNearMoveToShootingThirdPath = blueNearThirdPath.build();
         Action BlueNearEnd= blueNearThirdPathEnd.build();
-
+*/
 
 
 
         waitForStart();
+        Actions.runBlocking(
+                new ParallelAction(
+                        r.turnTurretRed(),
+                        new SequentialAction(
+                                RedFarGoToShootingPosition,
+                                nearShoot(),
+                                new SleepAction(2),
 
+                                new ParallelAction(
+                                        RedFarMoveToShootingFirstPath,
+                                        intake()
+                                ),
+                                nearShoot(),
+                                new SleepAction(2),
+                                new ParallelAction(
+                                        RedFarMoveToShootingSecondPath,
+                                        intake()
+                                ),
+                                nearShoot(),
+                                new SleepAction(2),
+                                new ParallelAction(
+                                        RedFarMoveToShootingThirdPath,
+                                        intake()
+                                ),
+                                nearShoot(),
+                                new SleepAction(2),
+                                new ParallelAction(
+                                        RedFarEnd
+                                )
+
+
+                        )
+
+                )
+
+        );
+
+/*
         if (autoSelector == AutoSelector.RED_FAR) {
             Actions.runBlocking(
                     new ParallelAction(
                           r.setTurretStart(),
                           new SequentialAction(//can do turn to first angle here to speed up time
 
-                              //r.activateShooter(),
+                              r.activateShooter(),
                               RedFarGoToShootingPosition,
-                              //shoot(),
+                              shoot(),
                                 new SleepAction(0.15),
                                 new ParallelAction(
-                                    RedFarMoveToShootingFirstPath
-                                    //intake()
+                                    RedFarMoveToShootingFirstPath,
+                                    intake()
                                 ),
-                                //shoot(),
+                                shoot(),
 
                                 new SleepAction(0.2),
                                 new ParallelAction(
-                                        RedFarMoveToShootingSecondPath
-                                        //intake()
+                                        RedFarMoveToShootingSecondPath,
+                                        intake()
                                 ),
-                                 //shoot(),
+                                 shoot(),
 
                                new SleepAction(0.15),
                                 new ParallelAction(
-                                        RedFarMoveToShootingThirdPath
-                                        //intake()
+                                        RedFarMoveToShootingThirdPath,
+                                        intake()
                               ),
-                               //shoot(),
+                               shoot(),
                                   new SleepAction(0.15),
                                   RedFarEnd
 
@@ -510,7 +498,7 @@ public class Automonous extends LinearOpMode {
         }else
             r.drive.localizer.setPose(blueStartNear);
 
-
+*/
 
 
     }
@@ -518,7 +506,6 @@ public class Automonous extends LinearOpMode {
         return new SequentialAction(
                 r.activateShooter(),
                 r.openHoodServo(),
-                r.checkShooterVelocity(),
                 r.turnOnIntake(),
                 r.ballBlockServoOpen()
         );
@@ -526,9 +513,6 @@ public class Automonous extends LinearOpMode {
 
     public Action nearShoot(){
         return new SequentialAction(
-                r.activateShooterNear(),
-                r.openHoodServoNear(),
-                r.checkShooterVelocityNear(),
                 r.turnOnIntake(),
                 r.ballBlockServoOpen()
 

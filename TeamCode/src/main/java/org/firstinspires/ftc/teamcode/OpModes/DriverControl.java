@@ -106,6 +106,7 @@ public class DriverControl extends OpMode {
 
   public Pose2d blueStartPose = new Pose2d(65,67,Math.toRadians(180));
   public Pose2d redStartPose = new Pose2d(65,-67,Math.toRadians(180));
+  public Pose2d middleShootPose = new Pose2d(63, 0, Math.toRadians(180));
 
   public enum TargetGoal{
     BLUE, RED
@@ -172,14 +173,6 @@ public class DriverControl extends OpMode {
 
     //NEW CODE
 
-    if(g2.b && ! previousG2.b){
-      trackingToggle = !trackingToggle;
-    }
-
-    if(trackingToggle){
-      r.outtake.launcherMotor2Off();
-      r.outtake.launcherMotor1Off();
-    }
 
           if(g2.x && !previousG2.x){
             switch (targetGoal){
@@ -193,11 +186,10 @@ public class DriverControl extends OpMode {
             }
           } else if (g2.dpad_down) {
             r.turret.startPosition();
-          } else if (g2.dpad_right) {
-            r.turret.setAngleRed(90);
-          } else if (g2.dpad_left) {
-            r.turret.setAngleRed(-90);
-          }  else{
+          } else if (g2.y && ! previousG1.y) {
+            r.drive.localizer.setPose(middleShootPose);
+
+          } else{
             switch (targetGoal){
               case RED:
                 r.aimTurretRed();
@@ -225,6 +217,14 @@ public class DriverControl extends OpMode {
       }
       else{
         slowDown = 1;
+      }
+
+      if(g1.dpad_down && !previousG1.dpad_down){
+        targetGoal = TargetGoal.RED;
+      }
+
+      if(g1.dpad_up && !previousG1.dpad_up){
+        targetGoal = TargetGoal.BLUE;
       }
 
     //tune PID controller for turret first, then test the code
