@@ -128,7 +128,7 @@ public class Automonous extends LinearOpMode {
 
 
         TrajectoryActionBuilder redFarSecondPath = redFarFirstPath.fresh()//secondPathFarRed
-                .turnTo(Math.toRadians(90))
+                //.turnTo(Math.toRadians(90))
                 .strafeToLinearHeading(new Vector2d(12, 12), Math.toRadians(90))
                 .setTangent(Math.toRadians(90))
                 .lineToY(50, new TranslationalVelConstraint(45))
@@ -344,6 +344,7 @@ public class Automonous extends LinearOpMode {
 
                 );
                 break;
+
             case RED_NEAR:
                 Actions.runBlocking(
                         new ParallelAction(
@@ -417,7 +418,7 @@ public class Automonous extends LinearOpMode {
 
                 );
 
-        /*    case BLUE_FAR:
+            //case BLUE_FAR:
                 Actions.runBlocking(
                         new ParallelAction(
                                 r.turnTurretBlue(),
@@ -448,13 +449,13 @@ public class Automonous extends LinearOpMode {
                                         ),
                                         nearShoot(),
                                         new SleepAction(2),
-                                        BlueFarMoveToShootingThirdPathEnd
+                                        BlueFarEnd
                                 )
                         ));
 
                 break;
 
-            */ case BLUE_NEAR:
+             case BLUE_NEAR:
                 Actions.runBlocking(
                         new ParallelAction(
                                 r.turnTurretBlue(),
@@ -489,6 +490,7 @@ public class Automonous extends LinearOpMode {
 
         }
     }
+
     public Action shoot(){
         return new SequentialAction(
                 r.activateShooter(),
