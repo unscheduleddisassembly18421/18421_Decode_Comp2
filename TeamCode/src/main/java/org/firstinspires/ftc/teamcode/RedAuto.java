@@ -293,7 +293,6 @@ public Action nearShoot(){
 public Action intake(){
     return new SequentialAction(
             r.ballBlockServoBlock(),
-            r.closeHoodServo(),
             new SleepAction(0.15),
             r.turnOnIntake()
     );

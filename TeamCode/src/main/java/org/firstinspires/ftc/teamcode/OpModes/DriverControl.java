@@ -167,6 +167,8 @@ public class DriverControl extends OpMode {
 
     Pose2d currentPose = r.drive.localizer.getPose();
 
+    Pose2d newPose = new Pose2d(currentPose.position.x, currentPose.position.y, Math.toRadians(180));
+
 
 
     telemetry.addData("Status", "Run Time: " + runtime.toString());
@@ -189,6 +191,8 @@ public class DriverControl extends OpMode {
           } else if (g2.y && ! previousG1.y) {
             r.drive.localizer.setPose(middleShootPose);
 
+          } else if (g1.a && !previousG1.a) {
+            r.drive.localizer.setPose(newPose);
           } else{
             switch (targetGoal){
               case RED:
