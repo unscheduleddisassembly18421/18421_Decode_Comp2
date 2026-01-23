@@ -154,6 +154,11 @@ public final class MecanumDrive {
         }
 
         @Override
+        public void recalIMU(){
+            localizer.recalIMU();
+        }
+
+        @Override
         public PoseVelocity2d update() {
             PositionVelocityPair leftFrontPosVel = leftFront.getPositionAndVelocity();
             PositionVelocityPair leftBackPosVel = leftBack.getPositionAndVelocity();
@@ -254,6 +259,10 @@ public final class MecanumDrive {
 
         FlightRecorder.write("MECANUM_PARAMS", PARAMS);
 
+    }
+
+    public void recalIMU(){
+        localizer.recalIMU();
     }
 
     public void setDrivePowers(PoseVelocity2d powers) {

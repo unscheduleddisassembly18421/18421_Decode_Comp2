@@ -121,6 +121,8 @@ public class DriverControl extends OpMode {
   @Override
   public void init() {
     telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+    r = new HwRobot(telemetry, hardwareMap);
+    r.init();
   }
 
   @Override
@@ -141,10 +143,10 @@ public class DriverControl extends OpMode {
 
   @Override
   public void start() {
-    r = new HwRobot(telemetry, hardwareMap);
-    r.init();
+
     telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
     telemetry.addData("Status", "Start");
+    r.start();
     //FtcDashboard.getInstance().startCameraStream(aprilTag, 0);
     r.turret.init();
     runtime.reset();
@@ -164,7 +166,9 @@ public class DriverControl extends OpMode {
     g2.copy(gamepad2);
 
     double yaw = r.drive.localizer.getPose().heading.toDouble();//maybe in radians
-
+    if(gamepad2.yWasPressed()){
+      r.drive.recalIMU();
+    }
     Pose2d currentPose = r.drive.localizer.getPose();
 
     Pose2d newPose = new Pose2d(currentPose.position.x, currentPose.position.y, Math.toRadians(180));
@@ -193,7 +197,10 @@ public class DriverControl extends OpMode {
 
           } else if (g1.a && !previousG1.a) {
             r.drive.localizer.setPose(newPose);
-          } else{
+          } else if (gamepad2.a){
+            r.outtake.deactivateShooter();
+          }
+          else{
             switch (targetGoal){
               case RED:
                 r.aimTurretRed();

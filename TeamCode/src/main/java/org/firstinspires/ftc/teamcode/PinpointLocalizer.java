@@ -21,7 +21,6 @@ public final class PinpointLocalizer implements Localizer {
     }
 
     public static Params PARAMS = new Params();
-
     public final GoBildaPinpointDriver driver;
     public final GoBildaPinpointDriver.EncoderDirection initialParDirection, initialPerpDirection;
 
@@ -56,6 +55,11 @@ public final class PinpointLocalizer implements Localizer {
     @Override
     public Pose2d getPose() {
         return txWorldPinpoint.times(txPinpointRobot);
+    }
+
+    @Override
+    public void recalIMU(){
+        driver.recalibrateIMU();
     }
 
     @Override
