@@ -174,6 +174,11 @@ public class Outtake {
         return -(launcherMotor2.getVelocity());
     }
 
+    public void deactivateShooter(){
+        launcherMotor1Off();
+        launcherMotor2Off();
+    }
+
     //actions
 
     public class ActivateShooter implements Action {

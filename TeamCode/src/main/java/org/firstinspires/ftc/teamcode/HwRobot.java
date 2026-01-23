@@ -35,6 +35,9 @@ public class HwRobot {
         intake = new Intake(hardwareMap, telemetry);
         outtake = new Outtake(hardwareMap, telemetry);
         turret = new Turret(hardwareMap, telemetry);
+    }
+
+    public void start(){
         turret.init();
         outtake.init();
     }

@@ -19,7 +19,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class RedAuto extends LinearOpMode{
 
 
-    public enum AutoSelector {RED_FAR, RED_NEAR, RED_FAR_BALL}
+    public enum AutoSelector {RED_FAR, RED_NEAR, BLUE_FAR, BLUE_NEAR}
     public Automonous.AutoSelector autoSelector = Automonous.AutoSelector.RED_FAR;
     public HwRobot r = null;
     public static double SHOOTING_DELAY = 0.45;
@@ -45,8 +45,6 @@ public class RedAuto extends LinearOpMode{
             telemetry.addData(" AUTO SELECTED", autoSelector);
             telemetry.addLine("D-Pad Up for Red Far");
             telemetry.addLine("D-Pad Right for Red Near");
-            telemetry.addLine("D-Pad Down For Red Far 9 Ball");
-            telemetry.update();
 
             if (gamepad1.dpad_up) {
 
@@ -56,10 +54,6 @@ public class RedAuto extends LinearOpMode{
 
                 autoSelector = Automonous.AutoSelector.RED_NEAR;
 
-            } else if (gamepad1.dpad_down) {
-
-                autoSelector = Automonous.AutoSelector.RED_FAR_9_BALL;
-
             }
 
         }
@@ -68,22 +62,16 @@ public class RedAuto extends LinearOpMode{
 
         Pose2d redStartNear = new Pose2d(-63, 12, Math.toRadians(0));
 
-        Pose2d redStartFar9Ball = new Pose2d(63,12, Math.toRadians(180));
-
 
         if (autoSelector == Automonous.AutoSelector.RED_FAR) {
             r.drive.localizer.setPose(redStartFar);
-
         } else if (autoSelector == Automonous.AutoSelector.RED_NEAR) {
             r.drive.localizer.setPose(redStartNear);
-
-        } else if (autoSelector == Automonous.AutoSelector.RED_FAR_9_BALL) {
-            r.drive.localizer.setPose(redStartFar9Ball);
         }
 
 
         // RED FAR (Change to 6 ball auto later)
-        TrajectoryActionBuilder redFarMoveToShootingPose = r.drive.actionBuilder(redStartFar9Ball)//moveToShootPoseFarRed
+        TrajectoryActionBuilder redFarMoveToShootingPose = r.drive.actionBuilder(redStartFar)//moveToShootPoseFarRed
                 .lineToX(-12)
                 .turnTo(Math.toRadians(140))
                 .endTrajectory();
@@ -136,39 +124,9 @@ public class RedAuto extends LinearOpMode{
                 .strafeToLinearHeading(new Vector2d(-12, 39), Math.toRadians(90))
                 .endTrajectory();
 
+        TrajectoryActionBuilder redFarFourthPath = redFarThirdPathEnd.fresh()
 
 
-        //RED FAR 9 BALL
-        TrajectoryActionBuilder redFar9BMoveToShootingPose = r.drive.actionBuilder(redStartFar9Ball)
-                .lineToX(55)
-                .turnTo(Math.toRadians(155))
-                .endTrajectory();
-
-        TrajectoryActionBuilder redFar9BFirstPath = redFar9BMoveToShootingPose.fresh()//firstPath9BallFarRed
-                .splineToLinearHeading(new Pose2d(35, 35, Math.toRadians(90)), Math.toRadians(90))
-                .setTangent(Math.toRadians(90))
-                .lineToY(55)
-                .splineToLinearHeading(new Pose2d(55, 12, Math.toRadians(90)), Math.toRadians(10))
-
-                //158 is shoot angle
-
-                .endTrajectory();
-        TrajectoryActionBuilder redFar9BSecondPath = redFar9BFirstPath.fresh()
-                .splineToLinearHeading(new Pose2d(12, 35, Math.toRadians(90)), Math.toRadians(90))
-                .setTangent(Math.toRadians(90))
-                .lineToY(55)
-                .strafeToLinearHeading(new Vector2d(55, 12), Math.toRadians(90))
-                .endTrajectory();
-
-        TrajectoryActionBuilder redFar9BThirdPath = redFar9BSecondPath.fresh()
-                .splineToLinearHeading(new Pose2d(-12, 35,Math.toRadians(90)),Math.toRadians(90))
-                .lineToY(55) //new TranslationalVelConstraint(25))
-                .setTangent(Math.toRadians(-45))
-                .splineToLinearHeading(new Pose2d(50, 12,Math.toRadians(90)), Math.toRadians(-30))
-                .endTrajectory();
-
-        TrajectoryActionBuilder redFar9BThirdPathEnd = redFar9BThirdPath.fresh()
-                .strafeToLinearHeading(new Vector2d(35,12), Math.toRadians(180))
 
                 .endTrajectory();
 
@@ -205,9 +163,9 @@ public class RedAuto extends LinearOpMode{
                 .splineToLinearHeading(new Pose2d(-12, 12, Math.toRadians(140)), Math.toRadians(0))
                 .endTrajectory();
 
-        //TrajectoryActionBuilder redNearThirdPathEnd = redNearThirdPath.fresh()//endRedNear
-                //.lineToY(38)
-                //.endTrajectory();
+        TrajectoryActionBuilder redNearThirdPathEnd = redNearThirdPath.fresh()//endRedNear
+                .lineToY(38)
+                .endTrajectory();
 
 
         //build trajectories
@@ -221,19 +179,12 @@ public class RedAuto extends LinearOpMode{
         Action RedFarMoveToShootingThirdPath = redFarThirdPath.build();
         Action RedFarEnd = redFarThirdPathEnd.build();
 
-        //RED FAR 9 BALL
-        Action RedFar9BallGoToShootingPosition = redFar9BMoveToShootingPose.build();
-        Action RedFar9BallMoveToShootingFirstPath = redFar9BFirstPath.build();
-        Action RedFar9BallMoveToShootingSecondPath = redFar9BSecondPath.build();
-        Action RedFar9BallMoveToShootingThirdPath = redFar9BThirdPath.build();
-        Action RedFar9BallEnd = redFar9BThirdPathEnd.build();
-
         //RED NEAR
         Action RedNearGoToShootingPosition = redNearMoveToShootingPose.build();
         Action RedNearMoveToShootingFirstPath = redNearMoveToShootingPose.build();
         Action RedNearMoveToShootingSecondPath = redNearSecondPath.build();
         Action RedNearMoveToShootingThirdPath = redNearThirdPath.build();
-        //Action RedNearEnd = redNearThirdPathEnd.build();
+        Action RedNearEnd = redNearThirdPathEnd.build();
 
         waitForStart();
 
@@ -266,20 +217,18 @@ public class RedAuto extends LinearOpMode{
                                             //intake()
                                     ),
                                     //shoot(),
-                                    new SleepAction(0.15)
-                                    //RedFarEnd
+                                    new SleepAction(0.15),
+                                    RedFarEnd
+
 
 
                             )
                     )
             );
 
-
-            //Im pushing htis again
-        } else if (autoSelector == Automonous.AutoSelector.RED_FAR_9_BALL) {
-
-
-        } else if (autoSelector == Automonous.AutoSelector.RED_NEAR) {
+        }
+        //Im pushing htis again
+        else if (autoSelector == Automonous.AutoSelector.RED_NEAR) {
             Actions.runBlocking(
                     new ParallelAction(
                             r.setTurretStart(),
