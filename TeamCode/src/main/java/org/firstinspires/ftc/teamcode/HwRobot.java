@@ -23,7 +23,7 @@ public class HwRobot {
     Pose2d BlueWallRight = new Pose2d(0,0,0);
 
     Pose2d blueGoalPose = new Pose2d(-70,-66,0);//find real pose
-    Pose2d redGoalPose = new Pose2d(-70,66,0);//find real pose
+    Pose2d redGoalPose = new Pose2d(-70,70,0);//find real pose
 
     public HwRobot(Telemetry t, HardwareMap hwm){
         hardwareMap = hwm;
@@ -138,7 +138,7 @@ public class HwRobot {
            TurretAngle = turretAim.redAngle;
         }
         angle =  (TurretAngle * turret.degreesPerRotation) + 0.5;
-        if(angle > 0.85 || angle < 0.15){
+        if(angle > 1 || angle < 0){
             turret.startPosition();
         }
         turret.setAngleRed(TurretAngle);

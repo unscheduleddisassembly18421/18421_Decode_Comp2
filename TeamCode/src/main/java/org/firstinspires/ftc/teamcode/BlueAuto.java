@@ -50,6 +50,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                 telemetry.addData(" AUTO SELECTED", autoSelector);
                 telemetry.addLine("D-Pad Up for Blue Far");
                 telemetry.addLine("D-Pad Right for Blue Near");
+                telemetry.update();
 
                 if (gamepad1.dpad_up) {
 
@@ -75,7 +76,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
             }
 
 
-            // RED FAR (Change to 6 ball auto later)
+            // BLUE FAR (Change to 6 ball auto later)
             TrajectoryActionBuilder blueFarMoveToShootingPose = r.drive.actionBuilder(blueStartFar)//moveToShootPoseFarRed
                     .lineToX(-12)
                     .turnTo(Math.toRadians(140))
@@ -180,14 +181,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
             //BLUE FAR
-            Action BlueFarGoToShootingPosition = blueFarMoveToShootingPosition.build();
+            Action BlueFarGoToShootingPosition = blueFarMoveToShootingPose.build();
             Action BlueFarMoveToShootingFirstPath = blueFarFirstPath.build();
             Action BlueFarMoveToShootingSecondPath = blueFarSecondPath.build();
             Action BlueFarMoveToShootingThirdPath = blueFarThirdPath.build();
             Action BlueFarEnd = blueFarThirdPathEnd.build();
 
             //BLUE NEAR
-            Action BlueNearGoToShootingPosition = blueNearMoveToShootingPosition.build();
+            Action BlueNearGoToShootingPosition = blueNearMoveToShootingPose.build();
             Action BlueNearMoveToShootingFirstPath = blueNearFirstPath.build();
             Action BlueNearMoveToShootingSecondPath = blueNearSecondPath.build();
             Action BlueNearMoveToShootingThirdPath = blueNearThirdPath.build();
@@ -198,33 +199,33 @@ import com.qualcomm.robotcore.util.ElapsedTime;
             if (autoSelector == Automonous.AutoSelector.BLUE_FAR) {
                 Actions.runBlocking(
                         new ParallelAction(
-                                r.setTurretStart(),
+                                r.turnTurretBlue(),
                                 new SequentialAction(//can do turn to first angle here to speed up time
 
                                         //r.activateShooter(),
                                         BlueFarGoToShootingPosition,
-                                        //shoot(),
-                                        new SleepAction(0.15),
+                                        shoot(),
+                                        new SleepAction(1.75),
                                         new ParallelAction(
-                                                BlueFarMoveToShootingFirstPath
-                                                //intake()
+                                                BlueFarMoveToShootingFirstPath,
+                                                intake()
                                         ),
-                                        //shoot(),
+                                        shoot(),
 
-                                        new SleepAction(0.2),
+                                        new SleepAction(1.75),
                                         new ParallelAction(
-                                                BlueFarMoveToShootingSecondPath
-                                                //intake()
+                                                BlueFarMoveToShootingSecondPath,
+                                                intake()
                                         ),
-                                        //shoot(),
+                                        shoot(),
 
-                                        new SleepAction(0.15),
+                                        new SleepAction(1.75),
                                         new ParallelAction(
-                                                BlueFarMoveToShootingThirdPath
-                                                //intake()
+                                                BlueFarMoveToShootingThirdPath,
+                                                intake()
                                         ),
-                                        //shoot(),
-                                        new SleepAction(0.15),
+                                        shoot(),
+                                        new SleepAction(1.75),
                                         BlueFarEnd
 
 
@@ -280,9 +281,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
         public Action shoot() {
             return new SequentialAction(
-                    r.activateShooter(),
-                    r.openHoodServo(),
-                    r.checkShooterVelocity(),
                     r.turnOnIntake(),
                     r.ballBlockServoOpen()
             );
@@ -290,9 +288,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
         public Action nearShoot() {
             return new SequentialAction(
-                    r.activateShooterNear(),
-                    r.openHoodServoNear(),
-                    r.checkShooterVelocityNear(),
                     r.turnOnIntake(),
                     r.ballBlockServoOpen()
 
@@ -302,8 +297,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
         public Action intake() {
             return new SequentialAction(
                     r.ballBlockServoBlock(),
-                    r.closeHoodServo(),
-                    new SleepAction(0.15),
                     r.turnOnIntake()
             );
 

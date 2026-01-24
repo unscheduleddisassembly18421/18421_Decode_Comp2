@@ -230,11 +230,11 @@ public class DriverControl extends OpMode {
         slowDown = 1;
       }
 
-      if(g1.dpad_down && !previousG1.dpad_down){
+      if(g1.dpad_up && !previousG1.dpad_up){
         targetGoal = TargetGoal.RED;
       }
 
-      if(g1.dpad_up && !previousG1.dpad_up){
+      if(g1.dpad_down && !previousG1.dpad_down){
         targetGoal = TargetGoal.BLUE;
       }
 
@@ -261,11 +261,9 @@ public class DriverControl extends OpMode {
     telemetry.addData("x", currentPose.position.x);
     telemetry.addData("y", currentPose.position.y);
     telemetry.addData("heading (deg)", Math.toDegrees(yaw));
-    telemetry.addData("motors at velocity", r.outtake.launchMotorsAtVelocity());
     telemetry.addData("launcher1 motors velocity", r.outtake.getVelocity1());
     telemetry.addData("launcher2 motors velocity", r.outtake.getVelocity2());
     telemetry.addData("target goal", targetGoal);
-    telemetry.addData("close motors at velocity", r.outtake.launcherMotorsAtVelocityNear());
     telemetry.addData("Tracking toggle", trackingToggle);
     //telemetry.update(); //not needed in a normal opmode
 
