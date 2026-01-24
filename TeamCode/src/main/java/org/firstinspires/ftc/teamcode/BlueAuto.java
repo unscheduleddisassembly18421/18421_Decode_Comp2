@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
+import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -23,7 +24,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
     public class BlueAuto extends LinearOpMode {
 
 
-        public enum AutoSelector {RED_FAR, RED_NEAR, BLUE_FAR, BLUE_NEAR}
+        public enum AutoSelector { BLUE_FAR, BLUE_NEAR}
 
         public Automonous.AutoSelector autoSelector = Automonous.AutoSelector.BLUE_FAR;
         public HwRobot r = null;
@@ -50,6 +51,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                 telemetry.addData(" AUTO SELECTED", autoSelector);
                 telemetry.addLine("D-Pad Up for Blue Far");
                 telemetry.addLine("D-Pad Right for Blue Near");
+                telemetry.addLine("D-Pad Down for Blue Far 9 Ball");
                 telemetry.update();
 
                 if (gamepad1.dpad_up) {
@@ -60,6 +62,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
                     autoSelector = Automonous.AutoSelector.BLUE_NEAR;
 
+                } else if (gamepad1.dpad_down) {
+
+                    autoSelector = Automonous.AutoSelector.BLUE_FAR_9_BALL;
+
                 }
 
             }
@@ -68,81 +74,97 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
             Pose2d blueStartNear = new Pose2d(-63, 12, Math.toRadians(0));
 
+            Pose2d blueStartFar9Ball = new Pose2d(63, 12, Math.toRadians(180));
+
+
 
             if (autoSelector == Automonous.AutoSelector.BLUE_FAR) {
                 r.drive.localizer.setPose(blueStartFar);
+
             } else if (autoSelector == Automonous.AutoSelector.BLUE_NEAR) {
                 r.drive.localizer.setPose(blueStartNear);
+
+            } else if (autoSelector == Automonous.AutoSelector.BLUE_FAR_9_BALL) {
+                r.drive.localizer.setPose(blueStartFar);
+                
             }
 
 
             // BLUE FAR (Change to 6 ball auto later)
-            TrajectoryActionBuilder blueFarMoveToShootingPose = r.drive.actionBuilder(blueStartFar)//moveToShootPoseFarRed
-                    .lineToX(-12)
-                    .turnTo(Math.toRadians(140))
+            TrajectoryActionBuilder blueFarMoveToShootingPose = r.drive.actionBuilder(blueStartFar)//moveToShootPoseFarBlue
+                    .lineToXSplineHeading(-12,Math.toRadians(270))
                     .endTrajectory();
 
-            TrajectoryActionBuilder blueFarFirstPath = blueFarMoveToShootingPose.fresh()//firstPathFarRed
-                    .turnTo(Math.toRadians(90))
-                    .lineToY(55)
-                    .lineToY(12)
-                    .turnTo(Math.toRadians(140))
+            TrajectoryActionBuilder blueFarFirstPath = blueFarMoveToShootingPose.fresh()//firstPathFarBlue
+                    .setTangent(Math.toRadians(270))
+                    .lineToY(-55)
+                    .lineToY(-12)
                     .endTrajectory();
-            //.setTangent(Math.toRadians(180))
-            //.splineToLinearHeading(new Pose2d(36, 30,Math.toRadians(90)),
-            //      Math.toRadians(90))
-            //.lineToY(55,  new TranslationalVelConstraint(20))
-            //.setTangent(Math.toRadians(270))
-            //.splineToLinearHeading(new Pose2d(55, 15,Math.toRadians(158)),Math.toRadians(0))
-            //.endTrajectory();
 
 
-            TrajectoryActionBuilder blueFarSecondPath = blueFarFirstPath.fresh()//secondPathFarRed
-                    .turnTo(Math.toRadians(90))
-                    .strafeToLinearHeading(new Vector2d(12, 12), Math.toRadians(90))
+
+            TrajectoryActionBuilder blueFarSecondPath = blueFarFirstPath.fresh()//secondPathFarBlue
+                    .strafeToSplineHeading(new Vector2d(14, -12), Math.toRadians(270))
                     .setTangent(Math.toRadians(90))
-                    .lineToY(50)
-                    .splineToLinearHeading(new Pose2d(-12, 12, Math.toRadians(140)), Math.toRadians(0))
+                    .strafeToSplineHeading(new Vector2d(14, -58), Math.toRadians(270), new TranslationalVelConstraint(40))
+                    .setTangent(Math.toRadians(40))
+                    .splineToSplineHeading(new Pose2d(-12, -12, Math.toRadians(270)), Math.toRadians(0))
                     .endTrajectory();
-            //.setTangent(Math.toRadians(180))
-            //.splineToLinearHeading(new Pose2d(13,30, Math.toRadians(90)), Math.toRadians(90))//13,35,90
-            //.lineToY(52, new TranslationalVelConstraint(15))
-            //.setTangent(Math.toRadians(270))
-            //.splineToLinearHeading(new Pose2d(55, 12,Math.toRadians(155)),Math.toRadians(0))
+
+
+
 
 
             TrajectoryActionBuilder blueFarThirdPath = blueFarSecondPath.fresh()//thirdPathFarRed
-                    .turnTo(Math.toRadians(90))
-                    .strafeToLinearHeading(new Vector2d(38, 12), Math.toRadians(90))
-                    .setTangent(Math.toRadians(90))
+                    .strafeToLinearHeading(new Vector2d(40, 12), Math.toRadians(270))
+                    .setTangent(Math.toRadians(270))
+                    .strafeToLinearHeading(new Vector2d(40,50), Math.toRadians(270), new TranslationalVelConstraint(40))
                     .lineToY(50)
-                    .splineToLinearHeading(new Pose2d(-12, 12, Math.toRadians(140)), Math.toRadians(0))
+                    .splineToLinearHeading(new Pose2d(-12, 12, Math.toRadians(270)), Math.toRadians(40))
                     .endTrajectory();
-            //.setTangent(Math.toRadians(180))
-            //.splineToLinearHeading(new Pose2d(-10, 30,Math.toRadians(90)),Math.toRadians(90))
-            //.lineToY(55, new TranslationalVelConstraint(25))
-            //.setTangent(Math.toRadians(-45))
-            //.splineToLinearHeading(new Pose2d(50, 12,Math.toRadians(155)), Math.toRadians(-30), new TranslationalVelConstraint(55))
 
 
             TrajectoryActionBuilder blueFarThirdPathEnd = blueFarThirdPath.fresh()//endBlueFar
-                    .strafeToLinearHeading(new Vector2d(-12, 39), Math.toRadians(90))
+                    .strafeToLinearHeading(new Vector2d(-12, 39), Math.toRadians(270))
                     .endTrajectory();
 
-            TrajectoryActionBuilder blueFarFourthPath = blueFarThirdPathEnd.fresh()
 
+            //BLUE FAR 9 BALL
+            TrajectoryActionBuilder blueFar9BMoveToShootingPose = r.drive.actionBuilder(blueStartFar9Ball)
+                    .lineToX(55)
 
                     .endTrajectory();
 
+            TrajectoryActionBuilder blueFar9BFirstPath = blueFar9BMoveToShootingPose.fresh()
+                    .splineToLinearHeading(new Pose2d(35, -35, Math.toRadians(270)), Math.toRadians(270))
+                    .setTangent(Math.toRadians(270))
+                    .lineToY(-55)
+                    .splineToLinearHeading(new Pose2d(55, -12, Math.toRadians(210)), Math.toRadians(10))
+                    .endTrajectory();
+
+            TrajectoryActionBuilder blueFar9BSecondPath = blueFar9BFirstPath.fresh()
+                    .splineToLinearHeading(new Pose2d(12, -35, Math.toRadians(270)), Math.toRadians(270))
+                    .setTangent(Math.toRadians(270))
+                    .lineToY(-55)
+                    .strafeToLinearHeading(new Vector2d(55, -12), Math.toRadians(270))
+                    .endTrajectory();
+
+            TrajectoryActionBuilder blueFar9BThirdPath = blueFar9BSecondPath.fresh()
+                    .splineToSplineHeading(new Pose2d(-12, -12, Math.toRadians(270)), Math.toRadians(90))
+                    .lineToY(-55)
+                    .setTangent(Math.toRadians(90))
+                    .splineToLinearHeading(new Pose2d(62, -12, Math.toRadians(270)), Math.toRadians(180))
+
+                    .endTrajectory();
+            TrajectoryActionBuilder blueFar9BThirdPathEnd = blueFar9BThirdPath.fresh()
+                    .strafeToLinearHeading(new Vector2d(35,-12), Math.toRadians(180))
+                    .endTrajectory();
 
             //BLUE NEAR
             TrajectoryActionBuilder blueNearMoveToShootingPose = r.drive.actionBuilder(blueStartNear)//moveToShootPoseNearBlue
                     .strafeToLinearHeading(new Vector2d(-12, 12), Math.toRadians(140))
                     .endTrajectory();
-            //.setTangent(Math.toRadians(90))
-            //.lineToY(56)
-            //.lineToY(18)
-            //.turnTo(Math.toRadians(145))
+
 
 
             TrajectoryActionBuilder blueNearFirstPath = blueNearMoveToShootingPose.fresh()//firstPathNearBlue
@@ -186,6 +208,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
             Action BlueFarMoveToShootingSecondPath = blueFarSecondPath.build();
             Action BlueFarMoveToShootingThirdPath = blueFarThirdPath.build();
             Action BlueFarEnd = blueFarThirdPathEnd.build();
+
+            //BLUE FAR 9 BALL
+            Action BlueFar9BallGoToShootingPosition = blueFar9BMoveToShootingPose.build();
+            Action BlueFar9BallMoveToShootingFirstPath = blueFar9BFirstPath.build();
+            Action BlueFar9BallMoveToShootingSecondPath = blueFar9BSecondPath.build();
+            Action BlueFar9BallMoveToShootingThirdPath = blueFar9BThirdPath.build();
+            Action BlueFar9BallEnd = blueFar9BThirdPathEnd.build();
+
 
             //BLUE NEAR
             Action BlueNearGoToShootingPosition = blueNearMoveToShootingPose.build();
