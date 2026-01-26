@@ -8,7 +8,6 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
-import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -84,64 +83,49 @@ public class RedAuto extends LinearOpMode{
         }
 
 
-        // RED FAR (Change to 6 ball auto later)
+        // RED FAR
         TrajectoryActionBuilder redFarMoveToShootingPose = r.drive.actionBuilder(redStartFar)//moveToShootPoseFarRed
-                .lineToXSplineHeading(-12,Math.toRadians(90))
-                //.lineToX(-12)
-
-                //.turnTo(Math.toRadians(140))
+                .lineToXSplineHeading(60, Math.toRadians(90))
                 .endTrajectory();
 
         TrajectoryActionBuilder redFarFirstPath = redFarMoveToShootingPose.fresh()//firstPathFarRed
 
                 .setTangent(Math.toRadians(90))
-                .lineToY(55)
-                .lineToY(12)
-                //.turnTo(Math.toRadians(140))
+                .lineToYSplineHeading(56, Math.toRadians(90))
+                .lineToYSplineHeading(12, Math.toRadians(90))
                 .endTrajectory();
-        //.setTangent(Math.toRadians(180))
-        //.splineToLinearHeading(new Pose2d(36, 30,Math.toRadians(90)),
-        //      Math.toRadians(90))
-        //.lineToY(55,  new TranslationalVelConstraint(20))
-        //.setTangent(Math.toRadians(270))
-        //.splineToLinearHeading(new Pose2d(55, 15,Math.toRadians(158)),Math.toRadians(0))
-        //.endTrajectory();
 
 
         TrajectoryActionBuilder redFarSecondPath = redFarFirstPath.fresh()//secondPathFarRed
-                //.turnTo(Math.toRadians(90))
-                .strafeToSplineHeading(new Vector2d(14, 12), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(36, 30), Math.toRadians(90))
                 .setTangent(Math.toRadians(90))
-                .strafeToSplineHeading(new Vector2d(14, 58), Math.toRadians(90), new TranslationalVelConstraint(40))
-                //.lineToY(50)
-                .setTangent(Math.toRadians(220))
-                .splineToSplineHeading(new Pose2d(-12, 12, Math.toRadians(90)), Math.toRadians(0))
+                .lineToY(59)
+                .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
                 .endTrajectory();
-        //.setTangent(Math.toRadians(180))
-        //.splineToLinearHeading(new Pose2d(13,30, Math.toRadians(90)), Math.toRadians(90))//13,35,90
-        //.lineToY(52, new TranslationalVelConstraint(15))
-        //.setTangent(Math.toRadians(270))
-        //.splineToLinearHeading(new Pose2d(55, 12,Math.toRadians(155)),Math.toRadians(0))
 
 
 
         TrajectoryActionBuilder redFarThirdPath = redFarSecondPath.fresh()//thirdPathFarRed
-                //.turnTo(Math.toRadians(90))
-                .strafeToLinearHeading(new Vector2d(40, 12), Math.toRadians(90))
-                .setTangent(Math.toRadians(90))
-                .strafeToLinearHeading(new Vector2d(40,50), Math.toRadians(90), new TranslationalVelConstraint(40))
-                //.lineToY(50)
-                .splineToLinearHeading(new Pose2d(-12, 12, Math.toRadians(90)), Math.toRadians(220))
+                .strafeToSplineHeading(new Vector2d(0, 20),Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(0,58),Math.toRadians(90))
+                .strafeToLinearHeading(new Vector2d(0,20), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
                 .endTrajectory();
-        //.setTangent(Math.toRadians(180))
-        //.splineToLinearHeading(new Pose2d(-10, 30,Math.toRadians(90)),Math.toRadians(90))
-        //.lineToY(55, new TranslationalVelConstraint(25))
-        //.setTangent(Math.toRadians(-45))
-        //.splineToLinearHeading(new Pose2d(50, 12,Math.toRadians(155)), Math.toRadians(-30), new TranslationalVelConstraint(55))
 
 
-        TrajectoryActionBuilder redFarThirdPathEnd = redFarThirdPath.fresh()//endRedFar
-                .strafeToLinearHeading(new Vector2d(-12, 39), Math.toRadians(90))
+        TrajectoryActionBuilder redFarFourthPath = redFarThirdPath.fresh()//fourthPathFarRed
+                .strafeToSplineHeading(new Vector2d(56, 58), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
+                .endTrajectory();
+
+        TrajectoryActionBuilder redFarFifthPath = redFarFourthPath.fresh()//fifthPathFarRed
+                .strafeToSplineHeading(new Vector2d(56, 58), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
+                .endTrajectory();
+
+        TrajectoryActionBuilder redFarSixthPath = redFarFifthPath.fresh()
+                .strafeToSplineHeading(new Vector2d(56, 58), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
                 .endTrajectory();
 
 
@@ -228,7 +212,9 @@ public class RedAuto extends LinearOpMode{
         Action RedFarMoveToShootingFirstPath = redFarFirstPath.build();
         Action RedFarMoveToShootingSecondPath = redFarSecondPath.build();
         Action RedFarMoveToShootingThirdPath = redFarThirdPath.build();
-        Action RedFarEnd = redFarThirdPathEnd.build();
+        Action RedFarMoveToShootingFourthPath = redFarFourthPath.build();
+        Action RedFarMoveToShootingFifthPath = redFarFifthPath.build();
+        Action RedFarMoveToShootingSixthPath = redFarSixthPath.build();
 
         //RED FAR 9 BALL
         Action RedFar9BallGoToShootingPosition = redFar9BMoveToShootingPose.build();
@@ -253,34 +239,40 @@ public class RedAuto extends LinearOpMode{
                             r.turnTurretRed(),
                             new SequentialAction(//can do turn to first angle here to speed up time
                                     new ParallelAction(
-                                            RedFarGoToShootingPosition,
-                                            intake()
+                                            RedFarGoToShootingPosition
+                                            //intake()
                                     ),
                                     shoot(),
                                     new SleepAction(1.75),
                                     new ParallelAction(
-                                            RedFarMoveToShootingFirstPath,
-                                            intake()
+                                            RedFarMoveToShootingFirstPath
+                                            //intake()
                                     ),
-                                    shoot(),
+                                    //shoot(),
 
                                     new SleepAction(1.75),
                                     new ParallelAction(
-                                            RedFarMoveToShootingSecondPath,
-                                            intake()
+                                            RedFarMoveToShootingSecondPath
+                                            //intake()
                                     ),
-                                    shoot(),
+                                    //shoot(),
 
                                     new SleepAction(1.75),
                                     new ParallelAction(
-                                            RedFarMoveToShootingThirdPath,
-                                            intake()
+                                            RedFarMoveToShootingThirdPath
+                                            //intake()
                                     ),
-                                    shoot(),
+                                    //shoot(),
                                     new SleepAction(1.75),
                                     new ParallelAction(
-                                            RedFarEnd,
-                                            intake()
+                                            RedFarMoveToShootingFourthPath
+                                            //intake()
+                                    ),
+                                    new ParallelAction(
+                                            RedFarMoveToShootingFifthPath
+                                    ),
+                                    new ParallelAction(
+                                            RedFarMoveToShootingSixthPath
                                     )
 
 
