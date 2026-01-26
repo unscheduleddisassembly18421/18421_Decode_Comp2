@@ -70,7 +70,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
             }
 
-            Pose2d blueStartFar = new Pose2d(63, 12, Math.toRadians(180));
+            Pose2d blueStartFar = new Pose2d(63, -12, Math.toRadians(180));
 
             Pose2d blueStartNear = new Pose2d(-63, 12, Math.toRadians(0));
 
@@ -92,12 +92,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
             // BLUE FAR (Change to 6 ball auto later)
             TrajectoryActionBuilder blueFarMoveToShootingPose = r.drive.actionBuilder(blueStartFar)//moveToShootPoseFarBlue
-                    .lineToXSplineHeading(-12,Math.toRadians(270))
+                    .setTangent(Math.toRadians(180))
+                    .lineToXSplineHeading(-16,Math.toRadians(270))
                     .endTrajectory();
 
             TrajectoryActionBuilder blueFarFirstPath = blueFarMoveToShootingPose.fresh()//firstPathFarBlue
                     .setTangent(Math.toRadians(270))
-                    .lineToY(-55)
+                    .lineToY(-55, new TranslationalVelConstraint(45))
                     .lineToY(-12)
                     .endTrajectory();
 
@@ -107,8 +108,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                     .strafeToSplineHeading(new Vector2d(14, -12), Math.toRadians(270))
                     .setTangent(Math.toRadians(90))
                     .strafeToSplineHeading(new Vector2d(14, -58), Math.toRadians(270), new TranslationalVelConstraint(40))
-                    .setTangent(Math.toRadians(40))
-                    .splineToSplineHeading(new Pose2d(-12, -12, Math.toRadians(270)), Math.toRadians(0))
+                    .setTangent(Math.toRadians(160))
+                    .splineToSplineHeading(new Pose2d(-15, -12, Math.toRadians(270)), Math.toRadians(190))
                     .endTrajectory();
 
 
@@ -116,16 +117,16 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
             TrajectoryActionBuilder blueFarThirdPath = blueFarSecondPath.fresh()//thirdPathFarRed
-                    .strafeToLinearHeading(new Vector2d(40, 12), Math.toRadians(270))
+                    .strafeToLinearHeading(new Vector2d(35, -12), Math.toRadians(270))
                     .setTangent(Math.toRadians(270))
-                    .strafeToLinearHeading(new Vector2d(40,50), Math.toRadians(270), new TranslationalVelConstraint(40))
-                    .lineToY(50)
-                    .splineToLinearHeading(new Pose2d(-12, 12, Math.toRadians(270)), Math.toRadians(40))
+                    .strafeToLinearHeading(new Vector2d(25,-50), Math.toRadians(270), new TranslationalVelConstraint(40))
+                    .lineToY(-58)
+                    .splineToLinearHeading(new Pose2d(-14, -12, Math.toRadians(270)), Math.toRadians(40))
                     .endTrajectory();
 
 
             TrajectoryActionBuilder blueFarThirdPathEnd = blueFarThirdPath.fresh()//endBlueFar
-                    .strafeToLinearHeading(new Vector2d(-12, 39), Math.toRadians(270))
+                    .strafeToLinearHeading(new Vector2d(-12, -39), Math.toRadians(270))
                     .endTrajectory();
 
 
@@ -182,7 +183,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                     .endTrajectory();
 
             TrajectoryActionBuilder blueNearThirdPath = blueNearSecondPath.fresh()//thirdPathNearBlue
-                    .strafeToLinearHeading(new Vector2d(36, 12), Math.toRadians(90))
+                    .strafeToLinearHeading(new Vector2d(25, 12), Math.toRadians(90))
                     .setTangent(Math.toRadians(90))
                     .lineToY(56)
                     .splineToLinearHeading(new Pose2d(-12, 12, Math.toRadians(140)), Math.toRadians(0))
@@ -231,9 +232,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                         new ParallelAction(
                                 r.turnTurretBlue(),
                                 new SequentialAction(//can do turn to first angle here to speed up time
-
-                                        //r.activateShooter(),
-                                        BlueFarGoToShootingPosition,
+                                        new ParallelAction(
+                                                BlueFarGoToShootingPosition,
+                                               intake()
+                                        ),
                                         shoot(),
                                         new SleepAction(1.75),
                                         new ParallelAction(
@@ -256,7 +258,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                                         ),
                                         shoot(),
                                         new SleepAction(1.75),
-                                        BlueFarEnd
+                                        new ParallelAction(
+                                                BlueFarEnd,
+                                                intake()
+                                        )
 
 
                                 )

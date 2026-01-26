@@ -293,7 +293,10 @@ public class RedAuto extends LinearOpMode{
             Actions.runBlocking(new ParallelAction(
                             r.turnTurretRed(),
                             new SequentialAction(//can do turn to first angle here to speed up time
-                                    RedFar9BallGoToShootingPosition,
+                                    new ParallelAction(
+                                            RedFar9BallGoToShootingPosition,
+                                            intake()
+                                    ),
                                     new SleepAction(0.75),
                                     shoot(),
                                     new SleepAction(1.75),

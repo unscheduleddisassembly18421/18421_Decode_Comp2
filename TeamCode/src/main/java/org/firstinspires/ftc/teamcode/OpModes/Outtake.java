@@ -26,7 +26,7 @@ public class Outtake {
     //Positions
     public static double HOODSERVO_START_POSITION  = 0;
     public static double HOODSERVO_SHOOT_POSITION = 0.45;
-    public static double LAUNCHERMOTOR_VELOCITY_ON_TELEOP = 1450;//max is around 2700
+    public static double LAUNCHERMOTOR_VELOCITY_ON_TELEOP = 1425;//max is around 2700
     public static double CLOSE_LAUNCHERMOTOR_VELOCITY_ON = 1100;//test
     public static double LAUNCHER_TOLERANCE = 0.995;
     public static double AUTO_LAUNCHERMOTOR_VELOCITY_ON = 1450;
@@ -152,7 +152,7 @@ public class Outtake {
         double trueAngle;
         double angle = (0.00741 * distance) -0.16667;
         if(angle > 0.5){
-            trueAngle = 0.5;
+            trueAngle = 0.45;
         }
         else{
             trueAngle = angle;

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import androidx.annotation.NonNull;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.teamcode.OpModes.Intake;
 import org.firstinspires.ftc.teamcode.OpModes.Outtake;
 import org.firstinspires.ftc.teamcode.OpModes.Turret;
 
+@Config
 public class HwRobot {
     public MecanumDrive drive;
     public Intake intake = null;
@@ -22,8 +24,11 @@ public class HwRobot {
     HardwareMap hardwareMap = null;
     Pose2d BlueWallRight = new Pose2d(0,0,0);
 
-    Pose2d blueGoalPose = new Pose2d(-70,-66,0);//find real pose
-    Pose2d redGoalPose = new Pose2d(-70,70,0);//find real pose
+    public static Pose2d blueGoalPose = new Pose2d(-66,-70,0);//find real pose
+    public static Pose2d redGoalPose = new Pose2d(-55,70,0);//find real pose
+
+    Pose2d blueAutoGoalPose = new Pose2d(-68, -68, 0);
+    Pose2d redGoalAutoPose = new Pose2d(-66,68,0);
 
     public HwRobot(Telemetry t, HardwareMap hwm){
         hardwareMap = hwm;
@@ -40,6 +45,16 @@ public class HwRobot {
     public void start(){
         turret.init();
         outtake.init();
+    }
+
+    public void shiftGoalRight(){
+        redGoalPose = new Pose2d(redGoalPose.position.x + 2, redGoalPose.position.y,0);
+        blueGoalPose = new Pose2d(blueGoalPose.position.x + 2, blueGoalPose.position.y,0);
+    }
+
+    public void shiftGoalLeft(){
+        redGoalPose = new Pose2d(redGoalPose.position.x - 2, redGoalPose.position.y,0);
+        blueGoalPose = new Pose2d(blueGoalPose.position.x - 2, blueGoalPose.position.y,0);
     }
 
 
@@ -157,6 +172,37 @@ public class HwRobot {
 
     }
 
+    public void aimTurretRedAuto(){
+        TurretAim turretAim = new TurretAim(drive.localizer.getPose(),redGoalAutoPose);
+        double TurretAngle;
+        double angle;
+        if(turretAim.redAngle > 180){
+            TurretAngle = turretAim.redAngle - 360;
+        } else if (turretAim.redAngle < -180) {
+            TurretAngle = turretAim.redAngle + 360;
+        } else{
+            TurretAngle = turretAim.redAngle;
+        }
+        angle =  (TurretAngle * turret.degreesPerRotation) + 0.5;
+        if(angle > 1 || angle < 0){
+            turret.startPosition();
+        }
+        turret.setAngleRed(TurretAngle);
+        if(turretAim.poseRobotX > 35){
+            outtake.shootFar();
+        }
+        else{
+            outtake.activateShooterRelative(turretAim.distance);
+            outtake.hoodServoRelative(turretAim.distance);
+        }
+        telemetry.addData("original angle", turretAim.redAngle);
+        telemetry.addData("new angle", TurretAngle);
+        telemetry.addData("hood position", (0.00741 * turretAim.distance) -0.16667);
+        telemetry.addData("servo position", angle);
+        telemetry.addData("distance", turretAim.distance);
+
+    }
+
     public void aimTurretBlue(){
         TurretAim turretAim = new TurretAim(drive.localizer.getPose(), blueGoalPose);
         double TurretAngle;
@@ -180,6 +226,37 @@ public class HwRobot {
               outtake.activateShooterRelative(turretAim.distance);
               outtake.hoodServoRelative(turretAim.distance);
           }
+        telemetry.addData("target angle", turretAim.blueAngle);
+        telemetry.addData("servo position", angle);
+        telemetry.addData("hood position", ((0.00741 * turretAim.distance) -0.16667));
+        telemetry.addData("distance", turretAim.distance);
+        //hood regression y=0.00741x-0.16667
+
+    }
+
+    public void aimTurretBlueAuto(){
+        TurretAim turretAim = new TurretAim(drive.localizer.getPose(), blueAutoGoalPose);
+        double TurretAngle;
+        double angle;
+        if(turretAim.blueAngle > 180){
+            TurretAngle = turretAim.blueAngle - 360;
+        } else if (turretAim.blueAngle < -180) {
+            TurretAngle = turretAim.blueAngle + 360;
+        } else{
+            TurretAngle = turretAim.blueAngle;
+        }
+        angle =  (turretAim.blueAngle * turret.degreesPerRotation) + 0.5;
+        if(angle > 1|| angle < 0){
+            turret.startPosition();
+        }
+        turret.setAngleBlue(TurretAngle);
+        if(turretAim.poseRobotX > 35){
+            outtake.shootFar();
+        }
+        else{
+            outtake.activateShooterRelative(turretAim.distance);
+            outtake.hoodServoRelative(turretAim.distance);
+        }
         telemetry.addData("target angle", turretAim.blueAngle);
         telemetry.addData("servo position", angle);
         telemetry.addData("hood position", ((0.00741 * turretAim.distance) -0.16667));
@@ -229,7 +306,7 @@ public class HwRobot {
             if(timer == null){
                 timer= new ElapsedTime();
             }
-            aimTurretRed();
+            aimTurretRedAuto();
             return timer.seconds() < 30;
         }
     }
@@ -247,7 +324,7 @@ public class HwRobot {
             if (timer == null){
                 timer = new ElapsedTime();
             }
-            aimTurretBlue();
+            aimTurretBlueAuto();
             return timer.seconds()<30;
         }
     }

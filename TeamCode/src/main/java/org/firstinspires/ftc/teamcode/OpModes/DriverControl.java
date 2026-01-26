@@ -116,6 +116,7 @@ public class DriverControl extends OpMode {
 
   public ElapsedTime shooterClock = new ElapsedTime();
   public ElapsedTime intakeClock = new ElapsedTime();
+  public ElapsedTime goalClock = new ElapsedTime();
 
 
   @Override
@@ -152,6 +153,7 @@ public class DriverControl extends OpMode {
     runtime.reset();
     shooterClock.reset();
     intakeClock.reset();
+    goalClock.reset();;
   }
 
   /**
@@ -178,7 +180,12 @@ public class DriverControl extends OpMode {
     telemetry.addData("Status", "Run Time: " + runtime.toString());
 
     //NEW CODE
-
+    if (g2.dpad_left && !previousG2.dpad_left){
+      r.shiftGoalLeft();
+    }
+    if (g2.dpad_right && !previousG2.dpad_right){
+      r.shiftGoalRight();
+    }
 
           if(g2.x && !previousG2.x){
             switch (targetGoal){
@@ -192,13 +199,6 @@ public class DriverControl extends OpMode {
             }
           } else if (g2.dpad_down) {
             r.turret.startPosition();
-          } else if (g2.y && ! previousG1.y) {
-            r.drive.localizer.setPose(middleShootPose);
-
-          } else if (g1.a && !previousG1.a) {
-            r.drive.localizer.setPose(newPose);
-          } else if (gamepad2.a){
-            r.outtake.deactivateShooter();
           }
           else{
             switch (targetGoal){
@@ -223,7 +223,7 @@ public class DriverControl extends OpMode {
         r.outtake.ballBlocKServoBlock();
       }
 
-      if(g1.left_bumper){
+      if(g1.right_bumper){
         slowDown = 5;
       }
       else{
