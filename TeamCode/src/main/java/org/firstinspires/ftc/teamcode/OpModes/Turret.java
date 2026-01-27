@@ -53,7 +53,6 @@ public class Turret {
 
         rotatorServo = hwmap.get(Servo.class, "rs");
         rotatorServo2 = hwmap.get(Servo.class, "rs2");
-        ai = hwmap.get(AnalogInput.class, "ai");
 //        position = getPosition();
         rotatorServo.setDirection(Servo.Direction.FORWARD);
         rotatorServo2.setDirection(Servo.Direction.FORWARD);
