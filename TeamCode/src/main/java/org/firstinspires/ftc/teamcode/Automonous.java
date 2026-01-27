@@ -507,13 +507,14 @@ public class Automonous extends LinearOpMode {
                             nearShoot()
                     )));
 
-        }else
+        }else {
             r.drive.localizer.setPose(blueStartNear);
+        }
 
-
-
-
+        r.pose2DStorage.setNewPose(r.drive.localizer.getPose());
     }
+
+
     public Action shoot(){
         return new SequentialAction(
                 r.activateShooter(),
