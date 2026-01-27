@@ -31,7 +31,7 @@ import org.firstinspires.ftc.teamcode.OpModes.DriverControl;
 @Config
 @Autonomous(name= "Automonous")
 public class Automonous extends LinearOpMode {
-    public enum AutoSelector {RED_FAR, RED_NEAR, BLUE_FAR, BLUE_NEAR, RED_FAR_9_BALL, BLUE_FAR_9_BALL}
+    public enum AutoSelector {RED_FAR, RED_NEAR, BLUE_FAR, BLUE_NEAR, RED_FAR_9_BALL, BLUE_FAR_9_BALL, RED_NEAR_12_BALL}
     public AutoSelector autoSelector = AutoSelector.RED_FAR;
     public HwRobot r = null;
     public static double SHOOTING_DELAY = 0.45;
