@@ -161,9 +161,9 @@ public class HwRobot {
                 outtake.shootFar();
         }
         else{
-              outtake.activateShooterRelative(turretAim.distance);
-              outtake.hoodServoRelative(turretAim.distance);
+            outtake.activateShooterRelative(turretAim.distance);
         }
+        outtake.hoodServoRelative(turretAim.distance);
         telemetry.addData("original angle", turretAim.redAngle);
         telemetry.addData("new angle", TurretAngle);
         telemetry.addData("hood position", (0.00741 * turretAim.distance) -0.16667);
@@ -193,8 +193,8 @@ public class HwRobot {
         }
         else{
             outtake.activateShooterRelative(turretAim.distance);
-            outtake.hoodServoRelative(turretAim.distance);
         }
+        outtake.hoodServoRelative(turretAim.distance);
         telemetry.addData("original angle", turretAim.redAngle);
         telemetry.addData("new angle", TurretAngle);
         telemetry.addData("hood position", (0.00741 * turretAim.distance) -0.16667);
@@ -224,8 +224,8 @@ public class HwRobot {
           }
           else{
               outtake.activateShooterRelative(turretAim.distance);
-              outtake.hoodServoRelative(turretAim.distance);
           }
+        outtake.hoodServoRelative(turretAim.distance);
         telemetry.addData("target angle", turretAim.blueAngle);
         telemetry.addData("servo position", angle);
         telemetry.addData("hood position", ((0.00741 * turretAim.distance) -0.16667));
@@ -255,8 +255,8 @@ public class HwRobot {
         }
         else{
             outtake.activateShooterRelative(turretAim.distance);
-            outtake.hoodServoRelative(turretAim.distance);
         }
+        outtake.hoodServoRelative(turretAim.distance);
         telemetry.addData("target angle", turretAim.blueAngle);
         telemetry.addData("servo position", angle);
         telemetry.addData("hood position", ((0.00741 * turretAim.distance) -0.16667));
