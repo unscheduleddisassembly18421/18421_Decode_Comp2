@@ -9,7 +9,6 @@ import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 
 import java.util.List;
 
@@ -18,9 +17,9 @@ public class Vision {
     private Limelight3A limelight;
     Telemetry telemetry = null;
 
-    public static double targetX;
-    public static double targetY;
-    public static double targetAera;
+    public static double poseX;
+    public static double poseY;
+    public static double targetArea;
 
     public static double distance;
 
@@ -40,9 +39,9 @@ public class Vision {
             List<LLResultTypes.FiducialResult> fiducialResults = llresult.getFiducialResults();
             for (LLResultTypes.FiducialResult fr : fiducialResults) {
                 if (fr.getFiducialId() == 24 || fr.getFiducialId() == 20){
-                    targetX = fr.getTargetPoseRobotSpace().getPosition().x;
-                    targetY = fr.getTargetPoseRobotSpace().getPosition().y;
-                    distance = Math.sqrt((targetX*targetX) + (targetY*targetY));
+                    poseX = fr.getTargetPoseRobotSpace().getPosition().x;
+                    poseY = fr.getTargetPoseRobotSpace().getPosition().y;
+                    distance = Math.sqrt((poseX * poseX) + (poseY * poseY));
                 }
                 telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees(), fr.getTargetYDegrees());
             }
