@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.OpModes.Intake;
 import org.firstinspires.ftc.teamcode.OpModes.Outtake;
 import org.firstinspires.ftc.teamcode.OpModes.Turret;
+import org.firstinspires.ftc.teamcode.OpModes.Vision;
 
 @Config
 public class HwRobot {
@@ -20,6 +21,7 @@ public class HwRobot {
     public Intake intake = null;
     public Outtake outtake = null;
     public Turret turret = null;
+    public Vision vision = null;
     public Pose2DStorage pose2DStorage = null;
     Telemetry telemetry = null;
     HardwareMap hardwareMap = null;
@@ -41,6 +43,7 @@ public class HwRobot {
         intake = new Intake(hardwareMap, telemetry);
         outtake = new Outtake(hardwareMap, telemetry);
         turret = new Turret(hardwareMap, telemetry);
+        vision = new Vision(hardwareMap, telemetry);
         pose2DStorage = new Pose2DStorage();
     }
 

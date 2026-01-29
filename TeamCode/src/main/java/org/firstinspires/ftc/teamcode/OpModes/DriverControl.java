@@ -153,7 +153,7 @@ public class DriverControl extends OpMode {
     runtime.reset();
     shooterClock.reset();
     intakeClock.reset();
-    goalClock.reset();;
+    goalClock.reset();
   }
 
   /**
