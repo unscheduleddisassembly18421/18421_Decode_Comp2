@@ -25,6 +25,8 @@ public class RedAuto extends LinearOpMode{
     public static double SHOOTING_DELAY = 0.45;
     public static double SELECTOR_DELAY_TIME = 0.4;
 
+
+
     public static double NEAR_DELAY = 10000;
     public static double MIDDLE_DELAY = 16500;
     public static double FAR_DELAY = 25000;
@@ -363,10 +365,11 @@ public class RedAuto extends LinearOpMode{
                             ))
             );
 
-        }else
+        }else {
             r.drive.localizer.setPose(redStartNear);
+        }
 
-
+    Pose2DStorage.StordedPose = r.drive.localizer.getPose();
 
 
 }
