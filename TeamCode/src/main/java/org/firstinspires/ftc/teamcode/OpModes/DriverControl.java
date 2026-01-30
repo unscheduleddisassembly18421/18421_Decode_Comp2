@@ -63,6 +63,7 @@ import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibra
 import org.firstinspires.ftc.teamcode.Drawing;
 import org.firstinspires.ftc.teamcode.HwRobot;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Pose2DStorage;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.VisionProcessor;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
@@ -118,6 +119,9 @@ public class DriverControl extends OpMode {
   public ElapsedTime intakeClock = new ElapsedTime();
   public ElapsedTime goalClock = new ElapsedTime();
 
+  public boolean right_trigger = false;
+  public boolean left_trigger = false;
+
 
   @Override
   public void init() {
@@ -151,6 +155,7 @@ public class DriverControl extends OpMode {
     //FtcDashboard.getInstance().startCameraStream(aprilTag, 0);
     r.turret.init();
     runtime.reset();
+    r.drive.localizer.setPose(Pose2DStorage.StordedPose);
     shooterClock.reset();
     intakeClock.reset();
     goalClock.reset();
@@ -212,15 +217,29 @@ public class DriverControl extends OpMode {
             }
           }
 
-      if(g2.left_bumper){
+      if(left_trigger){
         r.intake.intakeMotorOn();
         r.outtake.ballBlocKServoBlock();
-      } else if (g2.right_bumper) {
+      } else if (right_trigger) {
         r.intake.intakeMotorOn();
         r.outtake.ballBlockServoStart();
       } else{
         r.intake.intakeMotorOff();
         r.outtake.ballBlocKServoBlock();
+      }
+
+      if(gamepad2.right_trigger > 0.5){
+        right_trigger = true;
+      }
+      else{
+        right_trigger = false;
+      }
+
+      if(gamepad2.left_trigger > 0.5){
+        left_trigger = true;
+      }
+      else {
+        left_trigger = false;
       }
 
       if(g1.right_bumper){

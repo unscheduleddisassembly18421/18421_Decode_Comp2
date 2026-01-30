@@ -308,11 +308,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                                 ))
                 );
 
-            } else
+            } else {
                 r.drive.localizer.setPose(blueStartNear);
+            }
+
+            Pose2DStorage.StordedPose = r.drive.localizer.getPose();
 
 
         }
+
 
         public Action shoot() {
             return new SequentialAction(
