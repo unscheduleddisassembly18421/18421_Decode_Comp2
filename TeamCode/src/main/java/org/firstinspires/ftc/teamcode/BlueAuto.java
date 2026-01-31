@@ -66,6 +66,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
                     autoSelector = Automonous.AutoSelector.BLUE_FAR_9_BALL;
 
+                } else if (gamepad1.dpad_left) {
+
+                    autoSelector = Automonous.AutoSelector.BLUE_FAR_12_BALL;
+
                 }
 
             }
@@ -90,44 +94,61 @@ import com.qualcomm.robotcore.util.ElapsedTime;
             }
 
 
-            // BLUE FAR (Change to 6 ball auto later)
+            // BLUE FAR (COMP 3)
             TrajectoryActionBuilder blueFarMoveToShootingPose = r.drive.actionBuilder(blueStartFar)//moveToShootPoseFarBlue
-                    .setTangent(Math.toRadians(180))
-                    .lineToXSplineHeading(-16,Math.toRadians(270))
+                    .lineToXSplineHeading(57, Math.toRadians(270))
                     .endTrajectory();
 
             TrajectoryActionBuilder blueFarFirstPath = blueFarMoveToShootingPose.fresh()//firstPathFarBlue
-                    .setTangent(Math.toRadians(270))
-                    .lineToY(-55, new TranslationalVelConstraint(45))
-                    .lineToY(-12)
+                    .strafeToSplineHeading(new Vector2d(52, -60), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(60, -60), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(270))
                     .endTrajectory();
 
 
 
             TrajectoryActionBuilder blueFarSecondPath = blueFarFirstPath.fresh()//secondPathFarBlue
-                    .strafeToSplineHeading(new Vector2d(14, -12), Math.toRadians(270))
-                    .setTangent(Math.toRadians(90))
-                    .strafeToSplineHeading(new Vector2d(14, -58), Math.toRadians(270), new TranslationalVelConstraint(40))
-                    .setTangent(Math.toRadians(160))
-                    .splineToSplineHeading(new Pose2d(-15, -12, Math.toRadians(270)), Math.toRadians(190))
+                    .strafeToSplineHeading(new Vector2d(36, -30), Math.toRadians(270))
+                    .setTangent(Math.toRadians(270))
+                    .lineToY(-59)
+                    .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(270))
                     .endTrajectory();
-
-
 
 
 
             TrajectoryActionBuilder blueFarThirdPath = blueFarSecondPath.fresh()//thirdPathFarRed
-                    .strafeToLinearHeading(new Vector2d(35, -12), Math.toRadians(270))
-                    .setTangent(Math.toRadians(270))
-                    .strafeToLinearHeading(new Vector2d(25,-50), Math.toRadians(270), new TranslationalVelConstraint(40))
-                    .lineToY(-58)
-                    .splineToLinearHeading(new Pose2d(-14, -12, Math.toRadians(270)), Math.toRadians(40))
+                    .strafeToSplineHeading(new Vector2d(0, -20),Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(0,-58),Math.toRadians(270))
                     .endTrajectory();
 
 
-            TrajectoryActionBuilder blueFarThirdPathEnd = blueFarThirdPath.fresh()//endBlueFar
-                    .strafeToLinearHeading(new Vector2d(-12, -39), Math.toRadians(270))
+            TrajectoryActionBuilder blueFarFourthPath = blueFarThirdPath.fresh()
+                    .lineToY(-10)
+                    .strafeToSplineHeading(new Vector2d(24, -30), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(24, -59), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(60, -59), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(270))
                     .endTrajectory();
+
+
+            TrajectoryActionBuilder blueFarFifthPath = blueFarFourthPath.fresh()
+                    .strafeToSplineHeading(new Vector2d(56, -58), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(270))
+                    .endTrajectory();
+
+
+            TrajectoryActionBuilder blueFarSixthPath = blueFarFifthPath.fresh()
+                    .strafeToSplineHeading(new Vector2d(56, -58), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(270))
+                    .endTrajectory();
+
+
+
+            TrajectoryActionBuilder blueFarThirdPathEnd = blueFarSixthPath.fresh()//endBlueFar
+                    .strafeToSplineHeading(new Vector2d(38, -12), Math.toRadians(270))
+                    .endTrajectory();
+
+
 
 
             //BLUE FAR 9 BALL
@@ -161,53 +182,78 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                     .strafeToLinearHeading(new Vector2d(35,-12), Math.toRadians(180))
                     .endTrajectory();
 
-            //BLUE NEAR
+
+
+            //BLUE NEAR (COMP 3)
             TrajectoryActionBuilder blueNearMoveToShootingPose = r.drive.actionBuilder(blueStartNear)//moveToShootPoseNearBlue
-                    .strafeToLinearHeading(new Vector2d(-12, 12), Math.toRadians(140))
+                    .lineToXSplineHeading(-12, Math.toRadians(270))
                     .endTrajectory();
 
-
-
             TrajectoryActionBuilder blueNearFirstPath = blueNearMoveToShootingPose.fresh()//firstPathNearBlue
-                    .setTangent(Math.toRadians(90))
-                    .lineToY(56)
+                    .strafeToSplineHeading(new Vector2d(14, -35), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(14, -58), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(-12, -12), Math.toRadians(270))
+
                     .endTrajectory();
 
             TrajectoryActionBuilder blueNearSecondPath = blueNearFirstPath.fresh()//secondPathNearBlue
-                    .strafeToLinearHeading(new Vector2d(12, 12), Math.toRadians(90))
-                    .setTangent(Math.toRadians(90))
-                    .lineToY(56)
-                    .lineToY(12)
-                    .setTangent(Math.toRadians(180))
-                    .strafeToLinearHeading(new Vector2d(-12, 12), Math.toRadians(140))
+                    .strafeToSplineHeading(new Vector2d(35, -12), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(35, -58), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(-12, -12), Math.toRadians(270))
+
                     .endTrajectory();
 
             TrajectoryActionBuilder blueNearThirdPath = blueNearSecondPath.fresh()//thirdPathNearBlue
-                    .strafeToLinearHeading(new Vector2d(25, 12), Math.toRadians(90))
-                    .setTangent(Math.toRadians(90))
-                    .lineToY(56)
-                    .splineToLinearHeading(new Pose2d(-12, 12, Math.toRadians(140)), Math.toRadians(0))
-                    .endTrajectory();
-
-            TrajectoryActionBuilder blueNearThirdPathEnd = blueNearThirdPath.fresh()//endBlueNear
-
+                    .strafeToSplineHeading(new Vector2d(4, -12), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(4, -58), Math.toRadians(270))
 
                     .endTrajectory();
 
-            //TrajectoryActionBuilder redNearThirdPathEnd = redNearThirdPath.fresh()//endRedNear
-            //.lineToY(38)
-            //.endTrajectory();
+            TrajectoryActionBuilder blueNearFourthPath = blueNearThirdPath.fresh()
+                    .lineToY(-42)
+                    .strafeToSplineHeading(new Vector2d(20, -59), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(60, -59), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(-12, -12), Math.toRadians(270))
 
+                    .endTrajectory();
+
+            TrajectoryActionBuilder blueNearFifthPath = blueNearFourthPath.fresh()
+                    .strafeToSplineHeading(new Vector2d(-12, -58), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(-12, -12), Math.toRadians(270))
+
+                    .endTrajectory();
+
+
+            TrajectoryActionBuilder blueNearThirdPathEnd = blueNearFifthPath.fresh()//endBlueNear
+                    .strafeToSplineHeading(new Vector2d(4, -30), Math.toRadians(270))
+
+                    .endTrajectory();
+
+
+            // BLUE FAR 12 BALL (COMP 3)
+            TrajectoryActionBuilder blueFar12BMoveToShootingPose = r.drive.actionBuilder(blueStartFar)
+                    .strafeToSplineHeading(new Vector2d(36, -30), Math.toRadians(270))
+                    .setTangent(Math.toRadians(270))
+                    .lineToY(-59)
+                    .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(270))
+                    .endTrajectory();
+
+            TrajectoryActionBuilder blueFar12BFirstPath = blueFar12BMoveToShootingPose.fresh()
+
+                    .endTrajectory();
 
             //build trajectories
             //Action *NameOfPath* = nameOfPath.build();
 
 
-            //BLUE FAR
+            //BLUE FAR (COMP 3)
             Action BlueFarGoToShootingPosition = blueFarMoveToShootingPose.build();
             Action BlueFarMoveToShootingFirstPath = blueFarFirstPath.build();
             Action BlueFarMoveToShootingSecondPath = blueFarSecondPath.build();
             Action BlueFarMoveToShootingThirdPath = blueFarThirdPath.build();
+            Action BlueFarMoveToShootingFourthPath = blueFarFourthPath.build();
+            Action BlueFarMoveToShootingFifthPath = blueFarFifthPath.build();
+            Action BlueFarMoveToShootingSixthPath = blueFarSixthPath.build();
             Action BlueFarEnd = blueFarThirdPathEnd.build();
 
             //BLUE FAR 9 BALL
@@ -217,12 +263,18 @@ import com.qualcomm.robotcore.util.ElapsedTime;
             Action BlueFar9BallMoveToShootingThirdPath = blueFar9BThirdPath.build();
             Action BlueFar9BallEnd = blueFar9BThirdPathEnd.build();
 
+            //BLUE FAR 12 BALL (COMP 3)
+            Action BlueFar12BallGoToShootingPosition = blueFar12BMoveToShootingPose.build();
+            Action BlueFar12BallMoveToShootingFirstPath = blueFar12BFirstPath.build();
 
-            //BLUE NEAR
+
+            //BLUE NEAR (COMP 3)
             Action BlueNearGoToShootingPosition = blueNearMoveToShootingPose.build();
             Action BlueNearMoveToShootingFirstPath = blueNearFirstPath.build();
             Action BlueNearMoveToShootingSecondPath = blueNearSecondPath.build();
             Action BlueNearMoveToShootingThirdPath = blueNearThirdPath.build();
+            Action BlueNearMoveToShootingFourthPath = blueNearFourthPath.build();
+            Action BlueNearMoveToShootingFifthPath = blueNearFifthPath.build();
             Action BlueNearEnd= blueNearThirdPathEnd.build();
 
             waitForStart();
@@ -257,6 +309,28 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                                                 intake()
                                         ),
                                         shoot(),
+
+                                        new SleepAction(1.75),
+                                        new ParallelAction(
+                                                BlueFarMoveToShootingFourthPath,
+                                                intake()
+                                        ),
+                                        shoot(),
+
+                                        new SleepAction(1.75),
+                                        new ParallelAction(
+                                                BlueFarMoveToShootingFifthPath,
+                                                intake()
+                                        ),
+                                        shoot(),
+
+                                        new SleepAction(1.75),
+                                        new ParallelAction(
+                                                BlueFarMoveToShootingSixthPath,
+                                                intake()
+                                        ),
+                                        shoot(),
+
                                         new SleepAction(1.75),
                                         new ParallelAction(
                                                 BlueFarEnd,
@@ -273,11 +347,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
             else if (autoSelector == Automonous.AutoSelector.BLUE_NEAR) {
                 Actions.runBlocking(
                         new ParallelAction(
-                                r.setTurretStart(),
+                                r.turnTurretBlue(),
                                 new SequentialAction(
+
                                         new ParallelAction(
                                                 intake(),
-                                                BlueNearMoveToShootingFirstPath
+                                                BlueNearGoToShootingPosition
+
                                         ),
 
                                         new SleepAction(1),
