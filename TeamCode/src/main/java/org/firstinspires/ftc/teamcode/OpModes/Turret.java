@@ -41,7 +41,6 @@ public class Turret {
     private Servo leftLight = null;
     private Servo rightLight = null;
 
-    public static double GREEN_COLOR = 0.5;
     public static double RED_COLOR = 0.28;
     public static double BLUE_COLOR = 0.62;
 
@@ -84,7 +83,7 @@ public class Turret {
 
 
     //indicator light stuff
-    public void leftLightNewColor() {
+    public void leftLightBlue() {
         leftLight.setPosition(BLUE_COLOR);
     }
 
@@ -92,8 +91,8 @@ public class Turret {
         leftLight.setPosition(RED_COLOR);
     }
 
-    public void rightLightGreen() {
-        rightLight.setPosition(GREEN_COLOR);
+    public void rightLightBlue() {
+        rightLight.setPosition(BLUE_COLOR);
     }
 
     public void rightLightRed() {

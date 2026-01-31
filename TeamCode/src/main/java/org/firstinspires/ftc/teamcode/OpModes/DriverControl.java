@@ -119,9 +119,6 @@ public class DriverControl extends OpMode {
   public ElapsedTime intakeClock = new ElapsedTime();
   public ElapsedTime goalClock = new ElapsedTime();
 
-  public boolean right_trigger = false;
-  public boolean left_trigger = false;
-
 
   @Override
   public void init() {
@@ -217,29 +214,26 @@ public class DriverControl extends OpMode {
             }
           }
 
-      if(left_trigger){
+//      switch (targetGoal){
+//        case RED:
+//          r.turret.rightLightRed();
+//          r.turret.rightLightRed();
+//          break;
+//
+//        case BLUE:
+//          r.turret.rightLightBlue();
+//          r.turret.leftLightBlue();
+//      }
+
+      if(gamepad2.left_trigger > 0.25){
         r.intake.intakeMotorOn();
         r.outtake.ballBlocKServoBlock();
-      } else if (right_trigger) {
+      } else if (gamepad2.right_trigger > 0.25) {
         r.intake.intakeMotorOn();
         r.outtake.ballBlockServoStart();
       } else{
         r.intake.intakeMotorOff();
         r.outtake.ballBlocKServoBlock();
-      }
-
-      if(gamepad2.right_trigger > 0.5){
-        right_trigger = true;
-      }
-      else{
-        right_trigger = false;
-      }
-
-      if(gamepad2.left_trigger > 0.5){
-        left_trigger = true;
-      }
-      else {
-        left_trigger = false;
       }
 
       if(g1.right_bumper){
