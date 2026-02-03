@@ -117,8 +117,8 @@ public class RedAuto extends LinearOpMode{
         TrajectoryActionBuilder redFarFourthPath = redFarThirdPath.fresh()//fourthPathFarRed
                 .lineToY(10)
                 .strafeToSplineHeading(new Vector2d(24, 30), Math.toRadians(90))
-                .strafeToSplineHeading(new Vector2d(24, 59), Math.toRadians(90))
-                .strafeToSplineHeading(new Vector2d(60, 59), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(24, 57), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(60, 57), Math.toRadians(90))
                 .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
                 .endTrajectory();
 
@@ -257,9 +257,6 @@ public class RedAuto extends LinearOpMode{
                                             RedFarGoToShootingPosition,
                                             intake()
                                     ),
-                                    new SleepAction(1),
-                                    shoot(),
-                                    new SleepAction(1.75),
                                     shoot(),
                                     new SleepAction(1.75),
                                     new ParallelAction(
@@ -277,7 +274,8 @@ public class RedAuto extends LinearOpMode{
 
                                     new SleepAction(1.75),
                                     new ParallelAction(
-                                            RedFarMoveToShootingThirdPath
+                                            RedFarMoveToShootingThirdPath,
+                                            intake()
                                     ),
                                     new ParallelAction(
                                             RedFarMoveToShootingFourthPath,
@@ -350,40 +348,37 @@ public class RedAuto extends LinearOpMode{
         else if (autoSelector == Automonous.AutoSelector.RED_NEAR) {
             Actions.runBlocking(
                     new ParallelAction(
-                            r.turnTurretRed(),
+                            //r.turnTurretRed(),
                             new SequentialAction(
 
                                     new ParallelAction(
-                                            intake(),
+                                            //intake(),
                                             RedNearGoToShootingPosition
 
                                     ),
+                                    //shoot(),
+                                    new SleepAction(1.75),
 
                                     new ParallelAction(
-                                            intake(),
+                                            //intake(),
                                             RedNearMoveToShootingFirstPath
                                     ),
+                                    //shoot(),
 
-                                    new SleepAction(1),
-
-                                    nearShoot(),
-                                    new SleepAction(1),
+                                    new SleepAction(1.75),
 
                                     new ParallelAction(
-                                            intake(),
                                             RedNearMoveToShootingSecondPath
                                     ),
 
-                                    new SleepAction(1),
-
-                                    nearShoot(),
-                                    new SleepAction(1),
+                                    //Shoot(),
+                                    new SleepAction(1.75),
                                     new ParallelAction(
-                                            intake(),
+                                            //intake(),
                                             RedNearMoveToShootingThirdPath
                                     ),
-                                    new SleepAction(1),
-                                    nearShoot()
+                                    //Shoot(),
+                                    new SleepAction(1.75)
 
                             ))
             );

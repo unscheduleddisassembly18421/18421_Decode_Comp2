@@ -225,10 +225,10 @@ public class DriverControl extends OpMode {
 //          r.turret.leftLightBlue();
 //      }
 
-      if(gamepad2.left_trigger > 0.25){
+      if(gamepad2.left_trigger > 0.5){
         r.intake.intakeMotorOn();
         r.outtake.ballBlocKServoBlock();
-      } else if (gamepad2.right_trigger > 0.25) {
+      } else if (gamepad2.right_trigger > 0.5) {
         r.intake.intakeMotorOn();
         r.outtake.ballBlockServoStart();
       } else{

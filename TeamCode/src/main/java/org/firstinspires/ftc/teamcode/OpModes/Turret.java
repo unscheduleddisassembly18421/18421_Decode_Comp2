@@ -44,8 +44,6 @@ public class Turret {
     public static double RED_COLOR = 0.28;
     public static double BLUE_COLOR = 0.62;
 
-    private AnalogInput ai = null;
-
 
     public Turret(HardwareMap hwmap, Telemetry telemetry) {
         this.telemetry = telemetry;

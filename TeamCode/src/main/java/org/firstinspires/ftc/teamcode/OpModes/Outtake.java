@@ -23,6 +23,7 @@ public class Outtake {
     private Servo hoodServo = null;
     private Servo ballBlockServo1 = null;
     private Servo ballBlockServo2 = null;
+    private Servo hoodServo2 = null;
     //Positions
     public static double HOODSERVO_START_POSITION  = 0;
     public static double HOODSERVO_SHOOT_POSITION = 0.45;
@@ -31,7 +32,7 @@ public class Outtake {
     public static double LAUNCHER_TOLERANCE = 0.995;
     public static double AUTO_LAUNCHERMOTOR_VELOCITY_ON = 1450;
     public static double AUTO_HOODSERVO_SHOOT = 0.5;
-    public static double BALLBLOCKSERVO_BLOCK_POSITION = 0.1;
+    public static double BALLBLOCKSERVO_BLOCK_POSITION = 0.15;
 
     public static double newP = 525;
     public static double newI = 40;//tune more. stole from Brennan
@@ -51,8 +52,10 @@ public class Outtake {
         launcherMotor2 = hwmap.get(DcMotorEx.class, "Lm2");
         ballBlockServo1 = hwmap.get(Servo.class, "bs1");
         ballBlockServo2 = hwmap.get(Servo.class, "bs2");
+        hoodServo2 = hwmap.get(Servo.class, "hs2");
 
-        hoodServo.setDirection(Servo.Direction.FORWARD);
+        hoodServo.setDirection(Servo.Direction.REVERSE);
+        hoodServo2.setDirection(Servo.Direction.FORWARD);
 
         ballBlockServo1.setDirection(Servo.Direction.FORWARD);
         ballBlockServo2.setDirection(Servo.Direction.REVERSE);
@@ -75,6 +78,7 @@ public class Outtake {
 
     public void init(){
         hoodServo.setPosition(0);
+        hoodServo2.setPosition(0);
         ballBlockServoStart();
     }
 
@@ -112,6 +116,7 @@ public class Outtake {
 
     public void  hoodServoStart(){
         hoodServo.setPosition(0);
+        hoodServo2.setPosition(0);
     }
 
     public void shootFar(){
@@ -121,11 +126,12 @@ public class Outtake {
 
     public void hoodServoShoot(){
         hoodServo.setPosition(HOODSERVO_SHOOT_POSITION);
+        hoodServo2.setPosition(HOODSERVO_SHOOT_POSITION);
     }
 
     public void ballBlockServoStart(){
-        ballBlockServo1.setPosition(0);
-        ballBlockServo2.setPosition(0);
+        ballBlockServo1.setPosition(0.1);
+        ballBlockServo2.setPosition(0.1);
     }
 
     public void ballBlocKServoBlock(){
@@ -158,6 +164,8 @@ public class Outtake {
             trueAngle = angle;
         }
         hoodServo.setPosition(trueAngle);
+        hoodServo2.setPosition(trueAngle);
+        telemetry.addData("actual hood angle", trueAngle);
     }
 
     public void activateShooterRelative(double robotdistance){
