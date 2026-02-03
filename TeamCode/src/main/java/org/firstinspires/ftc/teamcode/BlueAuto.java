@@ -100,15 +100,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                     .endTrajectory();
 
             TrajectoryActionBuilder blueFarFirstPath = blueFarMoveToShootingPose.fresh()//firstPathFarBlue
-                    .strafeToSplineHeading(new Vector2d(52, -60), Math.toRadians(270))
-                    .strafeToSplineHeading(new Vector2d(60, -60), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(52, -57), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(60, -57), Math.toRadians(270))
                     .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(270))
                     .endTrajectory();
 
 
 
             TrajectoryActionBuilder blueFarSecondPath = blueFarFirstPath.fresh()//secondPathFarBlue
-                    .strafeToSplineHeading(new Vector2d(34, -30), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(34, -28), Math.toRadians(270))
                     .setTangent(Math.toRadians(270))
                     .lineToY(-59)
                     .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(270))

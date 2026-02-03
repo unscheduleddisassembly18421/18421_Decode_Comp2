@@ -157,7 +157,7 @@ public class HwRobot {
             TurretAngle = turretAim.redAngle;
         }
         angle = (TurretAngle * turret.degreesPerRotation) + 0.5;
-        if (angle > 0.9 || angle < 0.1) {
+        if (angle > 0.95 || angle < 0.05) {
             TurretAngle = 0;
         }
         turret.setAngleRed(TurretAngle);
@@ -188,7 +188,7 @@ public class HwRobot {
             TurretAngle = turretAim.redAngle;
         }
         angle = (TurretAngle * turret.degreesPerRotation) + 0.5;
-        if (angle > 0.9 || angle < 0.1) {
+        if (angle > 0.95 || angle < 0.05) {
             TurretAngle = 0;
         }
         turret.setAngleRed(TurretAngle);
@@ -218,7 +218,7 @@ public class HwRobot {
             TurretAngle = turretAim.blueAngle;
         }
         angle = (turretAim.blueAngle * turret.degreesPerRotation) + 0.5;
-        if (angle > 0.9 || angle < 0.1) {
+        if (angle > 0.95 || angle < 0.05) {
             TurretAngle = 0;
         }
         turret.setAngleBlue(TurretAngle);
@@ -249,7 +249,7 @@ public class HwRobot {
             TurretAngle = turretAim.blueAngle;
         }
         angle = (turretAim.blueAngle * turret.degreesPerRotation) + 0.5;
-        if (angle > 0.9 || angle < 0.1) {
+        if (angle > 0.95 || angle < 0.05) {
             TurretAngle = 0;
         }
         turret.setAngleBlue(TurretAngle);
