@@ -7,7 +7,6 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
-import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -52,6 +51,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                 telemetry.addLine("D-Pad Up for Blue Far");
                 telemetry.addLine("D-Pad Right for Blue Near");
                 telemetry.addLine("D-Pad Down for Blue Far 9 Ball");
+                telemetry.addLine("D-Pad Left for Blue Far 12 Ball");
                 telemetry.update();
 
                 if (gamepad1.dpad_up) {
@@ -76,9 +76,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
             Pose2d blueStartFar = new Pose2d(63, -12, Math.toRadians(180));
 
-            Pose2d blueStartNear = new Pose2d(-63, 12, Math.toRadians(0));
+            Pose2d blueStartNear = new Pose2d(-50, -52, Math.toRadians(50));
 
             Pose2d blueStartFar9Ball = new Pose2d(63, 12, Math.toRadians(180));
+
+            Pose2d blueStartFar12Ball = new Pose2d(63, -12, Math.toRadians(180));
 
 
 
@@ -91,6 +93,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
             } else if (autoSelector == Automonous.AutoSelector.BLUE_FAR_9_BALL) {
                 r.drive.localizer.setPose(blueStartFar);
                 
+            }else if (autoSelector == Automonous.AutoSelector.BLUE_FAR_12_BALL) {
+                r.drive.localizer.setPose(blueStartFar);
             }
 
 
@@ -186,21 +190,19 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
             //BLUE NEAR (COMP 3)
             TrajectoryActionBuilder blueNearMoveToShootingPose = r.drive.actionBuilder(blueStartNear)//moveToShootPoseNearBlue
-                    .lineToXSplineHeading(-12, Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(-12, -12), Math.toRadians(270))
                     .endTrajectory();
 
             TrajectoryActionBuilder blueNearFirstPath = blueNearMoveToShootingPose.fresh()//firstPathNearBlue
                     .strafeToSplineHeading(new Vector2d(14, -35), Math.toRadians(270))
                     .strafeToSplineHeading(new Vector2d(14, -58), Math.toRadians(270))
                     .strafeToSplineHeading(new Vector2d(-12, -12), Math.toRadians(270))
-
                     .endTrajectory();
 
             TrajectoryActionBuilder blueNearSecondPath = blueNearFirstPath.fresh()//secondPathNearBlue
-                    .strafeToSplineHeading(new Vector2d(35, -12), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(35, -25), Math.toRadians(270))
                     .strafeToSplineHeading(new Vector2d(35, -58), Math.toRadians(270))
                     .strafeToSplineHeading(new Vector2d(-12, -12), Math.toRadians(270))
-
                     .endTrajectory();
 
             TrajectoryActionBuilder blueNearThirdPath = blueNearSecondPath.fresh()//thirdPathNearBlue
@@ -210,37 +212,53 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                     .endTrajectory();
 
             TrajectoryActionBuilder blueNearFourthPath = blueNearThirdPath.fresh()
-                    .lineToY(-42)
-                    .strafeToSplineHeading(new Vector2d(20, -59), Math.toRadians(270))
-                    .strafeToSplineHeading(new Vector2d(60, -59), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(4, -20), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(-12, -25), Math.toRadians(270))
+                    .setTangent(Math.toRadians(270))
+                    .lineToY(-58)
                     .strafeToSplineHeading(new Vector2d(-12, -12), Math.toRadians(270))
-
-                    .endTrajectory();
-
-            TrajectoryActionBuilder blueNearFifthPath = blueNearFourthPath.fresh()
-                    .strafeToSplineHeading(new Vector2d(-12, -58), Math.toRadians(270))
-                    .strafeToSplineHeading(new Vector2d(-12, -12), Math.toRadians(270))
-
                     .endTrajectory();
 
 
-            TrajectoryActionBuilder blueNearThirdPathEnd = blueNearFifthPath.fresh()//endBlueNear
+
+            TrajectoryActionBuilder blueNearThirdPathEnd = blueNearFourthPath.fresh()//endBlueNear
                     .strafeToSplineHeading(new Vector2d(4, -30), Math.toRadians(270))
-
                     .endTrajectory();
+
 
 
             // BLUE FAR 12 BALL (COMP 3)
             TrajectoryActionBuilder blueFar12BMoveToShootingPose = r.drive.actionBuilder(blueStartFar)
-                    .strafeToSplineHeading(new Vector2d(36, -30), Math.toRadians(270))
+                    .lineToXSplineHeading(57, Math.toRadians(270))
+                    .endTrajectory();
+
+            TrajectoryActionBuilder blueFar12BFirstPath = blueFar12BMoveToShootingPose.fresh()
+                    .strafeToSplineHeading(new Vector2d(34, -28), Math.toRadians(270))
                     .setTangent(Math.toRadians(270))
                     .lineToY(-59)
                     .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(270))
                     .endTrajectory();
 
-            TrajectoryActionBuilder blueFar12BFirstPath = blueFar12BMoveToShootingPose.fresh()
+            TrajectoryActionBuilder blueFar12BSecondPath = blueFar12BFirstPath.fresh()
+                    .strafeToSplineHeading(new Vector2d(14, -25), Math.toRadians(270))
+                    .setTangent(Math.toRadians(270))
+                    .lineToY(-59)
+                    .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(270))
+                    .endTrajectory();
+
+            TrajectoryActionBuilder blueFar12BThirdPath = blueFar12BSecondPath.fresh()
+                    .strafeToSplineHeading(new Vector2d(-12, -25), Math.toRadians(270))
+                    .setTangent(Math.toRadians(270))
+                    .lineToY(59)
+                    .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(270))
 
                     .endTrajectory();
+
+            TrajectoryActionBuilder blueFar12BThirdPathEnd = blueFar12BThirdPath.fresh()
+                    .lineToXSplineHeading(38, Math.toRadians(270))
+                    .endTrajectory();
+
+
 
             //build trajectories
             //Action *NameOfPath* = nameOfPath.build();
@@ -266,6 +284,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
             //BLUE FAR 12 BALL (COMP 3)
             Action BlueFar12BallGoToShootingPosition = blueFar12BMoveToShootingPose.build();
             Action BlueFar12BallMoveToShootingFirstPath = blueFar12BFirstPath.build();
+            Action BlueFar12BallMoveToShootingSecondPath = blueFar12BSecondPath.build();
+            Action BlueFar12BallMoveToShootingThirdPath = blueFar12BThirdPath.build();
+            Action BlueFar12BallEnd = blueFar12BThirdPathEnd.build();
+
 
 
             //BLUE NEAR (COMP 3)
@@ -274,7 +296,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
             Action BlueNearMoveToShootingSecondPath = blueNearSecondPath.build();
             Action BlueNearMoveToShootingThirdPath = blueNearThirdPath.build();
             Action BlueNearMoveToShootingFourthPath = blueNearFourthPath.build();
-            Action BlueNearMoveToShootingFifthPath = blueNearFifthPath.build();
             Action BlueNearEnd= blueNearThirdPathEnd.build();
 
             waitForStart();
@@ -286,7 +307,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                                 new SequentialAction(//can do turn to first angle here to speed up time
                                         new ParallelAction(
                                                 BlueFarGoToShootingPosition,
-                                               intake()
+                                                intake()
                                         ),
                                         shoot(),
                                         new SleepAction(1.75),
@@ -342,46 +363,107 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                         )
                 );
 
-            }
-            //Im pushing htis again
-            else if (autoSelector == Automonous.AutoSelector.BLUE_NEAR) {
+            } else if (autoSelector == Automonous.AutoSelector.BLUE_FAR_12_BALL) {
                 Actions.runBlocking(
                         new ParallelAction(
                                 r.turnTurretBlue(),
                                 new SequentialAction(
-
                                         new ParallelAction(
-                                                intake(),
-                                                BlueNearGoToShootingPosition
-
-                                        ),
-
-                                        new SleepAction(1),
-
-                                        nearShoot(),
-                                        new SleepAction(1),
-
-                                        new ParallelAction(
-                                                intake(),
-                                                BlueNearMoveToShootingSecondPath
-                                        ),
-
-                                        new SleepAction(1),
-
-                                        nearShoot(),
-                                        new SleepAction(1),
-                                        new ParallelAction(
-                                                intake(),
-                                                BlueNearMoveToShootingThirdPath
+                                                BlueFar12BallGoToShootingPosition,
+                                                intake()
                                         ),
                                         new SleepAction(1),
+                                        shoot(),
+
+
+                                        new SleepAction(1),
+                                        new ParallelAction(
+                                                BlueFar12BallMoveToShootingFirstPath,
+                                                intake()
+                                        ),
+                                        shoot(),
+
+
+                                        new SleepAction(1),
+                                        new ParallelAction(
+                                                BlueFar12BallMoveToShootingSecondPath,
+                                                intake()
+                                        ),
+                                        shoot(),
+
+
+                                        new SleepAction(1),
+                                        new ParallelAction(
+                                                BlueFar12BallMoveToShootingThirdPath,
+                                                intake()
+                                        ),
+                                        shoot(),
+
+
+                                        new SleepAction(1),
+                                        new ParallelAction(
+                                                BlueFar12BallEnd,
+                                                intake()
+                                        )
+
+
+                                )
+                        )
+
+                );
+
+            //Im pushing htis again
+            }else if (autoSelector == Automonous.AutoSelector.BLUE_NEAR) {
+                Actions.runBlocking(
+                        new ParallelAction(
+                                r.turnTurretBlue(),
+                                new SequentialAction(
+                                        new ParallelAction(
+                                                BlueNearGoToShootingPosition,
+                                                intake()
+                                        ),
+                                        new SleepAction(1),
                                         nearShoot(),
+
+                                        new SleepAction(1.5),
+                                        new ParallelAction(
+                                                BlueNearMoveToShootingFirstPath,
+                                                intake()
+                                        ),
+                                        nearShoot(),
+
+
+                                        new SleepAction(1.5),
+                                        new ParallelAction(
+                                                BlueNearMoveToShootingSecondPath,
+                                                intake()
+                                        ),
+                                        nearShoot(),
+
+
+                                        new SleepAction(1),
+                                        new ParallelAction(
+                                                BlueNearMoveToShootingThirdPath,
+                                                intake()
+                                        ),
+
+
+                                        new SleepAction(1),
+                                        new ParallelAction(
+                                                BlueNearMoveToShootingFourthPath,
+                                                intake()
+                                        ),
+                                        nearShoot(),
+
+
+                                        new SleepAction(1.5),
                                         new ParallelAction(
                                                 BlueNearEnd
 
                                         )
 
-                                ))
+                                )
+                        )
                 );
 
             } else {
