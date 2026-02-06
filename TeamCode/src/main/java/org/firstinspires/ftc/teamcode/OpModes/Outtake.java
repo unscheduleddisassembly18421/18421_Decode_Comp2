@@ -7,6 +7,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -23,15 +24,16 @@ public class Outtake {
     private Servo hoodServo = null;
     private Servo ballBlockServo1 = null;
     private Servo ballBlockServo2 = null;
+    private Servo hoodServo2 = null;
     //Positions
-    public static double HOODSERVO_START_POSITION  = 0;
+    public static double HOODSERVO_START_POSITION  = 1;
     public static double HOODSERVO_SHOOT_POSITION = 0.45;
-    public static double LAUNCHERMOTOR_VELOCITY_ON_TELEOP = 1425;//max is around 2700
+    public static double LAUNCHERMOTOR_VELOCITY_ON_TELEOP = 1450;//max is around 2700
     public static double CLOSE_LAUNCHERMOTOR_VELOCITY_ON = 1100;//test
     public static double LAUNCHER_TOLERANCE = 0.995;
     public static double AUTO_LAUNCHERMOTOR_VELOCITY_ON = 1450;
     public static double AUTO_HOODSERVO_SHOOT = 0.5;
-    public static double BALLBLOCKSERVO_BLOCK_POSITION = 0.1;
+    public static double BALLBLOCKSERVO_BLOCK_POSITION = 0.15;
 
     public static double newP = 525;
     public static double newI = 40;//tune more. stole from Brennan
@@ -51,18 +53,18 @@ public class Outtake {
         launcherMotor2 = hwmap.get(DcMotorEx.class, "Lm2");
         ballBlockServo1 = hwmap.get(Servo.class, "bs1");
         ballBlockServo2 = hwmap.get(Servo.class, "bs2");
+        hoodServo2 = hwmap.get(Servo.class, "hs2");
 
-        hoodServo.setDirection(Servo.Direction.FORWARD);
+        hoodServo.setDirection(Servo.Direction.REVERSE);
+        hoodServo2.setDirection(Servo.Direction.FORWARD);
 
-        ballBlockServo1.setDirection(Servo.Direction.FORWARD);
-        ballBlockServo2.setDirection(Servo.Direction.REVERSE);
+        ballBlockServo1.setDirection(Servo.Direction.REVERSE);
+        ballBlockServo2.setDirection(Servo.Direction.FORWARD);
 
-
-        hoodServo.setPosition(HOODSERVO_START_POSITION);
         //flywheel motor stuff
 
-        launcherMotor1.setDirection(DcMotor.Direction.REVERSE);
-        launcherMotor2.setDirection(DcMotor.Direction.REVERSE);
+        launcherMotor1.setDirection(DcMotor.Direction.FORWARD);
+        launcherMotor2.setDirection(DcMotor.Direction.FORWARD);
         launcherMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         launcherMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         launcherMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -74,7 +76,8 @@ public class Outtake {
     }
 
     public void init(){
-        hoodServo.setPosition(0);
+        hoodServo.setPosition(1);
+        hoodServo2.setPosition(1);
         ballBlockServoStart();
     }
 
@@ -111,7 +114,8 @@ public class Outtake {
 
 
     public void  hoodServoStart(){
-        hoodServo.setPosition(0);
+        hoodServo.setPosition(1);
+        hoodServo2.setPosition(1);
     }
 
     public void shootFar(){
@@ -121,11 +125,12 @@ public class Outtake {
 
     public void hoodServoShoot(){
         hoodServo.setPosition(HOODSERVO_SHOOT_POSITION);
+        hoodServo2.setPosition(HOODSERVO_SHOOT_POSITION);
     }
 
     public void ballBlockServoStart(){
-        ballBlockServo1.setPosition(0);
-        ballBlockServo2.setPosition(0);
+        ballBlockServo1.setPosition(0.11);
+        ballBlockServo2.setPosition(0.11);
     }
 
     public void ballBlocKServoBlock(){
@@ -150,14 +155,17 @@ public class Outtake {
 
     public void hoodServoRelative(double distance){
         double trueAngle;
-        double angle = (0.00741 * distance) -0.16667;
-        if(angle > 0.5){
-            trueAngle = 0.45;
-        }
-        else{
+        double angle = -(0.00741 * distance) + 0.833334;
+        if(angle < 0.5){
+            trueAngle = 0.5;
+        } else if (angle > 1) {
+            trueAngle = 0.95;
+        } else{
             trueAngle = angle;
         }
         hoodServo.setPosition(trueAngle);
+        hoodServo2.setPosition(trueAngle);
+        telemetry.addData("actual hood angle", trueAngle);
     }
 
     public void activateShooterRelative(double robotdistance){

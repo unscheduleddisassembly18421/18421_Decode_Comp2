@@ -30,8 +30,8 @@ public class HwRobot {
     public static Pose2d blueGoalPose = new Pose2d(-66, -70, 0);//find real pose
     public static Pose2d redGoalPose = new Pose2d(-55, 70, 0);//find real pose
 
-    Pose2d blueAutoGoalPose = new Pose2d(-68, -68, 0);
-    Pose2d redGoalAutoPose = new Pose2d(-66, 68, 0);
+    Pose2d blueAutoGoalPose = new Pose2d(-66, -66, 0);
+    Pose2d redGoalAutoPose = new Pose2d(-66, 66, 0);
 
     public HwRobot(Telemetry t, HardwareMap hwm) {
         hardwareMap = hwm;
@@ -157,16 +157,17 @@ public class HwRobot {
             TurretAngle = turretAim.redAngle;
         }
         angle = (TurretAngle * turret.degreesPerRotation) + 0.5;
-        if (angle > 1 || angle < 0) {
-            turret.startPosition();
+        if (angle > 0.95 || angle < 0.05) {
+            TurretAngle = 0;
         }
         turret.setAngleRed(TurretAngle);
         if (turretAim.poseRobotX > 35) {
             outtake.shootFar();
+            outtake.hoodServoRelative(turretAim.distance);
         } else {
             outtake.activateShooterRelative(turretAim.distance);
+            outtake.hoodServoRelative(turretAim.distance);
         }
-        outtake.hoodServoRelative(turretAim.distance);
         telemetry.addData("original angle", turretAim.redAngle);
         telemetry.addData("new angle", TurretAngle);
         telemetry.addData("hood position", (0.00741 * turretAim.distance) - 0.16667);
@@ -187,16 +188,16 @@ public class HwRobot {
             TurretAngle = turretAim.redAngle;
         }
         angle = (TurretAngle * turret.degreesPerRotation) + 0.5;
-        if (angle > 1 || angle < 0) {
-            turret.startPosition();
+        if (angle > 0.95 || angle < 0.05) {
+            TurretAngle = 0;
         }
         turret.setAngleRed(TurretAngle);
+        outtake.hoodServoRelative(turretAim.distance);
         if (turretAim.poseRobotX > 35) {
             outtake.shootFar();
         } else {
             outtake.activateShooterRelative(turretAim.distance);
         }
-        outtake.hoodServoRelative(turretAim.distance);
         telemetry.addData("original angle", turretAim.redAngle);
         telemetry.addData("new angle", TurretAngle);
         telemetry.addData("hood position", (0.00741 * turretAim.distance) - 0.16667);
@@ -217,16 +218,17 @@ public class HwRobot {
             TurretAngle = turretAim.blueAngle;
         }
         angle = (turretAim.blueAngle * turret.degreesPerRotation) + 0.5;
-        if (angle > 1 || angle < 0) {
-            turret.startPosition();
+        if (angle > 0.95 || angle < 0.05) {
+            TurretAngle = 0;
         }
         turret.setAngleBlue(TurretAngle);
         if (turretAim.poseRobotX > 35) {
             outtake.shootFar();
+            outtake.hoodServoRelative(turretAim.distance);
         } else {
             outtake.activateShooterRelative(turretAim.distance);
+            outtake.hoodServoRelative(turretAim.distance);
         }
-        outtake.hoodServoRelative(turretAim.distance);
         telemetry.addData("target angle", turretAim.blueAngle);
         telemetry.addData("servo position", angle);
         telemetry.addData("hood position", ((0.00741 * turretAim.distance) - 0.16667));
@@ -247,16 +249,17 @@ public class HwRobot {
             TurretAngle = turretAim.blueAngle;
         }
         angle = (turretAim.blueAngle * turret.degreesPerRotation) + 0.5;
-        if (angle > 1 || angle < 0) {
-            turret.startPosition();
+        if (angle > 0.95 || angle < 0.05) {
+            TurretAngle = 0;
         }
         turret.setAngleBlue(TurretAngle);
         if (turretAim.poseRobotX > 35) {
             outtake.shootFar();
+            outtake.hoodServoRelative(turretAim.distance);
         } else {
             outtake.activateShooterRelative(turretAim.distance);
+            outtake.hoodServoRelative(turretAim.distance);
         }
-        outtake.hoodServoRelative(turretAim.distance);
         telemetry.addData("target angle", turretAim.blueAngle);
         telemetry.addData("servo position", angle);
         telemetry.addData("hood position", ((0.00741 * turretAim.distance) - 0.16667));
