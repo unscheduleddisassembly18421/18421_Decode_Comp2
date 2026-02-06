@@ -93,7 +93,7 @@ public class RedAuto extends LinearOpMode{
                 .endTrajectory();
 
         TrajectoryActionBuilder redFarFirstPath = redFarMoveToShootingPose.fresh()//firstPathFarRed
-                .strafeToSplineHeading(new Vector2d(52, 57), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(54, 57), Math.toRadians(90))
                 .strafeToSplineHeading(new Vector2d(60, 57), Math.toRadians(90))
                 .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
                 .endTrajectory();
@@ -109,26 +109,31 @@ public class RedAuto extends LinearOpMode{
 
 
         TrajectoryActionBuilder redFarThirdPath = redFarSecondPath.fresh()//thirdPathFarRed
-                .strafeToSplineHeading(new Vector2d(0, 20),Math.toRadians(90))
-                .strafeToSplineHeading(new Vector2d(0,55),Math.toRadians(90))
-                .endTrajectory();
-
-
-        TrajectoryActionBuilder redFarFourthPath = redFarThirdPath.fresh()//fourthPathFarRed
-                .lineToY(10)
-                .strafeToSplineHeading(new Vector2d(24, 30), Math.toRadians(90))
-                .strafeToSplineHeading(new Vector2d(24, 55), Math.toRadians(90))
-                .strafeToSplineHeading(new Vector2d(60, 55), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(-2, 25),Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(-2,53),Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(-2, 25), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(14, 25), Math.toRadians(90))
+                .setTangent(Math.toRadians(90))
+                .lineToY(59)
                 .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
                 .endTrajectory();
 
-        TrajectoryActionBuilder redFarFifthPath = redFarFourthPath.fresh()//fifthPathFarRed
-                .strafeToSplineHeading(new Vector2d(56, 58), Math.toRadians(90))
+
+//        TrajectoryActionBuilder redFarFourthPath = redFarThirdPath.fresh()//fourthPathFarRed
+//                .lineToY(10)
+//                .strafeToSplineHeading(new Vector2d(24, 30), Math.toRadians(90))
+//                .strafeToSplineHeading(new Vector2d(24, 55), Math.toRadians(90))
+//                .strafeToSplineHeading(new Vector2d(60, 55), Math.toRadians(90))
+//                .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
+//                .endTrajectory();
+
+        TrajectoryActionBuilder redFarFifthPath = redFarThirdPath.fresh()//fifthPathFarRed
+                .strafeToSplineHeading(new Vector2d(56, 53), Math.toRadians(90))
                 .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
                 .endTrajectory();
 
         TrajectoryActionBuilder redFarSixthPath = redFarFifthPath.fresh()//sixthPathFarRed
-                .strafeToSplineHeading(new Vector2d(56, 58), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(56, 53), Math.toRadians(90))
                 .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
                 .endTrajectory();
         TrajectoryActionBuilder redFarThirdPathEnd = redFarSixthPath.fresh()
@@ -224,7 +229,7 @@ public class RedAuto extends LinearOpMode{
         Action RedFarMoveToShootingFirstPath = redFarFirstPath.build();
         Action RedFarMoveToShootingSecondPath = redFarSecondPath.build();
         Action RedFarMoveToShootingThirdPath = redFarThirdPath.build();
-        Action RedFarMoveToShootingFourthPath = redFarFourthPath.build();
+//        Action RedFarMoveToShootingFourthPath = redFarFourthPath.build();
         Action RedFarMoveToShootingFifthPath = redFarFifthPath.build();
         Action RedFarMoveToShootingSixthPath = redFarSixthPath.build();
         Action RedFarEnd = redFarThirdPathEnd.build();
@@ -259,7 +264,7 @@ public class RedAuto extends LinearOpMode{
                                     ),
                                     new SleepAction(0.15),
                                     shoot(),
-                                    new SleepAction(1.75),
+                                    new SleepAction(2.25),
                                     new ParallelAction(
                                             RedFarMoveToShootingFirstPath,
                                             intake()
@@ -276,10 +281,6 @@ public class RedAuto extends LinearOpMode{
                                     new SleepAction(1.75),
                                     new ParallelAction(
                                             RedFarMoveToShootingThirdPath,
-                                            intake()
-                                    ),
-                                    new ParallelAction(
-                                            RedFarMoveToShootingFourthPath,
                                             intake()
                                     ),
                                     shoot(),

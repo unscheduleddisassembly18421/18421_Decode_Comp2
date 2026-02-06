@@ -117,21 +117,26 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
             TrajectoryActionBuilder blueFarThirdPath = blueFarSecondPath.fresh()//thirdPathFarRed
-                    .strafeToSplineHeading(new Vector2d(0, -20),Math.toRadians(270))
-                    .strafeToSplineHeading(new Vector2d(0,-58),Math.toRadians(270))
-                    .endTrajectory();
-
-
-            TrajectoryActionBuilder blueFarFourthPath = blueFarThirdPath.fresh()
-                    .lineToY(-10)
-                    .strafeToSplineHeading(new Vector2d(24, -30), Math.toRadians(270))
-                    .strafeToSplineHeading(new Vector2d(24, -59), Math.toRadians(270))
-                    .strafeToSplineHeading(new Vector2d(60, -59), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(-2, -25),Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(-2,-53),Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(-2, -25), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(14, -25), Math.toRadians(270))
+                    .setTangent(Math.toRadians(270))
+                    .lineToY(-59)
                     .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(270))
                     .endTrajectory();
 
 
-            TrajectoryActionBuilder blueFarFifthPath = blueFarFourthPath.fresh()
+//            TrajectoryActionBuilder blueFarFourthPath = blueFarThirdPath.fresh()
+//                    .lineToY(-10)
+//                    .strafeToSplineHeading(new Vector2d(24, -30), Math.toRadians(270))
+//                    .strafeToSplineHeading(new Vector2d(24, -59), Math.toRadians(270))
+//                    .strafeToSplineHeading(new Vector2d(60, -59), Math.toRadians(270))
+//                    .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(270))
+//                    .endTrajectory();
+
+
+            TrajectoryActionBuilder blueFarFifthPath = blueFarThirdPath.fresh()
                     .strafeToSplineHeading(new Vector2d(56, -58), Math.toRadians(270))
                     .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(270))
                     .endTrajectory();
@@ -251,7 +256,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
             Action BlueFarMoveToShootingFirstPath = blueFarFirstPath.build();
             Action BlueFarMoveToShootingSecondPath = blueFarSecondPath.build();
             Action BlueFarMoveToShootingThirdPath = blueFarThirdPath.build();
-            Action BlueFarMoveToShootingFourthPath = blueFarFourthPath.build();
+//            Action BlueFarMoveToShootingFourthPath = blueFarFourthPath.build();
             Action BlueFarMoveToShootingFifthPath = blueFarFifthPath.build();
             Action BlueFarMoveToShootingSixthPath = blueFarSixthPath.build();
             Action BlueFarEnd = blueFarThirdPathEnd.build();
@@ -288,8 +293,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                                                 BlueFarGoToShootingPosition,
                                                 intake()
                                         ),
+                                        new SleepAction(0.1),
                                         shoot(),
-                                        new SleepAction(1.75),
+                                        new SleepAction(2),
                                         new ParallelAction(
                                                 BlueFarMoveToShootingFirstPath,
                                                 intake()
@@ -306,13 +312,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                                         new SleepAction(1.75),
                                         new ParallelAction(
                                                 BlueFarMoveToShootingThirdPath,
-                                                intake()
-                                        ),
-                                        shoot(),
-
-                                        new SleepAction(1.75),
-                                        new ParallelAction(
-                                                BlueFarMoveToShootingFourthPath,
                                                 intake()
                                         ),
                                         shoot(),

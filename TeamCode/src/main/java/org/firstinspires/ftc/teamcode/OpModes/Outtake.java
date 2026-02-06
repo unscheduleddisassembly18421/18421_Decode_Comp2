@@ -28,7 +28,7 @@ public class Outtake {
     //Positions
     public static double HOODSERVO_START_POSITION  = 1;
     public static double HOODSERVO_SHOOT_POSITION = 0.45;
-    public static double LAUNCHERMOTOR_VELOCITY_ON_TELEOP = 1425;//max is around 2700
+    public static double LAUNCHERMOTOR_VELOCITY_ON_TELEOP = 1450;//max is around 2700
     public static double CLOSE_LAUNCHERMOTOR_VELOCITY_ON = 1100;//test
     public static double LAUNCHER_TOLERANCE = 0.995;
     public static double AUTO_LAUNCHERMOTOR_VELOCITY_ON = 1450;
