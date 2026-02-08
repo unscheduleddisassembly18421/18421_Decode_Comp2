@@ -243,6 +243,10 @@ public class DriverControl extends OpMode {
         slowDown = 1;
       }
 
+      if(gamepad2.b){
+        r.intake.intakeMotorForward();
+      }
+
       if(g1.dpad_up && !previousG1.dpad_up){
         targetGoal = TargetGoal.RED;
       }

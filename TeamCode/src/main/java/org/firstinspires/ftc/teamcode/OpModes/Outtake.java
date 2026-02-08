@@ -33,7 +33,8 @@ public class Outtake {
     public static double LAUNCHER_TOLERANCE = 0.995;
     public static double AUTO_LAUNCHERMOTOR_VELOCITY_ON = 1450;
     public static double AUTO_HOODSERVO_SHOOT = 0.5;
-    public static double BALLBLOCKSERVO_BLOCK_POSITION = 0.15;
+    public static double BALLBLOCKSERVO_BLOCK_POSITION = 0.2;
+    public static double LAUNCHERMOTOR_ON_AUTO = 1415;
 
     public static double newP = 525;
     public static double newI = 40;//tune more. stole from Brennan
@@ -123,14 +124,19 @@ public class Outtake {
         launcherMotor2.setVelocity(LAUNCHERMOTOR_VELOCITY_ON_TELEOP);
     }
 
+    public void shootFarAuto(){
+        launcherMotor1.setVelocity(LAUNCHERMOTOR_ON_AUTO);
+        launcherMotor2.setVelocity(LAUNCHERMOTOR_ON_AUTO);
+    }
+
     public void hoodServoShoot(){
         hoodServo.setPosition(HOODSERVO_SHOOT_POSITION);
         hoodServo2.setPosition(HOODSERVO_SHOOT_POSITION);
     }
 
     public void ballBlockServoStart(){
-        ballBlockServo1.setPosition(0.11);
-        ballBlockServo2.setPosition(0.11);
+        ballBlockServo1.setPosition(0.09);
+        ballBlockServo2.setPosition(0.08);
     }
 
     public void ballBlocKServoBlock(){
@@ -173,6 +179,7 @@ public class Outtake {
         launcherMotor1.setVelocity(velocity);
         launcherMotor2.setVelocity(velocity);
     }
+
 
     public double getVelocity1(){
         return (launcherMotor1.getVelocity());

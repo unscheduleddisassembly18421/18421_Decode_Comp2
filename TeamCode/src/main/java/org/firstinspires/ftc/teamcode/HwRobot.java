@@ -30,8 +30,8 @@ public class HwRobot {
     public static Pose2d blueGoalPose = new Pose2d(-66, -70, 0);//find real pose
     public static Pose2d redGoalPose = new Pose2d(-55, 70, 0);//find real pose
 
-    Pose2d blueAutoGoalPose = new Pose2d(-66, -66, 0);
-    Pose2d redGoalAutoPose = new Pose2d(-66, 66, 0);
+    Pose2d blueAutoGoalPose = new Pose2d(-65, -67, 0);
+    Pose2d redGoalAutoPose = new Pose2d(-67, 70, 0);
 
     public HwRobot(Telemetry t, HardwareMap hwm) {
         hardwareMap = hwm;
@@ -54,12 +54,12 @@ public class HwRobot {
 
     public void shiftGoalRight() {
         redGoalPose = new Pose2d(redGoalPose.position.x + 2, redGoalPose.position.y, 0);
-        blueGoalPose = new Pose2d(blueGoalPose.position.x + 2, blueGoalPose.position.y, 0);
+        blueGoalPose = new Pose2d(blueGoalPose.position.x - 2, blueGoalPose.position.y, 0);
     }
 
     public void shiftGoalLeft() {
         redGoalPose = new Pose2d(redGoalPose.position.x - 2, redGoalPose.position.y, 0);
-        blueGoalPose = new Pose2d(blueGoalPose.position.x - 2, blueGoalPose.position.y, 0);
+        blueGoalPose = new Pose2d(blueGoalPose.position.x + 2, blueGoalPose.position.y, 0);
     }
 
 
@@ -194,7 +194,7 @@ public class HwRobot {
         turret.setAngleRed(TurretAngle);
         outtake.hoodServoRelative(turretAim.distance);
         if (turretAim.poseRobotX > 35) {
-            outtake.shootFar();
+            outtake.shootFarAuto();
         } else {
             outtake.activateShooterRelative(turretAim.distance);
         }
@@ -239,6 +239,7 @@ public class HwRobot {
 
     public void aimTurretBlueAuto() {
         TurretAim turretAim = new TurretAim(drive.localizer.getPose(), blueAutoGoalPose);
+
         double TurretAngle;
         double angle;
         if (turretAim.blueAngle > 180) {
@@ -254,7 +255,7 @@ public class HwRobot {
         }
         turret.setAngleBlue(TurretAngle);
         if (turretAim.poseRobotX > 35) {
-            outtake.shootFar();
+            outtake.shootFarAuto();
             outtake.hoodServoRelative(turretAim.distance);
         } else {
             outtake.activateShooterRelative(turretAim.distance);
