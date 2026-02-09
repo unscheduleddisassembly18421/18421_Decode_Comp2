@@ -49,7 +49,7 @@ public class RedAuto extends LinearOpMode{
             telemetry.addData(" AUTO SELECTED", autoSelector);
             telemetry.addLine("D-Pad Up for Red Far");
             telemetry.addLine("D-Pad Right for Red Near");
-            telemetry.addLine("D-Pad Down for Red Far 9 Ball");
+            telemetry.addLine("D-Pad Down for Red Near 18 Ball");
             telemetry.addLine("D-Pad Left for Red Far 12 Ball");
 
             telemetry.update();
@@ -64,7 +64,7 @@ public class RedAuto extends LinearOpMode{
 
             }else if (gamepad1.dpad_down) {
 
-                autoSelector = Automonous.AutoSelector.RED_FAR_9_BALL;
+                autoSelector = Automonous.AutoSelector.RED_NEAR_18_BALL;
 
 
             }else if (gamepad1.dpad_left) {
@@ -89,7 +89,7 @@ public class RedAuto extends LinearOpMode{
         } else if (autoSelector == Automonous.AutoSelector.RED_NEAR) {
             r.drive.localizer.setPose(redStartNear);
 
-        } else if (autoSelector == Automonous.AutoSelector.RED_FAR_9_BALL) {
+        } else if (autoSelector == Automonous.AutoSelector.RED_NEAR_18_BALL) {
             r.drive.localizer.setPose(redStartFar);
 
         } else if (autoSelector == Automonous.AutoSelector.RED_FAR_12_BALL) {
@@ -117,15 +117,11 @@ public class RedAuto extends LinearOpMode{
                 .endTrajectory();
 
 
-
         TrajectoryActionBuilder redFarThirdPath = redFarSecondPath.fresh()//thirdPathFarRed
                 .strafeToSplineHeading(new Vector2d(14, 14), Math.toRadians(90))
                 .strafeToSplineHeading(new Vector2d(14, 56), Math.toRadians(90),
                         new TranslationalVelConstraint(45))
-                //.strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
 
-                //.strafeToSplineHeading(new Vector2d(-5, 20),Math.toRadians(90))
-                //.strafeToSplineHeading(new Vector2d(-5,50),Math.toRadians(90))
                 .endTrajectory();
 
 
@@ -134,12 +130,7 @@ public class RedAuto extends LinearOpMode{
                 .strafeToSplineHeading(new Vector2d(-3,52),Math.toRadians(90))
                 .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
 
-                //.lineToY(15)
-                //.strafeToSplineHeading(new Vector2d(14, 15), Math.toRadians(90))
-                //.strafeToSplineHeading(new Vector2d(14, 56), Math.toRadians(90),
-                //        new TranslationalVelConstraint(55))
-                //.strafeToSplineHeading(new Vector2d(60, 59), Math.toRadians(90))
-                //.strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
+
                 .endTrajectory();
 
         TrajectoryActionBuilder redFarFifthPath = redFarFourthPath.fresh()//fifthPathFarRed
@@ -157,36 +148,34 @@ public class RedAuto extends LinearOpMode{
                 .endTrajectory();
 
 
-        //RED FAR 9 BALL
-        TrajectoryActionBuilder redFar9BMoveToShootingPose = r.drive.actionBuilder(redStartFar9Ball)
-                .lineToXSplineHeading(59,Math.toRadians(90))
-                .endTrajectory();
-
-        TrajectoryActionBuilder redFar9BFirstPath = redFar9BMoveToShootingPose.fresh()
-                .splineToLinearHeading(new Pose2d(38, 12, Math.toRadians(90)), Math.toRadians(90))
-                .setTangent(Math.toRadians(90))
-                .lineToY(55)
-                .splineToLinearHeading(new Pose2d(62,12, Math.toRadians(90)), Math.toRadians(10))
-                .endTrajectory();
-
-        TrajectoryActionBuilder redFar9BSecondPath = redFar9BFirstPath.fresh()
-                .setTangent(Math.toRadians(90))
-                .splineToLinearHeading(new Pose2d(12, 12, Math.toRadians(90)), Math.toRadians(90))
-                .setTangent(Math.toRadians(90))
-                .lineToY(55)
-                .strafeToLinearHeading(new Vector2d(62, 12), Math.toRadians(90))
-                .endTrajectory();
-
-        TrajectoryActionBuilder redFar9BThirdPath = redFar9BSecondPath.fresh()
-                .splineToLinearHeading(new Pose2d(-12, -12, Math.toRadians(90)), Math.toRadians(90))
-                .lineToY(55)
-                .setTangent(Math.toRadians(-45))
-                .splineToLinearHeading(new Pose2d(62, 12, Math.toRadians(90)), Math.toRadians(-30))
+        //RED NEAR 18 BALL
+        TrajectoryActionBuilder redNear18BMoveToShootingPose = r.drive.actionBuilder(redStartNear)
 
                 .endTrajectory();
 
-        TrajectoryActionBuilder redFar9BThirdPathEnd = redFar9BThirdPath.fresh()
-                .strafeToLinearHeading(new Vector2d(35, 12), Math.toRadians(90))
+        TrajectoryActionBuilder redNear18BFirstPath = redNear18BMoveToShootingPose.fresh()
+
+                .endTrajectory();
+
+        TrajectoryActionBuilder redNear18BSecondPath = redNear18BFirstPath.fresh()
+
+                .endTrajectory();
+
+        TrajectoryActionBuilder redNear18BThirdPath = redNear18BSecondPath.fresh()
+
+
+                .endTrajectory();
+
+        TrajectoryActionBuilder redNear18BFourthPath = redNear18BThirdPath.fresh()
+
+
+                .endTrajectory();
+
+        TrajectoryActionBuilder redNear18BFifthPath = redNear18BFourthPath.fresh()
+
+                .endTrajectory();
+
+        TrajectoryActionBuilder redNear18BFifthPathEnd = redNear18BFifthPath.fresh()
 
                 .endTrajectory();
 
@@ -276,12 +265,14 @@ public class RedAuto extends LinearOpMode{
         Action RedFarMoveToShootingSixthPath = redFarSixthPath.build();
         Action RedFarEnd = redFarThirdPathEnd.build();
 
-        //RED FAR 9 BALL
-        Action RedFar9BallGoToShootingPosition = redFar9BMoveToShootingPose.build();
-        Action RedFar9BallMoveToShootingFirstPath = redFar9BFirstPath.build();
-        Action RedFar9BallMoveToShootingSecondPath = redFar9BSecondPath.build();
-        Action RedFar9BallMoveToShootingThirdPath = redFar9BThirdPath.build();
-        Action RedFar9BallEnd = redFar9BThirdPathEnd.build();
+        //RED NEAR 18 BALL
+        Action RedNear18BallGoToShootingPosition = redNear18BMoveToShootingPose.build();
+        Action RedNear18BallMoveToShootingFirstPath = redNear18BFirstPath.build();
+        Action RedNear18BallMoveToShootingSecondPath = redNear18BSecondPath.build();
+        Action RedNear18BallMoveToShootingThirdPath = redNear18BThirdPath.build();
+        Action RedNear18BallMoveToShootingFourthPath = redNear18BFourthPath.build();
+        Action RedNear18BallMoveToShootingFifthPath = redNear18BFifthPath.build();
+        Action RedNear18BallEnd = redNear18BFifthPathEnd.build();
 
         //RED FAR 12 BALL (COMP 3)
         Action RedFar12BallGoToShootingPosition = redFar12BMoveToShootingPose.build();
@@ -403,39 +394,60 @@ public class RedAuto extends LinearOpMode{
                     )
             );
 
-        } else if (autoSelector == Automonous.AutoSelector.RED_FAR_9_BALL) {
+        } else if (autoSelector == Automonous.AutoSelector.RED_NEAR_18_BALL) {
             Actions.runBlocking(
                     new ParallelAction(
                             r.turnTurretRed(),
                             new SequentialAction(//can do turn to first angle here to speed up time
                                     new ParallelAction(
-                                            RedFar9BallGoToShootingPosition,
+                                            RedNear18BallGoToShootingPosition,
                                             intake()
                                     ),
                                     new SleepAction(0.75),
                                     shoot(),
                                     new SleepAction(1.75),
                                     new ParallelAction(
-                                            RedFar9BallMoveToShootingFirstPath,
+                                            RedNear18BallMoveToShootingFirstPath,
                                             intake()
                                     ),
                                     shoot(),
 
                                     new SleepAction(1.75),
                                     new ParallelAction(
-                                            RedFar9BallMoveToShootingSecondPath,
+                                            RedNear18BallMoveToShootingSecondPath,
                                             intake()
                                     ),
                                     shoot(),
 
+
                                     new SleepAction(1.75),
                                     new ParallelAction(
-                                            RedFar9BallMoveToShootingThirdPath,
+                                            RedNear18BallMoveToShootingThirdPath,
                                             intake()
                                     ),
                                     shoot(),
+
+
                                     new SleepAction(1.75),
-                                    RedFar9BallEnd
+                                    new ParallelAction(
+                                            RedNear18BallMoveToShootingFourthPath,
+                                            intake()
+                                    ),
+                                    shoot(),
+
+
+                                    new SleepAction(1.75),
+                                    new ParallelAction(
+                                            RedNear18BallMoveToShootingFifthPath,
+                                            intake()
+                                    ),
+                                    shoot(),
+
+
+                                    new SleepAction(1.75),
+                                    new ParallelAction(
+                                            RedNear18BallEnd
+                                    )
 
 
 
