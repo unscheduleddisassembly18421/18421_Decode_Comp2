@@ -104,7 +104,7 @@ public class RedAuto extends LinearOpMode{
 
         TrajectoryActionBuilder redFarFirstPath = redFarMoveToShootingPose.fresh()//firstPathFarRed
                 .strafeToSplineHeading(new Vector2d(9, 14), Math.toRadians(90))
-                .strafeToSplineHeading(new Vector2d(9, 56), Math.toRadians(90),
+                .strafeToSplineHeading(new Vector2d(9, 53), Math.toRadians(90),
                         new TranslationalVelConstraint(45))
                 //.strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
 
@@ -117,7 +117,7 @@ public class RedAuto extends LinearOpMode{
 
         TrajectoryActionBuilder redFarSecondPath = redFarFirstPath.fresh()//secondPathFarRed
                 .strafeToSplineHeading(new Vector2d(-3, 26),Math.toRadians(90))
-                .strafeToSplineHeading(new Vector2d(-3,52),Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(-3,50),Math.toRadians(90))
                 .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
 
                 //.strafeToSplineHeading(new Vector2d(33, 28), Math.toRadians(90))
@@ -130,7 +130,7 @@ public class RedAuto extends LinearOpMode{
         TrajectoryActionBuilder redFarThirdPath = redFarSecondPath.fresh()//thirdPathFarRed
                 .strafeToSplineHeading(new Vector2d(33, 28), Math.toRadians(90))
                 .setTangent(Math.toRadians(90))
-                .lineToY(59)
+                .lineToY(55)
                 .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
 
 
@@ -154,12 +154,12 @@ public class RedAuto extends LinearOpMode{
                 .endTrajectory();
 
         TrajectoryActionBuilder redFarFifthPath = redFarFourthPath.fresh()//fifthPathFarRed
-                .strafeToSplineHeading(new Vector2d(56, 58), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(56, 58), Math.toRadians(50))
                 .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
                 .endTrajectory();
 
         TrajectoryActionBuilder redFarSixthPath = redFarFifthPath.fresh()//sixthPathFarRed
-                .strafeToSplineHeading(new Vector2d(56, 58), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(56, 58), Math.toRadians(50))
                 .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
                 .endTrajectory();
         TrajectoryActionBuilder redFarThirdPathEnd = redFarSixthPath.fresh()
@@ -257,7 +257,7 @@ public class RedAuto extends LinearOpMode{
 
 
         TrajectoryActionBuilder redNearFourthPath = redNearSecondPath.fresh()//thirdPathNearRed
-                .strafeToSplineHeading(new Vector2d(4, 20), Math.toRadians(90))
+                //.strafeToSplineHeading(new Vector2d(4, 20), Math.toRadians(90))
                 .strafeToSplineHeading(new Vector2d(-12, 25), Math.toRadians(90),
                         new TranslationalVelConstraint(45))
                 .setTangent(Math.toRadians(90))
