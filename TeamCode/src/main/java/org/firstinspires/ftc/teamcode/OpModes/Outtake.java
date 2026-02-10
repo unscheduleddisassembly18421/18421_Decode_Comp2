@@ -34,7 +34,7 @@ public class Outtake {
     public static double AUTO_LAUNCHERMOTOR_VELOCITY_ON = 1450;
     public static double AUTO_HOODSERVO_SHOOT = 0.5;
     public static double BALLBLOCKSERVO_BLOCK_POSITION = 0.2;
-    public static double LAUNCHERMOTOR_ON_AUTO = 1415;
+    public static double LAUNCHERMOTOR_ON_AUTO = 1395;
 
     public static double newP = 525;
     public static double newI = 40;//tune more. stole from Brennan

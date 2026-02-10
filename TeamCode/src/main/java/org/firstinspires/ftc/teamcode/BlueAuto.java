@@ -52,7 +52,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                 telemetry.addData(" AUTO SELECTED", autoSelector);
                 telemetry.addLine("D-Pad Up for Blue Far");
                 telemetry.addLine("D-Pad Right for Blue Near");
-                telemetry.addLine("D-Pad Down for Blue Far 9 Ball");
+                telemetry.addLine("D-Pad Down for Blue Near 18 Ball");
                 telemetry.addLine("D-Pad Left for Blue Far 12 Ball");
                 telemetry.update();
 
@@ -66,7 +66,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
                 } else if (gamepad1.dpad_down) {
 
-                    autoSelector = Automonous.AutoSelector.BLUE_FAR_9_BALL;
+                    autoSelector = Automonous.AutoSelector.BLUE_NEAR_18_BALL;
 
                 } else if (gamepad1.dpad_left) {
 
@@ -92,8 +92,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
             } else if (autoSelector == Automonous.AutoSelector.BLUE_NEAR) {
                 r.drive.localizer.setPose(blueStartNear);
 
-            } else if (autoSelector == Automonous.AutoSelector.BLUE_FAR_9_BALL) {
-                r.drive.localizer.setPose(blueStartFar);
+            } else if (autoSelector == Automonous.AutoSelector.BLUE_NEAR_18_BALL) {
+                r.drive.localizer.setPose(blueStartNear);
                 
             }else if (autoSelector == Automonous.AutoSelector.BLUE_FAR_12_BALL) {
                 r.drive.localizer.setPose(blueStartFar);
