@@ -109,7 +109,7 @@ public class DriverControl extends OpMode {
   public Pose2d redStartPose = new Pose2d(65,-67,Math.toRadians(180));
   public Pose2d middleShootPose = new Pose2d(63, 0, Math.toRadians(180));
 
-  public enum TargetGoal{
+  public enum TargetGoal {
     BLUE, RED
   }
 

@@ -142,8 +142,8 @@ public class RedAuto extends LinearOpMode{
 
 
         TrajectoryActionBuilder redFarFourthPath = redFarThirdPath.fresh()//fourthPathFarRed
-                .strafeToSplineHeading(new Vector2d(52, 55), Math.toRadians(70))
-                .strafeToSplineHeading(new Vector2d(62, 55), Math.toRadians(65))
+                //.strafeToSplineHeading(new Vector2d(62, 55), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(62, 55), Math.toRadians(90))
                 .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
 
                 //.strafeToSplineHeading(new Vector2d(-3, 26),Math.toRadians(90))
@@ -154,12 +154,12 @@ public class RedAuto extends LinearOpMode{
                 .endTrajectory();
 
         TrajectoryActionBuilder redFarFifthPath = redFarFourthPath.fresh()//fifthPathFarRed
-                .strafeToSplineHeading(new Vector2d(56, 58), Math.toRadians(50))
+                .strafeToSplineHeading(new Vector2d(56, 58), Math.toRadians(90))
                 .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
                 .endTrajectory();
 
         TrajectoryActionBuilder redFarSixthPath = redFarFifthPath.fresh()//sixthPathFarRed
-                .strafeToSplineHeading(new Vector2d(56, 58), Math.toRadians(50))
+                .strafeToSplineHeading(new Vector2d(56, 58), Math.toRadians(90))
                 .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
                 .endTrajectory();
         TrajectoryActionBuilder redFarThirdPathEnd = redFarSixthPath.fresh()
@@ -239,14 +239,14 @@ public class RedAuto extends LinearOpMode{
 
 
         TrajectoryActionBuilder redNearFirstPath = redNearMoveToShootingPose.fresh()//firstPathNearRed
-                .strafeToSplineHeading(new Vector2d(14, 33), Math.toRadians(90))
-                .strafeToSplineHeading(new Vector2d(14, 58), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(17, 30), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(17, 58), Math.toRadians(90))
                 .strafeToSplineHeading(new Vector2d(-12, 12), Math.toRadians(90))
                 .endTrajectory();
 
         TrajectoryActionBuilder redNearSecondPath = redNearFirstPath.fresh()//secondPathNearRed
-                .strafeToSplineHeading(new Vector2d(33, 25), Math.toRadians(90))
-                .strafeToSplineHeading(new Vector2d(33, 58), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(40, 23), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(40, 58), Math.toRadians(90))
                 .strafeToSplineHeading(new Vector2d(-12, 12), Math.toRadians(90))
                 .endTrajectory();
 
@@ -257,11 +257,9 @@ public class RedAuto extends LinearOpMode{
 
 
         TrajectoryActionBuilder redNearFourthPath = redNearSecondPath.fresh()//thirdPathNearRed
-                //.strafeToSplineHeading(new Vector2d(4, 20), Math.toRadians(90))
-                .strafeToSplineHeading(new Vector2d(-12, 25), Math.toRadians(90),
-                        new TranslationalVelConstraint(45))
+                .strafeToSplineHeading(new Vector2d(-12, 25), Math.toRadians(90))
                 .setTangent(Math.toRadians(90))
-                .lineToY(58)
+                .lineToY(58, new TranslationalVelConstraint(40))
                 .strafeToSplineHeading(new Vector2d(-12, 12), Math.toRadians(90))
                 .endTrajectory();
 
@@ -317,15 +315,17 @@ public class RedAuto extends LinearOpMode{
                     new ParallelAction(
                             r.turnTurretRed(),
                             new SequentialAction(//can do turn to first angle here to speed up time
-                                    new InstantAction(()->r.redGoalAutoPose = new Pose2d(-63, 43,0)),
+                                    new InstantAction(()->r.redGoalAutoPose = new Pose2d(-74, 49,0)),
+                                    //tweak this goal pose for preloaded far shoot
                                     new ParallelAction(
                                             RedFarGoToShootingPosition,
                                             intake()
                                     ),
-                                    new SleepAction(0.45),
+                                    new SleepAction(0.5),
                                     shoot(),
                                     new SleepAction(0.9),
-                                    new InstantAction(()->r.redGoalAutoPose = new Pose2d(-67, 57,0)),
+                                    new InstantAction(()->r.redGoalAutoPose = new Pose2d(-74, 57,0)),
+                                    //tweak this goal pose for rest of far shoots
                                     new ParallelAction(
                                             RedFarMoveToShootingFirstPath,
                                             intake()

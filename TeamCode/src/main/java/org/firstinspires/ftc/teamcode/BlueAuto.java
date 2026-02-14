@@ -130,7 +130,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
             TrajectoryActionBuilder blueFarThirdPath = blueFarSecondPath.fresh()//thirdPathFarRed
-                    .strafeToSplineHeading(new Vector2d(33, -28), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(35, -28), Math.toRadians(270))
                     .setTangent(Math.toRadians(270))
                     .lineToY(-59)
                     .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(270))
@@ -143,8 +143,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
             TrajectoryActionBuilder blueFarFourthPath = blueFarThirdPath.fresh()
                     .strafeToSplineHeading(new Vector2d(52, -55), Math.toRadians(270))
-                    .strafeToSplineHeading(new Vector2d(62, -55), Math.toRadians(290))
-                    .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(295))
+                    .strafeToSplineHeading(new Vector2d(62, -55), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(270))
 
                     //.strafeToSplineHeading(new Vector2d(-5, -26),Math.toRadians(270))
                     //.strafeToSplineHeading(new Vector2d(-5,-52),Math.toRadians(270))
@@ -217,8 +217,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                     .endTrajectory();
 
             TrajectoryActionBuilder blueNearSecondPath = blueNearFirstPath.fresh()//secondPathNearBlue
-                    .strafeToSplineHeading(new Vector2d(38, -23), Math.toRadians(270))
-                    .strafeToSplineHeading(new Vector2d(38, -58), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(40, -23), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(40, -58), Math.toRadians(270))
                     .strafeToSplineHeading(new Vector2d(-12, -12), Math.toRadians(270))
                     .endTrajectory();
 
@@ -322,21 +322,23 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                         new ParallelAction(
                                 r.turnTurretBlue(),
                                 new SequentialAction(//can do turn to first angle here to speed up time
-                                        new InstantAction(()->r.blueAutoGoalPose = new Pose2d(-65, -55,0)),
+                                        new InstantAction(()->r.blueAutoGoalPose = new Pose2d(-70, -67,0)),
+                                        //tweak THIS GOAL POSE FOR preloaded FAR SHOOT
                                         new ParallelAction(
                                                 BlueFarGoToShootingPosition,
                                                 intake()
                                         ),
-                                        new SleepAction(0.25),
+                                        new SleepAction(0.75),
                                         shoot(),
                                         new SleepAction(2),
-                                        new InstantAction(()->r.blueAutoGoalPose = new Pose2d(-65, -67,0)),
+                                        new InstantAction(()->r.blueAutoGoalPose = new Pose2d(-70, -67,0)),
+                                        //tweak for the rest of the far shoots
                                         new ParallelAction(
                                                 BlueFarMoveToShootingFirstPath,
                                                 intake()
                                         ),
 
-                                        new SleepAction(1),
+                                        new SleepAction(0.5),
                                         new ParallelAction(
                                                 BlueFarMoveToShootingSecondPath,
                                                 intake()
@@ -348,11 +350,16 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                                                 BlueFarMoveToShootingThirdPath,
                                                 intake()
                                         ),
+                                        shoot(),
+
+
+                                        new SleepAction(1),
                                         new ParallelAction(
                                                 BlueFarMoveToShootingFourthPath,
                                                 intake()
                                         ),
                                         shoot(),
+
                                         new SleepAction(1),
                                         new ParallelAction(
                                                 BlueFarMoveToShootingFifthPath,
@@ -430,6 +437,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
             //Im pushing htis again
             }else if (autoSelector == Automonous.AutoSelector.BLUE_NEAR) {
                 Actions.runBlocking(
+                        //tweak auto goal pose in HwRobot
                         new ParallelAction(
                                 r.turnTurretBlue(),
                                 new SequentialAction(
@@ -437,7 +445,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                                                 BlueNearGoToShootingPosition,
                                                 intake()
                                         ),
-                                        new SleepAction(0.15),
+                                        new SleepAction(0.5),
                                         nearShoot(),
 
                                         new SleepAction(2),

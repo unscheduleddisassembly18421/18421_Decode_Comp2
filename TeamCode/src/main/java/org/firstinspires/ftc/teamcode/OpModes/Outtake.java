@@ -19,8 +19,8 @@ public class Outtake {
     Telemetry telemetry = null;
 
     //hardware
-    private  DcMotorEx launcherMotor1 = null;//left one
-    private DcMotorEx launcherMotor2 = null;
+    public  DcMotorEx launcherMotor1 = null;//left one
+    public DcMotorEx launcherMotor2 = null;
     private Servo hoodServo = null;
     private Servo ballBlockServo1 = null;
     private Servo ballBlockServo2 = null;
@@ -65,7 +65,7 @@ public class Outtake {
         //flywheel motor stuff
 
         launcherMotor1.setDirection(DcMotor.Direction.FORWARD);
-        launcherMotor2.setDirection(DcMotor.Direction.FORWARD);
+        launcherMotor2.setDirection(DcMotor.Direction.REVERSE);
         launcherMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         launcherMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         launcherMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -186,7 +186,7 @@ public class Outtake {
     }
 
     public double getVelocity2(){
-        return -(launcherMotor2.getVelocity());
+        return (launcherMotor2.getVelocity());
     }
 
     public void deactivateShooter(){
