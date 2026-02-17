@@ -64,7 +64,7 @@ public class RedAuto extends LinearOpMode{
 
             }else if (gamepad1.dpad_down) {
 
-                autoSelector = Automonous.AutoSelector.RED_NEAR_18_BALL;
+                autoSelector = Automonous.AutoSelector.RED_FAR_18_BALL;
 
 
             }else if (gamepad1.dpad_left) {
@@ -78,7 +78,7 @@ public class RedAuto extends LinearOpMode{
 
         Pose2d redStartNear = new Pose2d(-50, 52, Math.toRadians(314));
 
-        Pose2d redStartNear18Ball = new Pose2d(63, 12, Math.toRadians(314));
+        Pose2d redStartFar18Ball = new Pose2d(63, 12, Math.toRadians(314));
 
         Pose2d redStartFar12Ball = new Pose2d(-50, 52, Math.toRadians(180));
 
@@ -89,7 +89,7 @@ public class RedAuto extends LinearOpMode{
         } else if (autoSelector == Automonous.AutoSelector.RED_NEAR) {
             r.drive.localizer.setPose(redStartNear);
 
-        } else if (autoSelector == Automonous.AutoSelector.RED_NEAR_18_BALL) {
+        } else if (autoSelector == Automonous.AutoSelector.RED_FAR_18_BALL) {
             r.drive.localizer.setPose(redStartFar);
 
         } else if (autoSelector == Automonous.AutoSelector.RED_FAR_12_BALL) {
@@ -97,7 +97,7 @@ public class RedAuto extends LinearOpMode{
         }
 
 
-        // RED FAR (COMP 3)
+        // RED FAR (STATES)
         TrajectoryActionBuilder redFarMoveToShootingPose = r.drive.actionBuilder(redStartFar)//moveToShootPoseFarRed
                 .lineToXSplineHeading(57, Math.toRadians(90))
                 .endTrajectory();
@@ -168,71 +168,91 @@ public class RedAuto extends LinearOpMode{
                 .endTrajectory();
 
 
-        //RED NEAR 18 BALL
-        TrajectoryActionBuilder redNear18BMoveToShootingPose = r.drive.actionBuilder(redStartNear18Ball)
+        //RED FAR 18 BALL (STATES)
+        TrajectoryActionBuilder redFar18BMoveToShootingPose = r.drive.actionBuilder(redStartFar18Ball) // shoots near preloaded(move to shoot pose) red far 18B
+                .strafeToSplineHeading(new Vector2d(-12, 12), Math.toRadians(90))
+                .endTrajectory();
+
+        TrajectoryActionBuilder redFar18BFirstPath = redFar18BMoveToShootingPose.fresh() // intakes 3rd stack & shoots near (first path) red far 18B
+                .setTangent(Math.toRadians(90))
+                .lineToY(59) // .strafeToSplineHeading(new Vector2d(-12, 59), Math.toRadians(90))
+                .lineToY(12) //  .strafeToSplineHeading(new Vector2d(-12, 12), Math.toRadians(90))
+                .endTrajectory();
+
+        TrajectoryActionBuilder redFar18BSecondPath = redFar18BFirstPath.fresh() // intakes 2nd stack (second path) red far 18B
+                .strafeToSplineHeading(new Vector2d(9, 25), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(9, 53), Math.toRadians(90))
+                .endTrajectory();
+
+        TrajectoryActionBuilder redFar18BThirdPath = redFar18BSecondPath.fresh() // opens the gate and shoots far 2nd stack (third path) red far 18B
+                .strafeToSplineHeading(new Vector2d(-4,57),Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(-4, 52), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
 
                 .endTrajectory();
 
-        TrajectoryActionBuilder redNear18BFirstPath = redNear18BMoveToShootingPose.fresh()
-
+        TrajectoryActionBuilder redFar18BFourthPath = redFar18BThirdPath.fresh() // intakes 1st stack & shoots far (fourth path) red far 18B
+                .strafeToSplineHeading(new Vector2d(33, 28), Math.toRadians(90))
+                .setTangent(Math.toRadians(90))
+                .lineToY(55)
+                .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
                 .endTrajectory();
 
-        TrajectoryActionBuilder redNear18BSecondPath = redNear18BFirstPath.fresh()
-
+        TrajectoryActionBuilder redFar18BFifthPath = redFar18BFourthPath.fresh() // intakes & shoots far human player zone (fifth path) red far 18B
+                .strafeToSplineHeading(new Vector2d(56, 58), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
                 .endTrajectory();
 
-        TrajectoryActionBuilder redNear18BThirdPath = redNear18BSecondPath.fresh()
-
-
+        TrajectoryActionBuilder redFar18BFifthPathEnd = redFar18BFifthPath.fresh() // intakes & shoots far human player zone overflow (fifth path end) red far 18B
+                .strafeToSplineHeading(new Vector2d(56, 58), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
                 .endTrajectory();
 
-        TrajectoryActionBuilder redNear18BFourthPath = redNear18BThirdPath.fresh()
 
-
-                .endTrajectory();
-
-        TrajectoryActionBuilder redNear18BFifthPath = redNear18BFourthPath.fresh()
-
-                .endTrajectory();
-
-        TrajectoryActionBuilder redNear18BFifthPathEnd = redNear18BFifthPath.fresh()
-
-                .endTrajectory();
 
 
         //RED FAR 12 BALL (COMP 3)
-        TrajectoryActionBuilder redFar12BMoveToShootingPose = r.drive.actionBuilder(redStartFar)
+        TrajectoryActionBuilder redFar12BMoveToShootingPose = r.drive.actionBuilder(redStartFar) // shoots far preloaded (move to shoot pose) red far 12B
                 .lineToXSplineHeading(57, Math.toRadians(90))
                 .endTrajectory();
 
-        TrajectoryActionBuilder redFar12BFirstPath = redFar12BMoveToShootingPose.fresh()
-                .strafeToSplineHeading(new Vector2d(34, 28), Math.toRadians(90))
+        TrajectoryActionBuilder redFar12BFirstPath = redFar12BMoveToShootingPose.fresh() // intakes & shoots far human player zone (first path) red far 12B
+                .strafeToSplineHeading(new Vector2d(62, 55), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
+
+                .endTrajectory();
+
+        TrajectoryActionBuilder redFar12BSecondPath = redFar12BFirstPath.fresh() // intakes 1st stack & shoots far (second path) red far 12B
+                .strafeToSplineHeading(new Vector2d(33, 28), Math.toRadians(90))
                 .setTangent(Math.toRadians(90))
-                .lineToY(59)
+                .lineToY(55)
                 .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
                 .endTrajectory();
 
-        TrajectoryActionBuilder redFar12BSecondPath = redFar12BFirstPath.fresh()
-                .strafeToSplineHeading(new Vector2d(14, 25), Math.toRadians(90))
-                .setTangent(Math.toRadians(90))
-                .lineToY(59)
+
+        TrajectoryActionBuilder redFar12BThirdPath = redFar12BSecondPath.fresh() // intakes 2nd stack & shoots far (third path) red far 12B
+                .strafeToSplineHeading(new Vector2d(9, 14), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(9, 53), Math.toRadians(90),
+                        new TranslationalVelConstraint(45))
                 .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
                 .endTrajectory();
 
-        TrajectoryActionBuilder redFar12BThirdPath = redFar12BSecondPath.fresh()
-                .strafeToSplineHeading(new Vector2d(-12, 25), Math.toRadians(90))
+
+        TrajectoryActionBuilder redFar12BFourthPath = redFar12BThirdPath.fresh() // intakes 3rd stack & shoots far (fourth path) red far 12B
                 .setTangent(Math.toRadians(90))
-                .lineToY(59)
+                .strafeToSplineHeading(new Vector2d(-12, 30), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(-12, 54), Math.toRadians(90))
                 .strafeToSplineHeading(new Vector2d(60, 12), Math.toRadians(90))
                 .endTrajectory();
 
-        TrajectoryActionBuilder redFar12BThirdPathEnd = redFar12BThirdPath.fresh()
-                .lineToXSplineHeading(38, Math.toRadians(90))
+
+        TrajectoryActionBuilder redFar12BFourthPathEnd = redFar12BFourthPath.fresh() // leaves far shoot zone (fourth path end) red far 12B
+                .lineToXSplineHeading(35, Math.toRadians(90))
                 .endTrajectory();
 
 
 
-        //RED NEAR (COMP 3)
+        //RED NEAR (STATES)
         TrajectoryActionBuilder redNearMoveToShootingPose = r.drive.actionBuilder(redStartNear)//moveToShootPoseNearRed
                 .strafeToSplineHeading(new Vector2d(-12, 12), Math.toRadians(90))
                 .endTrajectory();
@@ -250,7 +270,7 @@ public class RedAuto extends LinearOpMode{
                 .strafeToSplineHeading(new Vector2d(-12, 12), Math.toRadians(90))
                 .endTrajectory();
 
-        TrajectoryActionBuilder redNearThirdPath = redNearSecondPath.fresh()//thirdPathNearRed
+        TrajectoryActionBuilder redNearThirdPath = redNearSecondPath.fresh()//thirdPathNearRed  * Opens the gate, don't use
                 .strafeToSplineHeading(new Vector2d(4, 12), Math.toRadians(90))
                 .strafeToSplineHeading(new Vector2d(4, 58), Math.toRadians(90))
                 .endTrajectory();
@@ -283,26 +303,27 @@ public class RedAuto extends LinearOpMode{
         Action RedFarMoveToShootingSixthPath = redFarSixthPath.build();
         Action RedFarEnd = redFarThirdPathEnd.build();
 
-        //RED NEAR 18 BALL
-        Action RedNear18BallGoToShootingPosition = redNear18BMoveToShootingPose.build();
-        Action RedNear18BallMoveToShootingFirstPath = redNear18BFirstPath.build();
-        Action RedNear18BallMoveToShootingSecondPath = redNear18BSecondPath.build();
-        Action RedNear18BallMoveToShootingThirdPath = redNear18BThirdPath.build();
-        Action RedNear18BallMoveToShootingFourthPath = redNear18BFourthPath.build();
-        Action RedNear18BallMoveToShootingFifthPath = redNear18BFifthPath.build();
-        Action RedNear18BallEnd = redNear18BFifthPathEnd.build();
+        //RED FAR 18 BALL
+        Action RedFar18BallGoToShootingPosition = redFar18BMoveToShootingPose.build();
+        Action RedFar18BallMoveToShootingFirstPath = redFar18BFirstPath.build();
+        Action RedFar18BallMoveToShootingSecondPath = redFar18BSecondPath.build();
+        Action RedFar18BallMoveToShootingThirdPath = redFar18BThirdPath.build();
+        Action RedFar18BallMoveToShootingFourthPath = redFar18BFourthPath.build();
+        Action RedFar18BallMoveToShootingFifthPath = redFar18BFifthPath.build();
+        Action RedFar18BallEnd = redFar18BFifthPathEnd.build();
 
         //RED FAR 12 BALL (COMP 3)
         Action RedFar12BallGoToShootingPosition = redFar12BMoveToShootingPose.build();
         Action RedFar12BallMoveToShootingFirstPath = redFar12BFirstPath.build();
         Action RedFar12BallMoveToShootingSecondPath = redFar12BSecondPath.build();
         Action RedFar12BallMoveToShootingThirdPath = redFar12BThirdPath.build();
-        Action RedFar12BallEnd = redFar12BThirdPathEnd.build();
+        Action RedFar12BallMoveToShootingFourthPath = redFar12BFourthPath.build();
+        Action RedFar12BallEnd = redFar12BFourthPathEnd.build();
 
 
         //RED NEAR
         Action RedNearGoToShootingPosition = redNearMoveToShootingPose.build();
-        Action RedNearMoveToShootingFirstPath = redNearMoveToShootingPose.build();
+        Action RedNearMoveToShootingFirstPath = redNearFirstPath.build();
         Action RedNearMoveToShootingSecondPath = redNearSecondPath.build();
         //Action RedNearMoveToShootingThirdPath = redNearThirdPath.build();
         Action RedNearMoveToShootingFourthPath = redNearFourthPath.build();
@@ -323,6 +344,7 @@ public class RedAuto extends LinearOpMode{
                                     ),
                                     new SleepAction(0.5),
                                     shoot(),
+
                                     new SleepAction(0.9),
                                     new InstantAction(()->r.redGoalAutoPose = new Pose2d(-74, 57,0)),
                                     //tweak this goal pose for rest of far shoots
@@ -414,43 +436,34 @@ public class RedAuto extends LinearOpMode{
                     )
             );
 
-        } else if (autoSelector == Automonous.AutoSelector.RED_NEAR_18_BALL) {
+        } else if (autoSelector == Automonous.AutoSelector.RED_FAR_18_BALL) {
             Actions.runBlocking(
                     new ParallelAction(
                             r.turnTurretRed(),
                             new SequentialAction(//can do turn to first angle here to speed up time
+                                    new InstantAction(()->r.redGoalAutoPose = new Pose2d(-74, 49,0)),
+                                    //tweak this goal pose for preloaded far shoot
+
                                     new ParallelAction(
-                                            RedNear18BallGoToShootingPosition,
+                                            RedFar18BallGoToShootingPosition,
                                             intake()
                                     ),
                                     new SleepAction(0.75),
                                     shoot(),
+
                                     new SleepAction(1.75),
+                                    new InstantAction(()->r.redGoalAutoPose = new Pose2d(-74, 57,0)),
+                                    //tweak this goal pose for rest of far shoots
+
                                     new ParallelAction(
-                                            RedNear18BallMoveToShootingFirstPath,
+                                            RedFar18BallMoveToShootingFirstPath,
                                             intake()
                                     ),
-                                    shoot(),
-
-                                    new SleepAction(1.75),
-                                    new ParallelAction(
-                                            RedNear18BallMoveToShootingSecondPath,
-                                            intake()
-                                    ),
-                                    shoot(),
 
 
                                     new SleepAction(1.75),
                                     new ParallelAction(
-                                            RedNear18BallMoveToShootingThirdPath,
-                                            intake()
-                                    ),
-                                    shoot(),
-
-
-                                    new SleepAction(1.75),
-                                    new ParallelAction(
-                                            RedNear18BallMoveToShootingFourthPath,
+                                            RedFar18BallMoveToShootingSecondPath,
                                             intake()
                                     ),
                                     shoot(),
@@ -458,7 +471,7 @@ public class RedAuto extends LinearOpMode{
 
                                     new SleepAction(1.75),
                                     new ParallelAction(
-                                            RedNear18BallMoveToShootingFifthPath,
+                                            RedFar18BallMoveToShootingThirdPath,
                                             intake()
                                     ),
                                     shoot(),
@@ -466,7 +479,23 @@ public class RedAuto extends LinearOpMode{
 
                                     new SleepAction(1.75),
                                     new ParallelAction(
-                                            RedNear18BallEnd
+                                            RedFar18BallMoveToShootingFourthPath,
+                                            intake()
+                                    ),
+                                    shoot(),
+
+
+                                    new SleepAction(1.75),
+                                    new ParallelAction(
+                                            RedFar18BallMoveToShootingFifthPath,
+                                            intake()
+                                    ),
+                                    shoot(),
+
+
+                                    new SleepAction(1.75),
+                                    new ParallelAction(
+                                            RedFar18BallEnd
                                     )
 
 

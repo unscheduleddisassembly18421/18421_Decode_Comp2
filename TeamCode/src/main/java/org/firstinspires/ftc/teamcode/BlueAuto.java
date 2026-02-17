@@ -66,7 +66,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
                 } else if (gamepad1.dpad_down) {
 
-                    autoSelector = Automonous.AutoSelector.BLUE_NEAR_18_BALL;
+                    autoSelector = Automonous.AutoSelector.BLUE_FAR_18_BALL;
 
                 } else if (gamepad1.dpad_left) {
 
@@ -80,7 +80,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
             Pose2d blueStartNear = new Pose2d(-50, -52, Math.toRadians(50));
 
-            Pose2d blueStartFar9Ball = new Pose2d(63, 12, Math.toRadians(180));
+            Pose2d blueStartFar18Ball = new Pose2d(63, 12, Math.toRadians(180));
 
             Pose2d blueStartFar12Ball = new Pose2d(63, -12, Math.toRadians(180));
 
@@ -92,7 +92,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
             } else if (autoSelector == Automonous.AutoSelector.BLUE_NEAR) {
                 r.drive.localizer.setPose(blueStartNear);
 
-            } else if (autoSelector == Automonous.AutoSelector.BLUE_NEAR_18_BALL) {
+            } else if (autoSelector == Automonous.AutoSelector.BLUE_FAR_18_BALL) {
                 r.drive.localizer.setPose(blueStartNear);
                 
             }else if (autoSelector == Automonous.AutoSelector.BLUE_FAR_12_BALL) {
@@ -172,35 +172,26 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 
-            //BLUE FAR 9 BALL
-            TrajectoryActionBuilder blueFar9BMoveToShootingPose = r.drive.actionBuilder(blueStartFar9Ball)
-                    .lineToX(55)
+            //BLUE FAR 18 BALL
+            TrajectoryActionBuilder blueFar18BMoveToShootingPose = r.drive.actionBuilder(blueStartFar18Ball)
 
                     .endTrajectory();
 
-            TrajectoryActionBuilder blueFar9BFirstPath = blueFar9BMoveToShootingPose.fresh()
-                    .splineToLinearHeading(new Pose2d(35, -35, Math.toRadians(270)), Math.toRadians(270))
-                    .setTangent(Math.toRadians(270))
-                    .lineToY(-55)
-                    .splineToLinearHeading(new Pose2d(55, -12, Math.toRadians(210)), Math.toRadians(10))
-                    .endTrajectory();
-
-            TrajectoryActionBuilder blueFar9BSecondPath = blueFar9BFirstPath.fresh()
-                    .splineToLinearHeading(new Pose2d(12, -35, Math.toRadians(270)), Math.toRadians(270))
-                    .setTangent(Math.toRadians(270))
-                    .lineToY(-55)
-                    .strafeToLinearHeading(new Vector2d(55, -12), Math.toRadians(270))
-                    .endTrajectory();
-
-            TrajectoryActionBuilder blueFar9BThirdPath = blueFar9BSecondPath.fresh()
-                    .splineToSplineHeading(new Pose2d(-12, -12, Math.toRadians(270)), Math.toRadians(90))
-                    .lineToY(-55)
-                    .setTangent(Math.toRadians(90))
-                    .splineToLinearHeading(new Pose2d(62, -12, Math.toRadians(270)), Math.toRadians(180))
+            TrajectoryActionBuilder blueFar18BFirstPath = blueFar18BMoveToShootingPose.fresh()
 
                     .endTrajectory();
-            TrajectoryActionBuilder blueFar9BThirdPathEnd = blueFar9BThirdPath.fresh()
-                    .strafeToLinearHeading(new Vector2d(35,-12), Math.toRadians(180))
+
+            TrajectoryActionBuilder blueFar18BSecondPath = blueFar18BFirstPath.fresh()
+
+                    .endTrajectory();
+
+            TrajectoryActionBuilder blueFar18BThirdPath = blueFar18BSecondPath.fresh()
+
+
+                    .endTrajectory();
+
+            TrajectoryActionBuilder blueFar18BThirdPathEnd = blueFar18BThirdPath.fresh()
+
                     .endTrajectory();
 
 
@@ -291,12 +282,12 @@ import com.qualcomm.robotcore.util.ElapsedTime;
             Action BlueFarMoveToShootingSixthPath = blueFarSixthPath.build();
             Action BlueFarEnd = blueFarThirdPathEnd.build();
 
-            //BLUE FAR 9 BALL
-            Action BlueFar9BallGoToShootingPosition = blueFar9BMoveToShootingPose.build();
-            Action BlueFar9BallMoveToShootingFirstPath = blueFar9BFirstPath.build();
-            Action BlueFar9BallMoveToShootingSecondPath = blueFar9BSecondPath.build();
-            Action BlueFar9BallMoveToShootingThirdPath = blueFar9BThirdPath.build();
-            Action BlueFar9BallEnd = blueFar9BThirdPathEnd.build();
+            //BLUE FAR 18 BALL
+            Action BlueFar18BallGoToShootingPosition = blueFar18BMoveToShootingPose.build();
+            Action BlueFar18BallMoveToShootingFirstPath = blueFar18BFirstPath.build();
+            Action BlueFar18BallMoveToShootingSecondPath = blueFar18BSecondPath.build();
+            Action BlueFar18BallMoveToShootingThirdPath = blueFar18BThirdPath.build();
+            Action BlueFar18BallEnd = blueFar18BThirdPathEnd.build();
 
             //BLUE FAR 12 BALL (COMP 3)
             Action BlueFar12BallGoToShootingPosition = blueFar12BMoveToShootingPose.build();
@@ -434,7 +425,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
                 );
 
-            //Im pushing htis again
+            //Im pushing hits again
             }else if (autoSelector == Automonous.AutoSelector.BLUE_NEAR) {
                 Actions.runBlocking(
                         //tweak auto goal pose in HwRobot
