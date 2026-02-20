@@ -161,7 +161,7 @@ public class Outtake {
 
     public void hoodServoRelative(double distance){
         double trueAngle;
-        double angle = -(0.00741 * distance) + 0.833334;
+        double angle = -(0.00741 * distance) + 0.433334;
         if(angle < 0.5){
             trueAngle = 0.5;
         } else if (angle > 1) {

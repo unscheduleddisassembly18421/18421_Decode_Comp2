@@ -74,11 +74,11 @@ public class RedAuto extends LinearOpMode{
 
         }
 
-        Pose2d redStartFar = new Pose2d(63, 12, Math.toRadians(180));
+        Pose2d redStartFar = new Pose2d(63, 14, Math.toRadians(180));
 
         Pose2d redStartNear = new Pose2d(-50, 52, Math.toRadians(314));
 
-        Pose2d redStartFar18Ball = new Pose2d(63, 12, Math.toRadians(314));
+        Pose2d redStartFar18Ball = new Pose2d(63, 14, Math.toRadians(314));
 
         Pose2d redStartFar12Ball = new Pose2d(-50, 52, Math.toRadians(180));
 
@@ -259,33 +259,39 @@ public class RedAuto extends LinearOpMode{
 
 
         TrajectoryActionBuilder redNearFirstPath = redNearMoveToShootingPose.fresh()//firstPathNearRed
-                .strafeToSplineHeading(new Vector2d(17, 30), Math.toRadians(90))
-                .strafeToSplineHeading(new Vector2d(17, 58), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(20, 30), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(20, 70), Math.toRadians(90))
                 .strafeToSplineHeading(new Vector2d(-12, 12), Math.toRadians(90))
                 .endTrajectory();
 
         TrajectoryActionBuilder redNearSecondPath = redNearFirstPath.fresh()//secondPathNearRed
-                .strafeToSplineHeading(new Vector2d(40, 23), Math.toRadians(90))
-                .strafeToSplineHeading(new Vector2d(40, 58), Math.toRadians(90))
-                .strafeToSplineHeading(new Vector2d(-12, 12), Math.toRadians(90))
+                .setTangent(Math.toRadians(90))
+                .lineToY(65, new TranslationalVelConstraint(30))
+                .strafeToSplineHeading(new Vector2d(-12, 40), Math.toRadians(90))
+
                 .endTrajectory();
 
         TrajectoryActionBuilder redNearThirdPath = redNearSecondPath.fresh()//thirdPathNearRed  * Opens the gate, don't use
-                .strafeToSplineHeading(new Vector2d(4, 12), Math.toRadians(90))
-                .strafeToSplineHeading(new Vector2d(4, 58), Math.toRadians(90))
-                .endTrajectory();
 
-
-        TrajectoryActionBuilder redNearFourthPath = redNearSecondPath.fresh()//thirdPathNearRed
-                .strafeToSplineHeading(new Vector2d(-12, 25), Math.toRadians(90))
-                .setTangent(Math.toRadians(90))
-                .lineToY(58, new TranslationalVelConstraint(40))
+                .strafeToSplineHeading(new Vector2d(10, 60), Math.toRadians(90))
                 .strafeToSplineHeading(new Vector2d(-12, 12), Math.toRadians(90))
                 .endTrajectory();
 
 
+        TrajectoryActionBuilder redNearFourthPath = redNearThirdPath.fresh()//thirdPathNearRed
+                 .strafeToSplineHeading(new Vector2d(42, 23), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(42, 70), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(-12, 12), Math.toRadians(90))
+                .endTrajectory();
+
+        TrajectoryActionBuilder redNearFifthPath =redNearFourthPath.fresh()
+                .strafeToSplineHeading(new Vector2d(14, 55), Math.toRadians(40))
+                .strafeToSplineHeading(new Vector2d(55, 55), Math.toRadians(40))
+                .strafeToSplineHeading(new Vector2d(-12, 12), Math.toRadians(90))
+                .endTrajectory();
+
         TrajectoryActionBuilder redNearThirdPathEnd = redNearFourthPath.fresh()//endRedNear
-                .strafeToSplineHeading(new Vector2d(4, 30), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(10, 30), Math.toRadians(90))
                 .endTrajectory();
 
 
@@ -325,8 +331,9 @@ public class RedAuto extends LinearOpMode{
         Action RedNearGoToShootingPosition = redNearMoveToShootingPose.build();
         Action RedNearMoveToShootingFirstPath = redNearFirstPath.build();
         Action RedNearMoveToShootingSecondPath = redNearSecondPath.build();
-        //Action RedNearMoveToShootingThirdPath = redNearThirdPath.build();
+        Action RedNearMoveToShootingThirdPath = redNearThirdPath.build();
         Action RedNearMoveToShootingFourthPath = redNearFourthPath.build();
+        Action RedNearMoveToShootingFifthPath = redNearFifthPath.build();
         Action RedNearEnd = redNearThirdPathEnd.build();
 
         waitForStart();
@@ -336,7 +343,7 @@ public class RedAuto extends LinearOpMode{
                     new ParallelAction(
                             r.turnTurretRed(),
                             new SequentialAction(//can do turn to first angle here to speed up time
-                                    new InstantAction(()->r.redGoalAutoPose = new Pose2d(-74, 49,0)),
+                                    new InstantAction(()->r.redGoalAutoPose = new Pose2d(-74, 60,0)),
                                     //tweak this goal pose for preloaded far shoot
                                     new ParallelAction(
                                             RedFarGoToShootingPosition,
@@ -346,7 +353,7 @@ public class RedAuto extends LinearOpMode{
                                     shoot(),
 
                                     new SleepAction(0.9),
-                                    new InstantAction(()->r.redGoalAutoPose = new Pose2d(-74, 57,0)),
+                                    new InstantAction(()->r.redGoalAutoPose = new Pose2d(-74, 70,0)),
                                     //tweak this goal pose for rest of far shoots
                                     new ParallelAction(
                                             RedFarMoveToShootingFirstPath,
@@ -515,33 +522,40 @@ public class RedAuto extends LinearOpMode{
                                             RedNearGoToShootingPosition,
                                             intake()
                                     ),
-                                    new SleepAction(0.75),
+                                    new SleepAction(0.25),
                                     nearShoot(),
 
-                                    new SleepAction(1.75),
+                                    new SleepAction(1),
                                     new ParallelAction(
                                             RedNearMoveToShootingFirstPath,
                                             intake()
                                     ),
                                     nearShoot(),
 
-                                    new SleepAction(1.75),
+                                    new SleepAction(1),
                                     new ParallelAction(
                                             RedNearMoveToShootingSecondPath,
+                                            intake()
+                                    ),
+
+                                    new SleepAction(1),
+                                    new ParallelAction(
+                                            RedNearMoveToShootingThirdPath,
                                             intake()
                                     ),
                                     nearShoot(),
 
 
-
-                                    new SleepAction(1.75),
+                                    new SleepAction(1.1),
                                     new ParallelAction(
                                             RedNearMoveToShootingFourthPath,
                                             intake()
                                     ),
                                     nearShoot(),
 
-                                    new SleepAction(1.75),
+
+
+                                    new SleepAction(1.1),
                                     new ParallelAction(
                                             RedNearEnd,
                                             intake()

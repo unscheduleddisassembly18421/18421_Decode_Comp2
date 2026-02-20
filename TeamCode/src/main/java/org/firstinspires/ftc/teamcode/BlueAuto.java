@@ -76,13 +76,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
             }
 
-            Pose2d blueStartFar = new Pose2d(63, -12, Math.toRadians(180));
+            Pose2d blueStartFar = new Pose2d(63, -14, Math.toRadians(180));
 
             Pose2d blueStartNear = new Pose2d(-50, -52, Math.toRadians(50));
 
             Pose2d blueStartFar18Ball = new Pose2d(63, 12, Math.toRadians(180));
 
-            Pose2d blueStartFar12Ball = new Pose2d(63, -12, Math.toRadians(180));
+            Pose2d blueStartFar12Ball = new Pose2d(63, -14, Math.toRadians(180));
 
 
 
@@ -130,7 +130,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
             TrajectoryActionBuilder blueFarThirdPath = blueFarSecondPath.fresh()//thirdPathFarRed
-                    .strafeToSplineHeading(new Vector2d(35, -28), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(32, -28), Math.toRadians(270))
                     .setTangent(Math.toRadians(270))
                     .lineToY(-59)
                     .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(270))
@@ -142,8 +142,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
             TrajectoryActionBuilder blueFarFourthPath = blueFarThirdPath.fresh()
-                    .strafeToSplineHeading(new Vector2d(52, -55), Math.toRadians(270))
-                    .strafeToSplineHeading(new Vector2d(62, -55), Math.toRadians(270))
+                    //.strafeToSplineHeading(new Vector2d(62, -57), Math.toRadians(290))
+                    .strafeToSplineHeading(new Vector2d(62, -57), Math.toRadians(270))
+                    .waitSeconds(1.5)
                     .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(270))
 
                     //.strafeToSplineHeading(new Vector2d(-5, -26),Math.toRadians(270))
@@ -153,13 +154,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
             TrajectoryActionBuilder blueFarFifthPath = blueFarFourthPath.fresh()
-                    .strafeToSplineHeading(new Vector2d(56, -55), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(62, -57), Math.toRadians(270))
+                    .waitSeconds(0.35)
                     .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(270))
                     .endTrajectory();
 
 
             TrajectoryActionBuilder blueFarSixthPath = blueFarFifthPath.fresh()
-                    .strafeToSplineHeading(new Vector2d(56, -58), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(62, -58), Math.toRadians(270))
+                    .waitSeconds(0.35)
                     .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(270))
                     .endTrajectory();
 
@@ -202,35 +205,33 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                     .endTrajectory();
 
             TrajectoryActionBuilder blueNearFirstPath = blueNearMoveToShootingPose.fresh()//firstPathNearBlue
-                    .strafeToSplineHeading(new Vector2d(17, -30), Math.toRadians(270))
-                    .strafeToSplineHeading(new Vector2d(17, -58), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(20, -30), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(20, -70), Math.toRadians(270))
                     .strafeToSplineHeading(new Vector2d(-12, -12), Math.toRadians(270))
                     .endTrajectory();
 
             TrajectoryActionBuilder blueNearSecondPath = blueNearFirstPath.fresh()//secondPathNearBlue
-                    .strafeToSplineHeading(new Vector2d(40, -23), Math.toRadians(270))
-                    .strafeToSplineHeading(new Vector2d(40, -58), Math.toRadians(270))
-                    .strafeToSplineHeading(new Vector2d(-12, -12), Math.toRadians(270))
+                    .setTangent(Math.toRadians(270))
+                    .lineToY(-65, new TranslationalVelConstraint(30))
+                    .strafeToSplineHeading(new Vector2d(-12, -40), Math.toRadians(270))
                     .endTrajectory();
 
             TrajectoryActionBuilder blueNearThirdPath = blueNearSecondPath.fresh()//thirdPathNearBlue
-                    .strafeToSplineHeading(new Vector2d(4, -12), Math.toRadians(270))
-                    .strafeToSplineHeading(new Vector2d(4, -58), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(10, -60), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(-12, -12), Math.toRadians(270))
 
                     .endTrajectory();
 
-            TrajectoryActionBuilder blueNearFourthPath = blueNearSecondPath.fresh()
-                    //.strafeToSplineHeading(new Vector2d(4, -20), Math.toRadians(270))
-                    .strafeToSplineHeading(new Vector2d(-12, -25), Math.toRadians(270))
-                    .setTangent(Math.toRadians(270))
-                    .lineToY(-58, new TranslationalVelConstraint(40))
-                    .strafeToSplineHeading(new Vector2d(-12, -12), Math.toRadians(270))
+            TrajectoryActionBuilder blueNearFourthPath = blueNearThirdPath.fresh()
+                    .strafeToSplineHeading(new Vector2d(42, 23), Math.toRadians(90))
+                    .strafeToSplineHeading(new Vector2d(42, 70), Math.toRadians(90))
+                    .strafeToSplineHeading(new Vector2d(-12, 12), Math.toRadians(90))
                     .endTrajectory();
 
 
 
             TrajectoryActionBuilder blueNearThirdPathEnd = blueNearFourthPath.fresh()//endBlueNear
-                    .strafeToSplineHeading(new Vector2d(4, -30), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(10, -30), Math.toRadians(270))
                     .endTrajectory();
 
 
@@ -302,7 +303,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
             Action BlueNearGoToShootingPosition = blueNearMoveToShootingPose.build();
             Action BlueNearMoveToShootingFirstPath = blueNearFirstPath.build();
             Action BlueNearMoveToShootingSecondPath = blueNearSecondPath.build();
-            //Action BlueNearMoveToShootingThirdPath = blueNearThirdPath.build();
+            Action BlueNearMoveToShootingThirdPath = blueNearThirdPath.build();
             Action BlueNearMoveToShootingFourthPath = blueNearFourthPath.build();
             Action BlueNearEnd= blueNearThirdPathEnd.build();
 
@@ -313,30 +314,29 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                         new ParallelAction(
                                 r.turnTurretBlue(),
                                 new SequentialAction(//can do turn to first angle here to speed up time
-                                        new InstantAction(()->r.blueAutoGoalPose = new Pose2d(-70, -67,0)),
+                                        new InstantAction(()->r.blueAutoGoalPose = new Pose2d(-70, -55,0)),
                                         //tweak THIS GOAL POSE FOR preloaded FAR SHOOT
                                         new ParallelAction(
                                                 BlueFarGoToShootingPosition,
                                                 intake()
                                         ),
-                                        new SleepAction(0.75),
+                                        new SleepAction(0.65),
                                         shoot(),
-                                        new SleepAction(2),
-                                        new InstantAction(()->r.blueAutoGoalPose = new Pose2d(-70, -67,0)),
+                                        new SleepAction(0.85),
+                                        new InstantAction(()->r.blueAutoGoalPose = new Pose2d(-73, -63,0)),
                                         //tweak for the rest of the far shoots
                                         new ParallelAction(
                                                 BlueFarMoveToShootingFirstPath,
                                                 intake()
                                         ),
-
-                                        new SleepAction(0.5),
                                         new ParallelAction(
                                                 BlueFarMoveToShootingSecondPath,
                                                 intake()
                                         ),
                                         shoot(),
 
-                                        new SleepAction(1),
+                                        new SleepAction(0.85),
+                                        new InstantAction(()->r.blueAutoGoalPose = new Pose2d(-73, -67,0)),
                                         new ParallelAction(
                                                 BlueFarMoveToShootingThirdPath,
                                                 intake()
@@ -344,28 +344,23 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                                         shoot(),
 
 
-                                        new SleepAction(1),
+                                        new SleepAction(0.85),
                                         new ParallelAction(
                                                 BlueFarMoveToShootingFourthPath,
                                                 intake()
                                         ),
                                         shoot(),
 
-                                        new SleepAction(1),
+                                        new SleepAction(0.85),
                                         new ParallelAction(
                                                 BlueFarMoveToShootingFifthPath,
                                                 intake()
                                         ),
                                         shoot(),
 
-                                        new SleepAction(1.5),
-                                        new ParallelAction(
-                                                BlueFarMoveToShootingSixthPath,
-                                                intake()
-                                        ),
-                                        shoot(),
 
-                                        new SleepAction(1.5),
+
+                                        new SleepAction(0.85),
                                         new ParallelAction(
                                                 BlueFarEnd,
                                                 intake()
@@ -436,10 +431,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                                                 BlueNearGoToShootingPosition,
                                                 intake()
                                         ),
-                                        new SleepAction(0.5),
                                         nearShoot(),
 
-                                        new SleepAction(2),
+                                        new SleepAction(0.95),
                                         new ParallelAction(
                                                 BlueNearMoveToShootingFirstPath,
                                                 intake()
@@ -447,21 +441,25 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                                         nearShoot(),
 
 
-                                        new SleepAction(2),
+                                        new SleepAction(0.95),
                                         new ParallelAction(
                                                 BlueNearMoveToShootingSecondPath,
                                                 intake()
                                         ),
+                                        new ParallelAction(
+                                                BlueNearMoveToShootingThirdPath,
+                                                intake()
+                                        ),
                                         nearShoot(),
 
-
-                                        new SleepAction(2),
+                                        new SleepAction(0.95),
                                         new ParallelAction(
                                                 BlueNearMoveToShootingFourthPath,
                                                 intake()
                                         ),
                                         nearShoot(),
-                                        new SleepAction(3.5),
+
+                                        new SleepAction(0.95),
                                         new ParallelAction(
                                                 BlueNearEnd,
                                                 intake()

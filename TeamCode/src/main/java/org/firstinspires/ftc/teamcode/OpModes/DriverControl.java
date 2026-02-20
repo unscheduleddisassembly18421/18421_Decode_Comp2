@@ -217,17 +217,17 @@ public class DriverControl extends OpMode {
         switch (targetGoal){
           case RED:
             r.turret.rightLightRed();
-//          r.turret.rightLightRed();
+            r.turret.rightLightRed();
             break;
 
           case BLUE:
             r.turret.rightLightBlue();
-//          r.turret.leftLightBlue();
+            r.turret.leftLightBlue();
             break;
         }
 
-      if(gamepad2.left_trigger > 0.3){
-        r.intake.intakeMotorOn();
+      if(gamepad2.left_trigger > 0.1){
+        r.intake.intakeMotorOn(gamepad2.left_trigger );
         r.outtake.ballBlocKServoBlock();
       } else if (gamepad2.right_trigger > 0.3) {
         r.intake.intakeMotorOn();

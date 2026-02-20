@@ -41,8 +41,8 @@ public class Turret {
     private Servo leftLight = null;
     private Servo rightLight = null;
 
-    public static double RED_COLOR = 0.28;
-    public static double BLUE_COLOR = 0.62;
+    public static double RED_COLOR = 0.3;
+    public static double BLUE_COLOR = 0.65;
 
 
     public Turret(HardwareMap hwmap, Telemetry telemetry) {

@@ -51,6 +51,20 @@ public class Intake {
         intakeMotor2.setPower(INTAKEMOTOR_POWER_OFF);
     }
 
+    public void intakeMotorOn(double power){
+        double truePower;
+        if(power < 0.3){
+            truePower = 0.3;
+        } else if (power > 0.95) {
+            truePower = 0.95;
+        }
+        else{
+            truePower = power;
+        }
+        intakeMotor1.setPower(truePower);
+        intakeMotor2.setPower(truePower);
+    }
+
     public void intakeMotorOn(){
         intakeMotor1.setDirection(DcMotor.Direction.REVERSE);
         intakeMotor2.setDirection(DcMotor.Direction.REVERSE);
