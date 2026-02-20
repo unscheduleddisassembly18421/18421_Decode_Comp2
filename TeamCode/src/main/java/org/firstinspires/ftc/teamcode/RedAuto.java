@@ -21,8 +21,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class RedAuto extends LinearOpMode{
 
 
-    public enum AutoSelector {RED_FAR, RED_NEAR, RED_FAR_9_BALL}
-    public Automonous.AutoSelector autoSelector = Automonous.AutoSelector.RED_FAR;
+    public enum AutoSelector {RED_FAR, RED_NEAR, RED_FAR_12_BALL, RED_FAR_18_BALL,}
+    public RedAuto.AutoSelector autoSelector = AutoSelector.RED_FAR;
     public HwRobot r = null;
     public static double SHOOTING_DELAY = 0.45;
     public static double SELECTOR_DELAY_TIME = 0.4;
@@ -56,20 +56,22 @@ public class RedAuto extends LinearOpMode{
 
             if (gamepad1.dpad_up) {
 
-                autoSelector = Automonous.AutoSelector.RED_FAR;
+                autoSelector = RedAuto.AutoSelector.RED_FAR;
 
             } else if (gamepad1.dpad_right) {
 
-                autoSelector = Automonous.AutoSelector.RED_NEAR;
+                autoSelector = RedAuto.AutoSelector.RED_NEAR;
 
             }else if (gamepad1.dpad_down) {
 
-                autoSelector = Automonous.AutoSelector.RED_FAR_18_BALL;
+                autoSelector = RedAuto.AutoSelector.RED_FAR_18_BALL;
 
 
             }else if (gamepad1.dpad_left) {
 
-                autoSelector =Automonous.AutoSelector.RED_FAR_12_BALL;
+                autoSelector = RedAuto.AutoSelector.RED_FAR_12_BALL;
+
+                //}else if (gamepad1.xWasPressed())
             }
 
         }
@@ -83,16 +85,16 @@ public class RedAuto extends LinearOpMode{
         Pose2d redStartFar12Ball = new Pose2d(-50, 52, Math.toRadians(180));
 
 
-        if (autoSelector == Automonous.AutoSelector.RED_FAR) {
+        if (autoSelector == RedAuto.AutoSelector.RED_FAR) {
             r.drive.localizer.setPose(redStartFar);
 
-        } else if (autoSelector == Automonous.AutoSelector.RED_NEAR) {
+        } else if (autoSelector == RedAuto.AutoSelector.RED_NEAR) {
             r.drive.localizer.setPose(redStartNear);
 
-        } else if (autoSelector == Automonous.AutoSelector.RED_FAR_18_BALL) {
+        } else if (autoSelector == RedAuto.AutoSelector.RED_FAR_18_BALL) {
             r.drive.localizer.setPose(redStartFar);
 
-        } else if (autoSelector == Automonous.AutoSelector.RED_FAR_12_BALL) {
+        } else if (autoSelector == RedAuto.AutoSelector.RED_FAR_12_BALL) {
             r.drive.localizer.setPose(redStartFar);
         }
 
@@ -338,7 +340,7 @@ public class RedAuto extends LinearOpMode{
 
         waitForStart();
 
-        if (autoSelector == Automonous.AutoSelector.RED_FAR) {
+        if (autoSelector == RedAuto.AutoSelector.RED_FAR) {
             Actions.runBlocking(
                     new ParallelAction(
                             r.turnTurretRed(),
@@ -401,7 +403,7 @@ public class RedAuto extends LinearOpMode{
                             )
                     )
             );
-        } else if (autoSelector == Automonous.AutoSelector.BLUE_FAR_12_BALL) {
+        } else if (autoSelector == RedAuto.AutoSelector.RED_FAR_12_BALL) {
             Actions.runBlocking(
                     new ParallelAction(
                             r.turnTurretRed(),
@@ -443,7 +445,7 @@ public class RedAuto extends LinearOpMode{
                     )
             );
 
-        } else if (autoSelector == Automonous.AutoSelector.RED_FAR_18_BALL) {
+        } else if (autoSelector == RedAuto.AutoSelector.RED_FAR_18_BALL) {
             Actions.runBlocking(
                     new ParallelAction(
                             r.turnTurretRed(),
@@ -513,7 +515,7 @@ public class RedAuto extends LinearOpMode{
             );
         }
         //Im pushing htis again
-        else if (autoSelector == Automonous.AutoSelector.RED_NEAR) {
+        else if (autoSelector == RedAuto.AutoSelector.RED_NEAR) {
             Actions.runBlocking(
                     new ParallelAction(
                             r.turnTurretRed(),

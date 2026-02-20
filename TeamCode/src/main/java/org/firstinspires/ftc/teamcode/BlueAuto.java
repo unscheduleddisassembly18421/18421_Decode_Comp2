@@ -24,10 +24,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
     @Autonomous(name = "BlueAuto")
     public class BlueAuto extends LinearOpMode {
 
+        public enum AutoSelector { BLUE_FAR, BLUE_NEAR, BLUE_FAR_12_BALL, BLUE_FAR_18_BALL }
 
-        public enum AutoSelector { BLUE_FAR, BLUE_NEAR}
-
-        public Automonous.AutoSelector autoSelector = Automonous.AutoSelector.BLUE_FAR;
+        public BlueAuto.AutoSelector autoSelector = BlueAuto.AutoSelector.BLUE_FAR;
         public HwRobot r = null;
         public static double SHOOTING_DELAY = 0.45;
         public static double SELECTOR_DELAY_TIME = 0.4;
@@ -52,25 +51,25 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                 telemetry.addData(" AUTO SELECTED", autoSelector);
                 telemetry.addLine("D-Pad Up for Blue Far");
                 telemetry.addLine("D-Pad Right for Blue Near");
-                telemetry.addLine("D-Pad Down for Blue Near 18 Ball");
+                telemetry.addLine("D-Pad Down for Blue Far 18 Ball");
                 telemetry.addLine("D-Pad Left for Blue Far 12 Ball");
                 telemetry.update();
 
                 if (gamepad1.dpad_up) {
 
-                    autoSelector = Automonous.AutoSelector.BLUE_FAR;
+                    autoSelector = BlueAuto.AutoSelector.BLUE_FAR;
 
                 } else if (gamepad1.dpad_right) {
 
-                    autoSelector = Automonous.AutoSelector.BLUE_NEAR;
+                    autoSelector = BlueAuto.AutoSelector.BLUE_NEAR;
 
                 } else if (gamepad1.dpad_down) {
 
-                    autoSelector = Automonous.AutoSelector.BLUE_FAR_18_BALL;
+                    autoSelector = BlueAuto.AutoSelector.BLUE_FAR_18_BALL;
 
                 } else if (gamepad1.dpad_left) {
 
-                    autoSelector = Automonous.AutoSelector.BLUE_FAR_12_BALL;
+                    autoSelector = BlueAuto.AutoSelector.BLUE_FAR_12_BALL;
 
                 }
 
@@ -86,16 +85,16 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 
-            if (autoSelector == Automonous.AutoSelector.BLUE_FAR) {
+            if (autoSelector == BlueAuto.AutoSelector.BLUE_FAR) {
                 r.drive.localizer.setPose(blueStartFar);
 
-            } else if (autoSelector == Automonous.AutoSelector.BLUE_NEAR) {
+            } else if (autoSelector == BlueAuto.AutoSelector.BLUE_NEAR) {
                 r.drive.localizer.setPose(blueStartNear);
 
-            } else if (autoSelector == Automonous.AutoSelector.BLUE_FAR_18_BALL) {
+            } else if (autoSelector == BlueAuto.AutoSelector.BLUE_FAR_18_BALL) {
                 r.drive.localizer.setPose(blueStartNear);
                 
-            }else if (autoSelector == Automonous.AutoSelector.BLUE_FAR_12_BALL) {
+            }else if (autoSelector == BlueAuto.AutoSelector.BLUE_FAR_12_BALL) {
                 r.drive.localizer.setPose(blueStartFar);
             }
 
@@ -223,9 +222,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                     .endTrajectory();
 
             TrajectoryActionBuilder blueNearFourthPath = blueNearThirdPath.fresh()
-                    .strafeToSplineHeading(new Vector2d(42, 23), Math.toRadians(90))
-                    .strafeToSplineHeading(new Vector2d(42, 70), Math.toRadians(90))
-                    .strafeToSplineHeading(new Vector2d(-12, 12), Math.toRadians(90))
+                    .strafeToSplineHeading(new Vector2d(42, -23), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(42, -60), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(-12, -12), Math.toRadians(270))
                     .endTrajectory();
 
 
@@ -309,7 +308,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
             waitForStart();
 
-            if (autoSelector == Automonous.AutoSelector.BLUE_FAR) {
+            if (autoSelector == BlueAuto.AutoSelector.BLUE_FAR) {
                 Actions.runBlocking(
                         new ParallelAction(
                                 r.turnTurretBlue(),
@@ -371,7 +370,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                         )
                 );
 
-            } else if (autoSelector == Automonous.AutoSelector.BLUE_FAR_12_BALL) {
+            } else if (autoSelector == BlueAuto.AutoSelector.BLUE_FAR_12_BALL) {
                 Actions.runBlocking(
                         new ParallelAction(
                                 r.turnTurretBlue(),
@@ -421,7 +420,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                 );
 
             //Im pushing hits again
-            }else if (autoSelector == Automonous.AutoSelector.BLUE_NEAR) {
+            }else if (autoSelector == BlueAuto.AutoSelector.BLUE_NEAR) {
                 Actions.runBlocking(
                         //tweak auto goal pose in HwRobot
                         new ParallelAction(
