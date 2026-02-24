@@ -30,8 +30,8 @@ public class HwRobot {
     public static Pose2d blueGoalPose = new Pose2d(-69, -70, 0);//find real pose
     public static Pose2d redGoalPose = new Pose2d(-53, 70, 0);//find real pose
 
-    Pose2d blueAutoGoalPose = new Pose2d(-70, -78, 0);
-    Pose2d redGoalAutoPose = new Pose2d(-70, 78, 0);
+    Pose2d blueAutoGoalPose = new Pose2d(-70, -70, 0);
+    Pose2d redGoalAutoPose = new Pose2d(-70, 70, 0);
 
     public HwRobot(Telemetry t, HardwareMap hwm) {
         hardwareMap = hwm;

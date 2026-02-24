@@ -154,14 +154,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
             TrajectoryActionBuilder blueFarFifthPath = blueFarFourthPath.fresh()
                     .strafeToSplineHeading(new Vector2d(62, -57), Math.toRadians(270))
-                    .waitSeconds(0.35)
+                    .waitSeconds(0.25)
                     .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(270))
                     .endTrajectory();
 
 
             TrajectoryActionBuilder blueFarSixthPath = blueFarFifthPath.fresh()
                     .strafeToSplineHeading(new Vector2d(62, -58), Math.toRadians(270))
-                    .waitSeconds(0.35)
+                    .waitSeconds(0.25)
                     .strafeToSplineHeading(new Vector2d(60, -12), Math.toRadians(270))
                     .endTrajectory();
 
@@ -205,13 +205,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
             TrajectoryActionBuilder blueNearFirstPath = blueNearMoveToShootingPose.fresh()//firstPathNearBlue
                     .strafeToSplineHeading(new Vector2d(20, -30), Math.toRadians(270))
-                    .strafeToSplineHeading(new Vector2d(20, -70), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(20, -60), Math.toRadians(270))
                     .strafeToSplineHeading(new Vector2d(-12, -12), Math.toRadians(270))
                     .endTrajectory();
 
             TrajectoryActionBuilder blueNearSecondPath = blueNearFirstPath.fresh()//secondPathNearBlue
                     .setTangent(Math.toRadians(270))
-                    .lineToY(-65, new TranslationalVelConstraint(30))
+                    .lineToY(-60, new TranslationalVelConstraint(30))
                     .strafeToSplineHeading(new Vector2d(-12, -40), Math.toRadians(270))
                     .endTrajectory();
 
@@ -282,12 +282,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
             Action BlueFarMoveToShootingSixthPath = blueFarSixthPath.build();
             Action BlueFarEnd = blueFarThirdPathEnd.build();
 
-            //BLUE FAR 18 BALL
-            Action BlueFar18BallGoToShootingPosition = blueFar18BMoveToShootingPose.build();
-            Action BlueFar18BallMoveToShootingFirstPath = blueFar18BFirstPath.build();
-            Action BlueFar18BallMoveToShootingSecondPath = blueFar18BSecondPath.build();
-            Action BlueFar18BallMoveToShootingThirdPath = blueFar18BThirdPath.build();
-            Action BlueFar18BallEnd = blueFar18BThirdPathEnd.build();
+//            //BLUE NEAR NO GATE
+//            Action RedFar18BallGoToShootingPosition = blueNearNoGateMoveToShootingPose.build();
+//            Action RedFar18BallMoveToShootingFirstPath = blueNearNoGateFirstPath.build();
+//            Action RedFar18BallMoveToShootingSecondPath = blueNearNoGateSecondPath.build();
+//            Action RedFar18BallMoveToShootingThirdPath = blueNearNoGateThirdPath.build();
+//            Action RedFar18BallMoveToShootingFourthPath = blueNearNoGateFourthPath.build();
+//            Action RedFar18BallMoveToShootingFifthPath = blueNearNoGateFifthPath.build();
+//            Action RedFar18BallEnd = blueNearNoGateFifthPathEnd.build();
+
 
             //BLUE FAR 12 BALL (COMP 3)
             Action BlueFar12BallGoToShootingPosition = blueFar12BMoveToShootingPose.build();
@@ -344,18 +347,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
                                         new SleepAction(0.85),
+                                        new InstantAction(()->r.blueAutoGoalPose = new Pose2d(-73, -69,0)),
                                         new ParallelAction(
                                                 BlueFarMoveToShootingFourthPath,
                                                 intake()
                                         ),
                                         shoot(),
 
-                                        new SleepAction(0.85),
-                                        new ParallelAction(
-                                                BlueFarMoveToShootingFifthPath,
-                                                intake()
-                                        ),
-                                        shoot(),
+
 
 
 
