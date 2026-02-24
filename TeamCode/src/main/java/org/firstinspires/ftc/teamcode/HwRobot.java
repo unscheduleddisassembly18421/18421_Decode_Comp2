@@ -10,10 +10,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.OpModes.Intake;
-import org.firstinspires.ftc.teamcode.OpModes.Outtake;
-import org.firstinspires.ftc.teamcode.OpModes.Turret;
-import org.firstinspires.ftc.teamcode.OpModes.Vision;
+import org.firstinspires.ftc.teamcode.TeleopInSeason.Intake;
+import org.firstinspires.ftc.teamcode.TeleopInSeason.Outtake;
+import org.firstinspires.ftc.teamcode.TeleopInSeason.Turret;
+import org.firstinspires.ftc.teamcode.TeleopInSeason.Vision;
 
 @Config
 public class HwRobot {

@@ -27,21 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.OpModes;
-
-import static org.firstinspires.ftc.teamcode.Variables.INTAKE_DELAY;
-import static org.firstinspires.ftc.teamcode.Variables.INTAKE_OFF_DELAY;
-import static org.firstinspires.ftc.teamcode.Variables.RELOAD_DELAY;
-import static org.firstinspires.ftc.teamcode.Variables.SHOOTER_DELAY;
-import static org.firstinspires.ftc.teamcode.Variables.firstAngle;
-import static org.firstinspires.ftc.teamcode.Variables.firstShootingAngle;
-import static org.firstinspires.ftc.teamcode.Variables.secondAngle;
-import static org.firstinspires.ftc.teamcode.Variables.secondShootingAngle;
-import static org.firstinspires.ftc.teamcode.Variables.thirdAngle;
-import static org.firstinspires.ftc.teamcode.Variables.thirdShootingAngle;
-
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
+package org.firstinspires.ftc.teamcode.TeleopInSeason;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -54,25 +40,10 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.function.Continuation;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
-import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
 import org.firstinspires.ftc.teamcode.Drawing;
 import org.firstinspires.ftc.teamcode.HwRobot;
-import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Pose2DStorage;
-import org.firstinspires.ftc.vision.VisionPortal;
-import org.firstinspires.ftc.vision.VisionProcessor;
-import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
-import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
-import org.opencv.android.Utils;
-import org.opencv.core.Mat;
-
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 
 /*

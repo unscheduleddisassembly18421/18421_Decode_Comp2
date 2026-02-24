@@ -2,18 +2,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.teamcode.Variables.INTAKE_DELAY;
-import static org.firstinspires.ftc.teamcode.Variables.INTAKE_OFF_DELAY;
-import static org.firstinspires.ftc.teamcode.Variables.firstAngle;
-import static org.firstinspires.ftc.teamcode.Variables.firstShootingAngle;
-import static org.firstinspires.ftc.teamcode.Variables.secondAngle;
-import static org.firstinspires.ftc.teamcode.Variables.secondShootingAngle;
-import static org.firstinspires.ftc.teamcode.Variables.thirdAngle;
-import static org.firstinspires.ftc.teamcode.Variables.thirdShootingAngle;
-
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.roadrunner.InstantAction;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
@@ -26,8 +16,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.teamcode.OpModes.DriverControl;
 
 @Disabled
 @Config
